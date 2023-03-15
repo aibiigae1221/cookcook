@@ -1,0 +1,32 @@
+.content-wrapper{
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position:relative;
+}
+
+.banner-holder{
+    background-image:url("../../../public/img/banner.jpg");
+    background-size:100% 70%;
+    background-repeat:no-repeat;
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:-1;
+}
+
+.content-wrapper .header{
+  display:flex;
+  flex-basis:20%;
+}
+
+.content-wrapper .center{
+  display: flex;
+  flex-basis:60%;
+}
+
+.content-wrapper .footer{
+  display: flex;
+  flex-basis:10%;
+}
