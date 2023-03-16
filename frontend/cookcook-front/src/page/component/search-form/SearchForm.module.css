@@ -12,7 +12,7 @@
   background-color:#CFCCBE;
   color:#000;
   width:350px;
-
+  height:16%;
   padding-left:10px;
   outline:none;
 }
@@ -28,7 +28,7 @@
   background:transparent;
   margin:0;
   padding:0;
-  height:100%;
+  height:16%;
   cursor:pointer;
 }
 

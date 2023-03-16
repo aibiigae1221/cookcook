@@ -1,15 +1,13 @@
 
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
+import RecipeList from "../component/recipe-list/component";
 
 import "../common/index.css";
 
 const IndexPage = () => {
   return (
     <div className="content-wrapper">
-
-      <div className="banner-holder"></div>
-
       <div className="content header">
         <HeaderContent />
       </div>
@@ -17,7 +15,8 @@ const IndexPage = () => {
 
 
       <div className="content center">
-        <h1>index</h1>
+        <RecipeList />
+
       </div>
 
       <div className="content footer">
