@@ -22,7 +22,7 @@ const FooterContent = () => {
           <li className={styles.listItem}>
             <h1 className={styles.header}>Reference</h1>
           </li>
-          <li className={styles.listItem}><a href="https://github.com/aibiigae1221/cookcook" target="_blank">CookCook Github 주소</a></li>
+          <li className={styles.listItem}><a className={styles.anchor} href="https://github.com/aibiigae1221/cookcook" target="_blank" rel="noreferrer">CookCook Github 주소</a></li>
         </ul>
 
 

@@ -1,0 +1,69 @@
+
+.wrap{
+    display:flex;
+    flex-direction: row;
+    margin-top:42px;
+    margin-right:10px;
+    position:relative;
+}
+
+.inputKeyword{
+  border:0 none;
+  background-color:#CFCCBE;
+  color:#000;
+  width:350px;
+
+  padding-left:10px;
+  outline:none;
+}
+
+.inputKeyword:focus{
+  border-bottom:2px solid #000;
+}
+
+.searchButton{
+  display:flex;
+  justify-content: flex-end;
+  border:0px none;
+  background:transparent;
+  margin:0;
+  padding:0;
+  height:100%;
+  cursor:pointer;
+}
+
+.img{
+  height:100%;
+}
+
+.expectedSearchBar{
+  position:absolute;
+  width:83.5%;
+  max-height:200px;
+  background-color:#fff;
+  color:#000;
+  top:46px;
+  overflow-y:auto;
+  z-index:1;
+  padding:10px;
+}
+
+
+
+.itemTitle{
+  font-weight:bold;
+  font-size:12pt;
+  color:#E1A83D;
+  cursor:pointer;
+
+}
+
+.itemRecipe{
+  color:#989080;
+  font-size:10pt;
+  padding-bottom:20px;
+  margin:5px 0;
+  border-bottom:1px solid #E1A83D;
+  cursor:pointer;
+
+}
