@@ -9,10 +9,10 @@
 
 .inputKeyword{
   border:0 none;
-  background-color:#CFCCBE;
-  color:#000;
+  background-color:#85745C;
+  color:#CFCCBE;
   width:350px;
-  height:16%;
+  height:42px;
   padding-left:10px;
   outline:none;
 }
@@ -22,14 +22,15 @@
 }
 
 .searchButton{
-  display:flex;
-  justify-content: flex-end;
-  border:0px none;
-  background:transparent;
-  margin:0;
-  padding:0;
-  height:16%;
+  height:45px;
+
+  color:#85745C;
+  background-color:#CFCCBE;
   cursor:pointer;
+}
+
+.searchButton:hover{
+  background-color:#F5ECC4;
 }
 
 .img{

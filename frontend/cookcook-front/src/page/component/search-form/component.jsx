@@ -1,6 +1,5 @@
 
 import React, {useState} from "react";
-import searchButtonImage from "./search-button.png";
 import styles from "./SearchForm.module.css";
 
 const SearchForm = () => {
@@ -26,7 +25,7 @@ const SearchForm = () => {
   const handleKeywordKeyDown = (e) => {
 
     if(expectedSearchList.length > 0){
-      if(e.key == "ArrowDown"){
+      if(e.key === "ArrowDown"){
         let newIdx = hoveredIdx + 1;
         if(newIdx > expectedSearchList.length-1){
           newIdx = 0;
@@ -34,19 +33,19 @@ const SearchForm = () => {
 
         setHoveredIdx(newIdx);
 
-      }else if(e.key == "ArrowUp"){
+      }else if(e.key === "ArrowUp"){
         let newIdx = hoveredIdx - 1;
         if(newIdx < 0){
           newIdx = expectedSearchList.length - 1;
         }
 
         setHoveredIdx(newIdx);
-      }else if(e.key == "Enter"){
+      }else if(e.key === "Enter"){
         copyToInputSearch(hoveredIdx);
       }
     }
 
-    if(e.key == 'Enter') e.preventDefault();
+    if(e.key === 'Enter') e.preventDefault();
 
   }
 
@@ -63,7 +62,7 @@ const SearchForm = () => {
 
 
   const RenderExpectedSearchList = expectedSearchList.map( (el,idx) =>
-      <li key={el.itemId} className={styles.item} onClick={()=>copyToInputSearch(idx)} onMouseOver={()=>hoverItem(idx)} onKeyDown={handleKeywordKeyDown} style={{backgroundColor:idx == hoveredIdx? "#CFCCBE" : "#fff"}}>
+      <li key={el.itemId} className={styles.item} onClick={()=>copyToInputSearch(idx)} onMouseOver={()=>hoverItem(idx)} onKeyDown={handleKeywordKeyDown} style={{backgroundColor:idx === hoveredIdx? "#CFCCBE" : "#fff"}}>
         <p className={styles.itemTitle}>{el.itemTitle}</p>
         <p className={styles.itemRecipe}>{el.itemRecipe}</p>
       </li>
@@ -75,7 +74,7 @@ const SearchForm = () => {
       <input name="keyword" className={styles.inputKeyword} value={keyword} onChange={handleKeywordChange} onKeyDown={handleKeywordKeyDown}/>
 
       <button className={styles.searchButton}>
-        <img src={searchButtonImage} alt="검색 버튼" className={styles.img}/>
+        검색
       </button>
 
       {showExpectedSearchPage &&

@@ -10,10 +10,12 @@
 
 .content-wrapper .header{
   display:flex;
-  height:35%;
+  min-height:30%;
   background-image:url("../../../public/img/banner.jpg");
-  background-size:100% 100%;
+  background-size:cover;
   background-repeat:no-repeat;
+  background-position:center 70%;
+
 }
 
 .content-wrapper .center{

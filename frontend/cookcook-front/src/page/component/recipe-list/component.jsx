@@ -52,7 +52,7 @@ const RecipeList = () => {
 
 
     {
-      recipieId:0,
+      recipieId:1,
       mainImageUrl:"/img/data/item1_0.jpg",
       title:"오늘은 짜장면을",
       tags:["짜장면", "중식", "다이어트 파괴자","존맛탱"],

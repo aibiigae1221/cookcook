@@ -1,6 +1,7 @@
 
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
+import NewRecipeForm from "../component/new-recipe-form/component";
 
 import "../common/index.css";
 
@@ -17,7 +18,7 @@ const CreateRecipePage = () => {
 
 
       <div className="content center">
-        <h1>레시피 만들기 페이지</h1>
+        <NewRecipeForm />
       </div>
 
       <div className="content footer">

@@ -24,8 +24,8 @@ const HeaderContent = () => {
 
             <ul className={styles.ul}>
               <li><NavLink to="/create-recipe-page" className={styles.gnbItem}>나만의 레시피 공유하기</NavLink></li>
-              <li><NavLink to="/find-job-page" className={styles.gnbItem}>요리사 채용공고</NavLink></li>
-              <li><NavLink to="/tip-sharing-page" className={styles.gnbItem}>팁과 노하우</NavLink></li>
+              {/*<li><NavLink to="/find-job-page" className={styles.gnbItem}>요리사 채용공고</NavLink></li>*/}
+              {/*<li><NavLink to="/tip-sharing-page" className={styles.gnbItem}>팁과 노하우</NavLink></li>*/}
               <li><NavLink to="/about-this-app" className={styles.gnbItem}>About This APP</NavLink></li>
             </ul>
           </nav>
