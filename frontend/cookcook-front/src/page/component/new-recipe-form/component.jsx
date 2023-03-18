@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/joy/Textarea';
+import { MuiFileInput } from 'mui-file-input'
 
 import cookStepImage from "./default-cook-step-image.jpg";
 
@@ -16,20 +17,25 @@ let cookStepIdx = 0;
 
 const NewRecipeForm = () => {
 
+  const [title, setTitle] = useState("");
+  const [mainImageSrc, setMainImageSrc] = useState(null);
   const [tagList, setTagList] = useState([]);
-  const [newTagName, setNewTagName] = useState("");
   const [cookStepList, setCookStepList] = useState([
     {
       idx:0,
       detail:"",
-      imgSrc:null
+      imgSrc:null,
+      uploadSrc:null
     }
   ]);
 
+  const [newTagName, setNewTagName] = useState("");
 
-
-  const handleNewTagName = (e) => {
-    setNewTagName(e.target.value);
+  const handleInputTagEnter = ev => {
+    if(ev.key === "Enter"){
+      addNewTag();
+      ev.preventDefault();
+    }
   };
 
   const addNewTag = () => {
@@ -41,6 +47,13 @@ const NewRecipeForm = () => {
     setTagList(tagList.filter(tag => tag !== tagName))
   };
 
+  const handleInputChange = (ev, setter) => {
+    setter(ev.target.value);
+  };
+
+  const handleInputFileChange = (value, setter) => {
+    setter(value);
+  };
 
   const addNewCookStep = () => {
     cookStepIdx++;
@@ -72,7 +85,8 @@ const NewRecipeForm = () => {
         return {
           idx:item.idx,
           detail:value,
-          imgSrc:item.imgSrc
+          imgSrc:item.imgSrc,
+          uploadSrc:item.uploadSrc
         };
       }else{
         return item;
@@ -81,6 +95,24 @@ const NewRecipeForm = () => {
 
     setCookStepList(newList);
   };
+
+  const handleCookStepImage = (newFile, selectedIdx) => {
+    const newList = cookStepList.map(item => {
+      if(item.idx === selectedIdx){
+        return {
+          idx:item.idx,
+          detail:item.detail,
+          imgSrc:newFile,
+          uploadSrc:item.uploadSrc
+        };
+      }else{
+        return item;
+      }
+    });
+
+    setCookStepList(newList);
+  };
+
 
 
   const printTagList = tagList.map((tag, idx) =>
@@ -108,12 +140,12 @@ const NewRecipeForm = () => {
             </Grid>
             <Grid item sm={4} style={{lineHeight:"1.5"}}>
               <p style={{marginTop:"30px"}}>조리과정을 뒷받쳐줄 이미지를 추가해보세요</p>
-              {cookStep.imgSrc !== null ?
-                <img src={cookStep.imgSrc} alt={cookStep.imgSrc} className={styles.cookingStepImage} />
+              {cookStep.uploadSrc !== null ?
+                <img src={cookStep.uploadSrc} alt={cookStep.uploadSrc} className={styles.cookingStepImage} />
                 :
                 <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
               }
-              <input type="file" />
+              <MuiFileInput value={cookStep.imgSrc} onChange={(newFile) => handleCookStepImage(newFile, cookStep.idx)}  />
             </Grid>
           </React.Fragment>
   );
@@ -136,12 +168,12 @@ const NewRecipeForm = () => {
             <h1 className={styles.h1}>당신의 특별한 레시피를 공유해보세요</h1>
           </Grid>
           <Grid item sm={12}>
-            <TextField fullWidth label="공유하실 레시피의 주제를 알려주세요" id="title" />
+            <TextField fullWidth label="공유하실 레시피의 주제를 알려주세요" id="title" value={title} onChange={ev => handleInputChange(ev, setTitle)}/>
           </Grid>
 
           <Grid item sm={12}>
             <Stack spacing={2} direction="row">
-              <TextField fullWidth label="레시피를 가리키는 태그들을 추가해보세요" id="tags" value={newTagName} onChange={handleNewTagName} />
+              <TextField fullWidth label="레시피를 가리키는 태그들을 추가해보세요" id="tags" value={newTagName} onKeyDown={handleInputTagEnter} onChange={ev => handleInputChange(ev, setNewTagName)} />
               <Button variant="contained" onClick={addNewTag}>추가</Button>
             </Stack>
           </Grid>
@@ -157,7 +189,7 @@ const NewRecipeForm = () => {
           <Grid item sm={4} style={{lineHeight:"1.5"}}>
             <p style={{fontWeight:"bold"}}>완성된 요리의 이미지 파일을 추가해보세요</p>
             <p>이미지를 추가하지 않으면 기본 이미지가 보여집니다.</p>
-            <input type="file" />
+            <MuiFileInput id="mainImageSrc" value={mainImageSrc} onChange={(newFile) => handleInputFileChange(newFile, setMainImageSrc)}  />
             <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
           </Grid>
 
