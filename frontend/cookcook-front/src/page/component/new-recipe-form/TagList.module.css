@@ -1,11 +1,4 @@
 
-
-
-.h1{
-  font-size:21pt;
-  font-weight:bold;
-}
-
 .tagItem{
   background-color:#3DD2C2;
   color:#fff;
@@ -26,15 +19,4 @@
 
   cursor:pointer;
   padding:0 3px 0 10px;
-}
-
-.h2{
-  font-size:15pt;
-  font-weight:bold;
-}
-
-.cookingStepImage{
-  max-width:200px;
-  max-height:200px;
-
 }
