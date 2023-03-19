@@ -1,9 +1,23 @@
 
-import styles from "./HeaderContent.module.css";
+import {useState} from "react";
 import {NavLink} from "react-router-dom";
 import SearchForm from "./SearchForm";
+import LoginModal from "./LoginModal";
+
+import styles from "./HeaderContent.module.css";
 
 const HeaderContent = () => {
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleCloseLoginModal = () => {
+    setOpenModal(false)
+  };
+
+  const handleOpenLoginModal = () => {
+    setOpenModal(true)
+  };
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -19,7 +33,7 @@ const HeaderContent = () => {
           <nav className={styles.nav}>
             <ul className={styles.subNavBar}>
               <li><NavLink className={styles.subNavBarItem} to="/">홈</NavLink></li>
-              <li><a href="/" className={styles.subNavBarItem}>로그인</a></li>
+              <li><span className={styles.subNavBarItem} onClick={handleOpenLoginModal}>로그인</span></li>
             </ul>
 
             <ul className={styles.ul}>
@@ -35,7 +49,10 @@ const HeaderContent = () => {
         </div>
 
 
-
+        <LoginModal
+            openModal={openModal}
+            handleCloseLoginModal={handleCloseLoginModal}
+        />
       </div>
 
     </>

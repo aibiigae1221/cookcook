@@ -36,6 +36,7 @@
 .subNavBarItem{
     font-weight:bold;
     margin-right:30px;
+    cursor:pointer;
 }
 
 .subNavBarItem:hover{
