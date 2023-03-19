@@ -15,6 +15,7 @@ const NewRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [mainImageSrc, setMainImageSrc] = useState(null);
   const [tagList, setTagList] = useState([]);
+  const [commentary, setCommentary] = useState("");
   const [cookStepList, setCookStepList] = useState([
     {
       idx:0,
@@ -126,6 +127,8 @@ const NewRecipeForm = () => {
                     removeTag={removeTag}
                     tagList={tagList}
                     setNewTagName={setNewTagName}
+                    commentary={commentary}
+                    setCommentary={setCommentary}
                     handleInputTagEnter={handleInputTagEnter}
                     addNewTag={addNewTag}
                     mainImageSrc={mainImageSrc}

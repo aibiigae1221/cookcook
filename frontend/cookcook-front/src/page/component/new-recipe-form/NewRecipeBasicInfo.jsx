@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { MuiFileInput } from 'mui-file-input'
+import Textarea from '@mui/joy/Textarea';
 
 import TagList from "./TagList";
 
@@ -13,6 +14,7 @@ const NewRecipeBasicInfo = (
                         {title, setTitle,
                           handleInputChange,
                           newTagName, setNewTagName, handleInputTagEnter, addNewTag, removeTag, tagList,
+                          commentary, setCommentary,
                           mainImageSrc, setMainImageSrc,
                           handleInputFileChange,
                           cookStepImage}) => {
@@ -43,6 +45,11 @@ const NewRecipeBasicInfo = (
         <p>이미지를 추가하지 않으면 기본 이미지가 보여집니다.</p>
         <MuiFileInput id="mainImageSrc" value={mainImageSrc} onChange={(newFile) => handleInputFileChange(newFile, setMainImageSrc)}  />
         <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
+      </Grid>
+
+      <Grid item sm={12}>
+        <p style={{fontWeight:"bold", marginBottom:"10px"}}>이 레시피에 대한 기본적인 설명을 적어보세요</p>
+        <Textarea placeholder="" minRows={5} value={commentary} onChange={(e) => handleInputChange(e, setCommentary)} />
       </Grid>
     </>
   );

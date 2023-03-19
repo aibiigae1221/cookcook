@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import Textarea from '@mui/joy/Textarea';
 import { MuiFileInput } from 'mui-file-input'
 
+
+
 import styles from "./CookStepElement.module.css";
 
 
@@ -18,7 +20,11 @@ const CookStepElement = ({
     <>
       <Grid item sm={8}>
         <div>
-          <p>#{mapIdx+1}</p>
+          <p style={{
+            fontWeight:"bold"
+            }}>
+            #{mapIdx+1}
+          </p>
           <Button onClick={() => removeLastCookStep(cookStep.idx)}>요리과정 제거</Button>
           <Textarea placeholder="요리 과정을 적어주세요" minRows={9} value={cookStep.detail} onChange={(e) => handleCookStepDetailChange(e, cookStep.idx)} />
 
