@@ -1,9 +1,15 @@
-import styles from  "./RecipeList.module.css";
-import CookRecipe from "./CookRecipe";
+
+import HeaderContent from "../component/header-content/component";
+import FooterContent from "../component/footer-content/component";
+import RecipeDetailCard from "../component/recipe-detail-card/component";
+import {useParams} from "react-router-dom";
 
 
-const RecipeList = () => {
+import "../common/index.css";
 
+const RecipeDetailPage = () => {
+
+  const params = useParams();
 
   const items = [
     {
@@ -12,6 +18,8 @@ const RecipeList = () => {
       title:"제가 만든 돈가스 맛나요~",
       tags:["돈가스", "양식", "다이어트 파괴자","존맛탱"],
       createdDate:"2023-03-16",
+      author:"갱훈",
+      commentary:"이 돈가스를 먹고 나서 제 인생이 달라졌습니다 여러분도 만들어서 드셔보십쇼.",
       steps:[
         {
           order:0,
@@ -57,6 +65,8 @@ const RecipeList = () => {
       title:"오늘은 짜장면을",
       tags:["짜장면", "중식", "다이어트 파괴자","존맛탱"],
       createdDate:"2023-03-16",
+      author:"갱훈",
+      commentary:"이 돈가스를 먹고 나서 제 인생이 달라졌습니다 여러분도 만들어서 드셔보십쇼.",
       steps:[
         {
           order:0,
@@ -93,27 +103,28 @@ const RecipeList = () => {
         },
       ]
     }
-
   ];
 
-  let RenderItems = null;
-
-  if(items != null && items.length > 0){
-    RenderItems = items.map(item => (
-      <CookRecipe key={item.recipeId} item={item} />
-    ));
-  }
+  const recipeData = items.filter(item => String(item.recipeId) === params.recipeId);
 
   return (
-      <div className={styles.wrap}>
-        <h1 className={styles.title}>새로 나온 조리법 !!</h1>
-        {RenderItems}
+    <div className="content-wrapper">
+      <div className="content header">
+        <HeaderContent />
       </div>
+
+
+
+      <div className="content center">
+        <RecipeDetailCard recipe={recipeData[0]} />
+      </div>
+
+      <div className="content footer">
+        <FooterContent />
+      </div>
+    </div>
   );
 };
 
 
-
-
-
-export default RecipeList;
+export default RecipeDetailPage;

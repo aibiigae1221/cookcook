@@ -7,7 +7,7 @@ const CookRecipe = ({item}) => {
 
 
   return (
-    <article key={item.recipieId} className={styles.recipeItem}>
+    <article  className={styles.recipeItem}>
       <div className={styles.left}>
         <p><img src={item.mainImageUrl} alt={item.mainImageUrl} className={styles.recipeMainImageHolder} /></p>
         <p className={styles.horizontalDivider}></p>
@@ -27,7 +27,7 @@ const CookRecipe = ({item}) => {
           ))}
         </ul>
         <nav className={styles.navbar}>
-          <NavLink to={"/"} className={styles.more}>더보기</NavLink>
+          <NavLink to={`/recipe-detail/${item.recipeId}`} className={styles.more}>더보기</NavLink>
         </nav>
       </div>
     </article>

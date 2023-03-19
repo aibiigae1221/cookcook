@@ -6,6 +6,7 @@ const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/inde
 const FindJobPage = React.lazy(() => import("./page/find-job-page/index"));
 const TipSharingPage = React.lazy(() => import("./page/tip-sharing-page/index"));
 const AboutThisAppPage = React.lazy(() => import("./page/about-this-app/index"));
+const RecipeDetailPage = React.lazy(() => import("./page/recipe-detail/index"));
 
 const router  = createBrowserRouter([
   {
@@ -31,7 +32,12 @@ const router  = createBrowserRouter([
   {
     path:"/about-this-app",
     element:<AboutThisAppPage />
-  }
+  },
+
+  {
+    path:"/recipe-detail/:recipeId",
+    element:<RecipeDetailPage />
+  },
 ]);
 
 
