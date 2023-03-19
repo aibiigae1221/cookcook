@@ -34,6 +34,7 @@ const HeaderContent = () => {
             <ul className={styles.subNavBar}>
               <li><NavLink className={styles.subNavBarItem} to="/">홈</NavLink></li>
               <li><span className={styles.subNavBarItem} onClick={handleOpenLoginModal}>로그인</span></li>
+              <li><NavLink className={styles.subNavBarItem} to="/sign-up">회원가입</NavLink></li>
             </ul>
 
             <ul className={styles.ul}>

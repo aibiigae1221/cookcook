@@ -23,7 +23,7 @@ const LoginInput = ({handleCloseLoginModal}) => {
   };
 
   const moveToSignInPage = () => {
-    navigate("/sign-up");//todo
+    navigate("/sign-up");
   };
 
 
