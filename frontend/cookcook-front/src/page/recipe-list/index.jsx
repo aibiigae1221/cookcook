@@ -1,11 +1,11 @@
-
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
-import RecipeListPreview from "../component/recipe-list-preview/component";
+import RecipeCommunityList from "../component/recipe-community-list/component";
 
 import "../common/index.css";
 
-const IndexPage = () => {
+
+const RecipeListPage = () => {
   return (
     <div className="content-wrapper">
       <div className="content header">
@@ -15,7 +15,7 @@ const IndexPage = () => {
 
 
       <div className="content center">
-        <RecipeListPreview />
+        <RecipeCommunityList />
 
       </div>
 
@@ -26,5 +26,4 @@ const IndexPage = () => {
   );
 };
 
-
-export default IndexPage;
+export default RecipeListPage;

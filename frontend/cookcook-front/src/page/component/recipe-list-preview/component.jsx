@@ -2,7 +2,7 @@ import styles from  "./RecipeList.module.css";
 import CookRecipe from "./CookRecipe";
 
 
-const RecipeList = () => {
+const RecipeListPreview = () => {
 
 
   const items = [
@@ -12,6 +12,7 @@ const RecipeList = () => {
       title:"제가 만든 돈가스 맛나요~",
       tags:["돈가스", "양식", "다이어트 파괴자","존맛탱"],
       createdDate:"2023-03-16",
+      commentary:"이 돈가스를 먹고 나서 제 인생이 달라졌습니다 여러분도 만들어서 드셔보십쇼.",
       steps:[
         {
           order:0,
@@ -57,6 +58,7 @@ const RecipeList = () => {
       title:"오늘은 짜장면을",
       tags:["짜장면", "중식", "다이어트 파괴자","존맛탱"],
       createdDate:"2023-03-16",
+      commentary:"이 돈가스를 먹고 나서 제 인생이 달라졌습니다 여러분도 만들어서 드셔보십쇼.",
       steps:[
         {
           order:0,
@@ -116,4 +118,4 @@ const RecipeList = () => {
 
 
 
-export default RecipeList;
+export default RecipeListPreview;

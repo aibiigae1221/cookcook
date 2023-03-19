@@ -1,0 +1,12 @@
+.tagList{
+  display:flex;
+
+}
+
+.tag{
+  padding:10px;
+  background-color:#3DD2C2;
+  margin:0 5px;
+  color:#fff;
+  border-radius:15px;
+}

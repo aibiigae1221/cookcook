@@ -3,6 +3,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 const IndexPage = React.lazy(() => import("./page/index/index"));
 const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
+const RecipeListPage = React.lazy(() => import("./page/recipe-list/index"));
 const FindJobPage = React.lazy(() => import("./page/find-job-page/index"));
 const TipSharingPage = React.lazy(() => import("./page/tip-sharing-page/index"));
 const AboutThisAppPage = React.lazy(() => import("./page/about-this-app/index"));
@@ -17,6 +18,11 @@ const router  = createBrowserRouter([
   {
     path:"/create-recipe-page",
     element:<CreateRecipePage />
+  },
+
+  {
+    path:"/recipe-list",
+    element:<RecipeListPage />
   },
 
   {

@@ -1,15 +1,15 @@
 import React from "react";
-
+import {useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import RecipeBasic from "./RecipeBasic";
 import RecipeStepList from "./RecipeStepList";
 
-
 const RecipeDetailCard = ({recipe}) => {
 
-  console.log(recipe);
+  const navigate = useNavigate();
 
   const moveToTop = () => {
     window.scrollTo({
@@ -17,6 +17,10 @@ const RecipeDetailCard = ({recipe}) => {
       left:0,
       behavior:"smooth"
     });
+  };
+
+  const backToLastPage = () => {
+    navigate(-1);
   };
 
   return (
@@ -44,13 +48,11 @@ const RecipeDetailCard = ({recipe}) => {
           <RecipeStepList recipe={recipe} />
 
           <Grid item sm={12}>
-            <div
-              style={{
-                textAlign:"right"
-              }}>
-              <Button variant="contained" onClick={moveToTop}>위로 가기</Button>
-            </div>
 
+            <Stack direction="row" spacing={2} style={{justifyContent:"flex-end"}}>
+              <Button variant="outlined" onClick={backToLastPage}>뒤로가기(BACK)</Button>
+              <Button variant="outlined" onClick={moveToTop}>위로가기(UP)</Button>
+            </Stack>
           </Grid>
 
         </Grid>

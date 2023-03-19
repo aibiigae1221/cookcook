@@ -1,5 +1,6 @@
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useSearchParams, useNavigate} from "react-router-dom";
 import styles from "./SearchForm.module.css";
 
 const SearchForm = () => {
@@ -7,6 +8,8 @@ const SearchForm = () => {
   const [keyword, setKeyword] = useState("");
   const [hoveredIdx, setHoveredIdx] = useState(-1);
   const [showExpectedSearchPage, setShowExpectedSearchPage] = useState(false);
+  const [searchParams] = useSearchParams({search_recipe:""});
+  const navigate = useNavigate();
 
   const expectedSearchList = [
     {itemId:1, itemTitle: "파닭 만들기", itemRecipe: "1.재료를 준비합니다. 2.이렇게 저렇게 요리를 합니다."},
@@ -16,13 +19,14 @@ const SearchForm = () => {
 
   const handleKeywordChange = (e) => {
     if(expectedSearchList.length > 0 ){
-      console.log("hit");
       setShowExpectedSearchPage(true);
     }
+
     setKeyword(e.target.value);
   };
 
   const handleKeywordKeyDown = (e) => {
+
 
     if(expectedSearchList.length > 0){
       if(e.key === "ArrowDown"){
@@ -33,6 +37,11 @@ const SearchForm = () => {
 
         setHoveredIdx(newIdx);
 
+      }else if(e.key === "Backspace"){
+        if(keyword === "" && showExpectedSearchPage){
+          setShowExpectedSearchPage(false);
+        }
+
       }else if(e.key === "ArrowUp"){
         let newIdx = hoveredIdx - 1;
         if(newIdx < 0){
@@ -41,7 +50,13 @@ const SearchForm = () => {
 
         setHoveredIdx(newIdx);
       }else if(e.key === "Enter"){
-        copyToInputSearch(hoveredIdx);
+        if(showExpectedSearchPage){
+            //추천 검색어 선택했을 때
+            copyToInputSearch(hoveredIdx);
+        }else{
+            // 추천 검색어가 닫혀있는 상태로써, 키워드 검색 폼 제출할 때
+            navigate(`/recipe-list?search_recipe=${keyword}&pageNo=1`);
+        }
       }
     }
 
@@ -60,6 +75,11 @@ const SearchForm = () => {
     setHoveredIdx(idx);
   }
 
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    navigate(`/recipe-list?search_recipe=${keyword}&pageNo=1`);
+  }
+
 
   const RenderExpectedSearchList = expectedSearchList.map( (el,idx) =>
       <li key={el.itemId} className={styles.item} onClick={()=>copyToInputSearch(idx)} onMouseOver={()=>hoverItem(idx)} onKeyDown={handleKeywordKeyDown} style={{backgroundColor:idx === hoveredIdx? "#CFCCBE" : "#fff"}}>
@@ -68,12 +88,17 @@ const SearchForm = () => {
       </li>
   )
 
+  useEffect(() => {
+    setKeyword(searchParams.get("search_recipe"))
+  }, [searchParams]);
+
+
   return (
     <form className={styles.wrap}>
 
       <input name="keyword" className={styles.inputKeyword} value={keyword} onChange={handleKeywordChange} onKeyDown={handleKeywordKeyDown}/>
 
-      <button className={styles.searchButton}>
+      <button className={styles.searchButton} onClick={handleSubmit}>
         검색
       </button>
 
