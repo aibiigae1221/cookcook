@@ -17,6 +17,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -40,38 +42,85 @@ public class UserAuthenticationTest {
 	private UserService userService;
 	
 	@Test
-	public void login() throws Exception {
+	public void loginTest() throws Exception {
 		
-		MultiValueMap<String, String> signInParams = new LinkedMultiValueMap<String, String>();
-		signInParams.put("email", List.of(USER_EMAIL));
-		signInParams.put("password",List.of(USER_PASSWORD));
-		signInParams.put("nickname", List.of(USER_NICKNAME));
-		
-		mvc.perform(post("/sign-up")
-			.contentType(MediaType.APPLICATION_FORM_URLENCODED) 
-			.params(signInParams))
-			.andDo(print()) .andExpect(status().isOk());
-		 
+		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isOk());
 		assertEquals(1, userService.countAllUsers());
 		
-		MultiValueMap<String, String> loginParams = new LinkedMultiValueMap<String, String>();
-		loginParams.put("email", List.of(USER_EMAIL));
-		loginParams.put("password",List.of(USER_PASSWORD));
-		
-		String jwt = mvc.perform(post("/login")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.params(loginParams))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
+		String jwt = login(USER_EMAIL, USER_PASSWORD, status().isOk())
+						.andReturn()
+						.getResponse()
+						.getContentAsString();
 		
 		assertNotNull(jwt);
-		logger.info("jwt: [{}]", jwt);
-		
+		logger.info("jwt:[{}]", jwt);
 		
 		mvc.perform(get("/restricted") 
 				.header("Authorization", "Bearer " + jwt))
 		  		.andExpect(status().isOk());
-		 
+	}
+	
+	private ResultActions login(String email, String password, ResultMatcher resultMatcher) throws Exception {
+		MultiValueMap<String, String> loginParams = new LinkedMultiValueMap<String, String>();
+		loginParams.put("email", List.of(email));
+		loginParams.put("password",List.of(password));
+		
+		return mvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.params(loginParams))
+				.andDo(print())
+				.andExpect(resultMatcher);
+		
+	}
+
+	private void signUp(String email, String password, String nickname, ResultMatcher resultMatcher) throws Exception {
+		MultiValueMap<String, String> signInParams = new LinkedMultiValueMap<String, String>();
+		signInParams.put("email", List.of(email));
+		signInParams.put("password",List.of(password));
+		signInParams.put("nickname", List.of(nickname));
+		
+		mvc.perform(post("/sign-up")
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED) 
+			.params(signInParams))
+			
+			.andDo(print()) 
+			.andExpect(resultMatcher);
+	}
+
+	@Test
+	public void signupWithFailedInput() throws Exception {
+		signUp("", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
+		
+		MultiValueMap<String, String> signInParams = new LinkedMultiValueMap<String, String>();
+		// email 안주고 전송해보기
+		signInParams.put("password",List.of(USER_PASSWORD));
+		signInParams.put("nickname", List.of(USER_NICKNAME));
+		
+		mvc.perform(post("/sign-up")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED) 
+				.params(signInParams))
+				.andDo(print()) 
+				.andExpect(status().isBadRequest());
+		
+		signUp("malformedEmail", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
+	}
+	
+	@Test
+	public void loginWithFailedInput() throws Exception {
+		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isOk());
+		login("malformedEmail", USER_PASSWORD, status().isBadRequest());
+		signUp("", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
+		
+		
+		MultiValueMap<String, String> loginParams = new LinkedMultiValueMap<String, String>();
+		// loginParams.put("email", List.of(email));
+		// 아이디 누락시키고 로그인 시도
+		loginParams.put("password",List.of(USER_PASSWORD));
+		
+		mvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.params(loginParams))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 }

@@ -25,6 +25,8 @@ import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.web.domain.LoginParameters;
 import com.aibiigae1221.cookcook.web.domain.SignUpParameters;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 
@@ -44,18 +46,17 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/sign-up")
-	public void signUp(SignUpParameters params) {
+	public void signUp(@Valid SignUpParameters params) {
 		logger.info(params.toString());
 		userService.addUser(paramsToUserEntity(params));
 	}
 
-	private User paramsToUserEntity(SignUpParameters params) {
-		return new User(params.getEmail(), params.getPassword(), params.getNickname());
-	}
+	
 
 	@PostMapping("/login") 
-	public String login(LoginParameters params) {
+	public String login(@Valid LoginParameters params) {
 		logger.info(params.toString());
+		
 		Instant now = Instant.now(); long expiry = 36000L;
 	  
 		UserDetails userDetails = userDetailsService.loadUserByUsername(params.getEmail());
@@ -83,7 +84,10 @@ public class UserController {
 	
 	@GetMapping("/restricted")
 	public void restrictedPage(Authentication authentication) {
-		// TODO
 		logger.info("restricted page - name:[{}]", authentication.getName());
+	}
+	
+	private User paramsToUserEntity(SignUpParameters params) {
+		return new User(params.getEmail(), params.getPassword(), params.getNickname());
 	}
 }
