@@ -55,7 +55,7 @@ public class UserController {
 
 	@PostMapping("/login") 
 	public String login(@Valid LoginParameters params) {
-		logger.info(params.toString());
+		logger.info("login params - {}", params.toString());
 		
 		Instant now = Instant.now(); long expiry = 36000L;
 	  

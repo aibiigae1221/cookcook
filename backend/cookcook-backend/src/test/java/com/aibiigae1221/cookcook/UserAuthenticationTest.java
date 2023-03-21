@@ -107,6 +107,7 @@ public class UserAuthenticationTest {
 	
 	@Test
 	public void loginWithFailedInput() throws Exception {
+		
 		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isOk());
 		login("malformedEmail", USER_PASSWORD, status().isBadRequest());
 		signUp("", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
@@ -122,5 +123,8 @@ public class UserAuthenticationTest {
 				.params(loginParams))
 				.andDo(print())
 				.andExpect(status().isBadRequest());
+		
+		login("worngemail@gmail.com", USER_PASSWORD, status().isForbidden()).andDo(print());
 	}
+	
 }
