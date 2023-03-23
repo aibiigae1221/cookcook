@@ -6,20 +6,24 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import LoginIcon from '@mui/icons-material/Login';
+import {useDispatch} from "react-redux";
+import {login} from "../../../data/user-slice";
 
 const LoginInput = ({handleCloseLoginModal}) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showErrorLoginMessage/*, setShowErrorLoginMessage*/] = useState(false);
+  const [showErrorLoginMessage, setShowErrorLoginMessage] = useState(false);
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const handleLogin = () => {
-    alert(`email:[${email}] / password:[${password}]`);
+    dispatch(login({email, password}));
   };
 
   const handleChange = (ev, setter) => {
-    setter(ev.target.value);
+    setter(ev.target.value.trim());
   };
 
   const moveToSignInPage = () => {
@@ -46,7 +50,6 @@ const LoginInput = ({handleCloseLoginModal}) => {
             <Alert severity="error">로그인 실패 - 입력하신 정보가 유효하지 않습니다!</Alert>
           </Grid>
         }
-
 
         <Grid item sm={12}>
           <Stack spacing={2} direction="row" style={{justifyContent:"flex-end"}}>

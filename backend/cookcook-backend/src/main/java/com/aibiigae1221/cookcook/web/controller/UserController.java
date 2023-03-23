@@ -101,9 +101,14 @@ public class UserController {
 	
 	@GetMapping("/restricted")
 	public void restrictedPage(Authentication authentication) {
-		logger.info("restricted page - name:[{}]", authentication.getName());
+		// 테스트 목적 entry point
+		
+		if(authentication != null)
+			logger.info("인증된 유저만 접속 가능한 페이지 - name:[{}]", authentication.getName());
+		else
+			logger.info("인증이 안되었지만 접속이 된 경우..");
 	}
-	
+
 	private User paramsToUserEntity(SignUpParameters params) {
 		return new User(params.getEmail(), params.getPassword(), params.getNickname());
 	}

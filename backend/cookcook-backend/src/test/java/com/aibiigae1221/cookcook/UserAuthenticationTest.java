@@ -63,14 +63,15 @@ public class UserAuthenticationTest {
 		JsonNode jsonNode = objectMapper.readTree(content);
 		String jwt = jsonNode.get("jwt").asText();
 		
-		
 		assertNotNull(jwt);
 		logger.info("jwt:[{}]", jwt);
 		
 		mvc.perform(get("/restricted") 
 				.header("Authorization", "Bearer " + jwt))
 		  		.andExpect(status().isOk());
-		  		
+		
+		mvc.perform(get("/logout"))
+				.andExpect(status().isOk());
 	}
 	
 	private ResultActions login(String email, String password, ResultMatcher resultMatcher) throws Exception {
@@ -103,7 +104,7 @@ public class UserAuthenticationTest {
 	@Test
 	public void signupWithFailedInput() throws Exception {
 		signUp("", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
-		/*
+		
 		MultiValueMap<String, String> signInParams = new LinkedMultiValueMap<String, String>();
 		// email 안주고 전송해보기
 		signInParams.put("password",List.of(USER_PASSWORD));
@@ -116,7 +117,7 @@ public class UserAuthenticationTest {
 				.andExpect(status().isBadRequest());
 		
 		signUp("malformedEmail", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
-		*/
+		
 	}
 	
 	@Test
@@ -146,5 +147,6 @@ public class UserAuthenticationTest {
 		
 		login("worngemail@gmail.com", USER_PASSWORD, status().isForbidden()).andDo(print());
 	}
+	
 	
 }

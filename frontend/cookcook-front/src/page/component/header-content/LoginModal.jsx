@@ -2,14 +2,12 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Grid from '@mui/material/Grid';
 import LoginInput from "./LoginInput";
-
 import styles from "./LoginModal.module.css";
 
 
 
 
 const LoginModal = ({openModal, handleCloseLoginModal}) => {
-
 
   const modalContainerCss = {
     position:"absolute",

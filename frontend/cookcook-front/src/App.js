@@ -1,6 +1,9 @@
 import React, {Suspense} from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
+import store from './data/store';
+import { Provider } from 'react-redux';
+
 const IndexPage = React.lazy(() => import("./page/index/index"));
 const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
 const RecipeListPage = React.lazy(() => import("./page/recipe-list/index"));
@@ -10,10 +13,12 @@ const TipSharingPage = React.lazy(() => import("./page/tip-sharing-page/index"))
 const AboutThisAppPage = React.lazy(() => import("./page/about-this-app/index"));
 const RecipeDetailPage = React.lazy(() => import("./page/recipe-detail/index"));
 
+
+
 const router  = createBrowserRouter([
   {
     path:"/",
-    element:<IndexPage />
+    element: <IndexPage />
   },
 
   {
@@ -38,17 +43,20 @@ const router  = createBrowserRouter([
 
   {
     path:"/tip-sharing-page",
-    element:<TipSharingPage />
+    element:
+        <TipSharingPage />
   },
 
   {
     path:"/about-this-app",
-    element:<AboutThisAppPage />
+    element:
+        <AboutThisAppPage />
   },
 
   {
     path:"/recipe-detail/:recipeId",
-    element:<RecipeDetailPage />
+    element:
+        <RecipeDetailPage />
   },
 ]);
 
@@ -57,8 +65,11 @@ const router  = createBrowserRouter([
 function App() {
   return (
     <React.StrictMode>
+
       <Suspense fallback={<div>로딩...</div>}>
-        <RouterProvider router={router} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </Suspense>
     </React.StrictMode>
   );
