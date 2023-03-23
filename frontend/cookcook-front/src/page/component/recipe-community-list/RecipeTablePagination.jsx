@@ -29,7 +29,7 @@ const RecipeTablePagination = () => {
   return (
     <div className={styles.wrap}>
       <Stack spacing={2}>
-        <Pagination count={10} color="primary" onChange={handleChange} count={1} page={Number(currentPage)} />
+        <Pagination color="primary" onChange={handleChange} count={1} page={Number(currentPage)} />
 
       </Stack>
     </div>

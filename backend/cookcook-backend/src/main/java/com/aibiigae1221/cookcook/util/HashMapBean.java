@@ -27,7 +27,11 @@ public class HashMapBean {
 
 	@Override
 	public String toString() {
-		return map.keySet().stream().collect(Collectors.joining("-"));
+		return map
+				.keySet()
+				.stream()
+				.map(keyname -> map.get(keyname).toString())
+				.collect(Collectors.joining(" / "));
 	}
 
 	public Object getSource() {

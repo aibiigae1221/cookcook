@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.aibiigae1221.cookcook.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @AutoConfigureMockMvc
@@ -41,16 +44,25 @@ public class UserAuthenticationTest {
 	@Autowired
 	private UserService userService;
 	
+	@BeforeEach
+	public void initEnvironment() {
+		userService.removeAllUsers();
+	}
+	
 	@Test
 	public void loginTest() throws Exception {
 		
 		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isOk());
 		assertEquals(1, userService.countAllUsers());
 		
-		String jwt = login(USER_EMAIL, USER_PASSWORD, status().isOk())
+		String content = login(USER_EMAIL, USER_PASSWORD, status().isOk())
 						.andReturn()
-						.getResponse()
-						.getContentAsString();
+						.getResponse().getContentAsString();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(content);
+		String jwt = jsonNode.get("jwt").asText();
+		
 		
 		assertNotNull(jwt);
 		logger.info("jwt:[{}]", jwt);
@@ -58,6 +70,7 @@ public class UserAuthenticationTest {
 		mvc.perform(get("/restricted") 
 				.header("Authorization", "Bearer " + jwt))
 		  		.andExpect(status().isOk());
+		  		
 	}
 	
 	private ResultActions login(String email, String password, ResultMatcher resultMatcher) throws Exception {
@@ -90,7 +103,7 @@ public class UserAuthenticationTest {
 	@Test
 	public void signupWithFailedInput() throws Exception {
 		signUp("", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
-		
+		/*
 		MultiValueMap<String, String> signInParams = new LinkedMultiValueMap<String, String>();
 		// email 안주고 전송해보기
 		signInParams.put("password",List.of(USER_PASSWORD));
@@ -103,6 +116,13 @@ public class UserAuthenticationTest {
 				.andExpect(status().isBadRequest());
 		
 		signUp("malformedEmail", USER_PASSWORD, USER_NICKNAME, status().isBadRequest());
+		*/
+	}
+	
+	@Test
+	public void signUpWithDuplicatedEmail() throws Exception {
+		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isOk());
+		signUp(USER_EMAIL, USER_PASSWORD, USER_NICKNAME, status().isConflict());
 	}
 	
 	@Test

@@ -8,4 +8,6 @@ public interface UserService {
 
 	long countAllUsers();
 
+	void removeAllUsers();
+
 }

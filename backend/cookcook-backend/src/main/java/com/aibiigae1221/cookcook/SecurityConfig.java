@@ -2,6 +2,7 @@ package com.aibiigae1221.cookcook;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.aibiigae1221.cookcook.security.CustomUserDetailsService;
 import com.nimbusds.jose.jwk.JWK;
@@ -47,6 +51,8 @@ public class SecurityConfig {
 							.requestMatchers("/sign-up", "/login").permitAll()
 							.anyRequest().authenticated()
 				)
+				.cors()
+					.configurationSource(corsConfiguration()).and()
 				.csrf().disable()
 				.httpBasic(Customizer.withDefaults())
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
@@ -59,6 +65,18 @@ public class SecurityConfig {
 		return http.build();
 	}
 	
+	@Bean
+	public CorsConfigurationSource corsConfiguration() {
+		CorsConfiguration cors = new CorsConfiguration();
+		cors.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:3000"));
+		cors.addAllowedMethod("*");		
+		cors.addAllowedHeader("*");
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", cors);
+		return source;
+	}
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new CustomUserDetailsService();

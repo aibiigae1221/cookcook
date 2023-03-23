@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.UserService;
+import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.LoginParameters;
 import com.aibiigae1221.cookcook.web.domain.SignUpParameters;
 
@@ -45,17 +49,24 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private ObjectProvider<HashMapBean> hashMapHolderProvider;
+	
+	
 	@PostMapping("/sign-up")
-	public void signUp(@Valid SignUpParameters params) {
+	public ResponseEntity<?> signUp(@Valid SignUpParameters params) {
 		logger.info(params.toString());
 		userService.addUser(paramsToUserEntity(params));
+		
+		HashMapBean map = hashMapHolderProvider.getObject();
+		map.put("status", "success");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(map.getSource());
 	}
 
-	
-
 	@PostMapping("/login") 
-	public String login(@Valid LoginParameters params) {
-		logger.info("login params - {}", params.toString());
+	public ResponseEntity<?> login(@Valid LoginParameters params) {
+		logger.info("로그인 파라미터 - {}", params.toString());
 		
 		Instant now = Instant.now(); long expiry = 36000L;
 	  
@@ -79,7 +90,13 @@ public class UserController {
 								})
 								.build();
 
-		return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue(); 
+		String jwt = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+		
+		HashMapBean map = hashMapHolderProvider.getObject();
+		map.put("status", "success");
+		map.put("jwt", jwt);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(map.getSource()); 
 	}
 	
 	@GetMapping("/restricted")
