@@ -3,9 +3,8 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { MuiFileInput } from 'mui-file-input'
 import Textarea from '@mui/joy/Textarea';
-
+import cookStepImage from "./default-cook-step-image.jpg";
 import TagList from "./TagList";
 
 import styles from "./NewRecipeBasicInfo.module.css";
@@ -15,9 +14,9 @@ const NewRecipeBasicInfo = (
                           handleInputChange,
                           newTagName, setNewTagName, handleInputTagEnter, addNewTag, removeTag, tagList,
                           commentary, setCommentary,
-                          mainImageSrc, setMainImageSrc,
-                          handleInputFileChange,
-                          cookStepImage}) => {
+                          uploadedMainImageSrc,
+                          handleMainImage
+                          }) => {
 
   return (
     <>
@@ -43,8 +42,12 @@ const NewRecipeBasicInfo = (
       <Grid item sm={4} style={{lineHeight:"1.5"}}>
         <p style={{fontWeight:"bold"}}>완성된 요리의 이미지 파일을 추가해보세요</p>
         <p>이미지를 추가하지 않으면 기본 이미지가 보여집니다.</p>
-        <MuiFileInput id="mainImageSrc" value={mainImageSrc} onChange={(newFile) => handleInputFileChange(newFile, setMainImageSrc)}  />
-        <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
+        <input accept="image/*" type="file"  onChange={handleMainImage} />
+        {uploadedMainImageSrc !== null ?
+          <img src={uploadedMainImageSrc} alt={uploadedMainImageSrc} className={styles.cookingStepImage} />
+          :
+          <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
+        }
       </Grid>
 
       <Grid item sm={12}>

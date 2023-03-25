@@ -1,6 +1,5 @@
-
-
 import React, {useState} from "react";
+import {useSelector} from "react-redux";
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,7 +12,6 @@ let cookStepIdx = 0;
 const NewRecipeForm = () => {
 
   const [title, setTitle] = useState("");
-  const [mainImageSrc, setMainImageSrc] = useState(null);
   const [tagList, setTagList] = useState([]);
   const [commentary, setCommentary] = useState("");
   const [cookStepList, setCookStepList] = useState([
@@ -24,8 +22,10 @@ const NewRecipeForm = () => {
       uploadSrc:null
     }
   ]);
-
+  const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState("");
   const [newTagName, setNewTagName] = useState("");
+
+  const jwt = useSelector(state => state.user.jwt);
 
   const handleInputTagEnter = ev => {
     if(ev.key === "Enter"){
@@ -47,8 +47,36 @@ const NewRecipeForm = () => {
     setter(ev.target.value);
   };
 
-  const handleInputFileChange = (value, setter) => {
-    setter(value);
+  const handleMainImage = (e) => {
+    // TODO:
+
+    const authHeader = `Bearer ${jwt}`;
+    const body = new FormData();
+    body.append("image", e.target.files[0]);
+
+
+    const options = {
+      method: "post",
+      mode: "cors",
+      cache:"no-cache",
+      headers:{
+        "Authorization": authHeader
+      },
+      body:body
+    };
+
+    fetch("http://127.0.0.1:8080/recipe/upload-image", options)
+      .then(response => response.json())
+      .then(json => {
+        if(json.status === "success"){
+          console.log(json.imageUrl);
+          setUploadedMainImageSrc(json.imageUrl)
+        }else{
+          alert("이미지 저장에 실패하였습니다.");
+        }
+      });
+
+
   };
 
   const addNewCookStep = () => {
@@ -120,20 +148,12 @@ const NewRecipeForm = () => {
       <form>
         <Grid container spacing={2}>
           <NewRecipeBasicInfo
-                    title={title}
-                    setTitle={setTitle}
+                    title={title} setTitle={setTitle}
                     handleInputChange={handleInputChange}
-                    newTagName={newTagName}
-                    removeTag={removeTag}
-                    tagList={tagList}
-                    setNewTagName={setNewTagName}
-                    commentary={commentary}
-                    setCommentary={setCommentary}
-                    handleInputTagEnter={handleInputTagEnter}
-                    addNewTag={addNewTag}
-                    mainImageSrc={mainImageSrc}
-                    setMainImageSrc={setMainImageSrc}
-                    handleInputFileChange={handleInputFileChange}
+                    newTagName={newTagName} setNewTagName={setNewTagName} handleInputTagEnter={handleInputTagEnter} addNewTag={addNewTag} removeTag={removeTag} tagList={tagList}
+                    commentary={commentary} setCommentary={setCommentary}
+                    uploadedMainImageSrc={uploadedMainImageSrc}
+                    handleMainImage={handleMainImage}
                   />
 
           <Grid item sm={12}>

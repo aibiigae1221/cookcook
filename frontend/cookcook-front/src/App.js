@@ -1,8 +1,13 @@
 import React, {Suspense} from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
-import store from './data/store';
 import { Provider } from 'react-redux';
+
+//import store from './data/store';
+// persist
+import store, {persistor} from "./data/store";
+import { PersistGate } from 'redux-persist/integration/react'
+
 
 const IndexPage = React.lazy(() => import("./page/index/index"));
 const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
@@ -68,7 +73,9 @@ function App() {
 
       <Suspense fallback={<div>로딩...</div>}>
         <Provider store={store}>
-          <RouterProvider router={router} />
+          <PersistGate loading={null} persistor={persistor}>
+            <RouterProvider router={router} />
+          </PersistGate>
         </Provider>
       </Suspense>
     </React.StrictMode>
