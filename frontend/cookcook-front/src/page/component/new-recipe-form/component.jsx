@@ -111,8 +111,7 @@ const NewRecipeForm = () => {
         return {
           idx:item.idx,
           detail:value,
-          imgSrc:item.imgSrc,
-          uploadSrc:item.uploadSrc
+          uploadUrl:item.uploadUrl
         };
       }else{
         return item;
