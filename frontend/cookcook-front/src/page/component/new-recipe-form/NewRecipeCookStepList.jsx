@@ -7,7 +7,7 @@ import CookStepElement from "./CookStepElement";
 
 import styles from "./NewRecipeCookStepList.module.css";
 
-import cookStepImage from "./default-cook-step-image.jpg";
+
 
 
 const NewRecipeCookStepList = ({
@@ -34,11 +34,10 @@ const NewRecipeCookStepList = ({
       </Grid>
 
       {cookStepList.map( (cookStep, idx) =>
-        <React.Fragment key={idx}>
+        <React.Fragment key={cookStep.idx}>
           <CookStepElement
-                mapIdx={idx}
+                order={idx}
                 cookStep={cookStep}
-                cookStepImage={cookStepImage}
                 removeLastCookStep={removeLastCookStep}
                 handleCookStepDetailChange={handleCookStepDetailChange}
                 handleCookStepImage={handleCookStepImage}

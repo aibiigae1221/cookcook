@@ -18,8 +18,7 @@ const NewRecipeForm = () => {
     {
       idx:0,
       detail:"",
-      imgSrc:null,
-      uploadSrc:null
+      uploadUrl:null
     }
   ]);
   const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState("");
@@ -48,12 +47,16 @@ const NewRecipeForm = () => {
   };
 
   const handleMainImage = (e) => {
-    // TODO:
+    uploadImage(e, (imageUrl) => {
+      setUploadedMainImageSrc(imageUrl)
+    });
+  };
+
+  const uploadImage = (e, receiveImage) => {
 
     const authHeader = `Bearer ${jwt}`;
     const body = new FormData();
     body.append("image", e.target.files[0]);
-
 
     const options = {
       method: "post",
@@ -69,14 +72,12 @@ const NewRecipeForm = () => {
       .then(response => response.json())
       .then(json => {
         if(json.status === "success"){
-          console.log(json.imageUrl);
-          setUploadedMainImageSrc(json.imageUrl)
+          //console.log(json.imageUrl);
+          receiveImage(json.imageUrl)
         }else{
           alert("이미지 저장에 실패하였습니다.");
         }
       });
-
-
   };
 
   const addNewCookStep = () => {
@@ -121,21 +122,23 @@ const NewRecipeForm = () => {
     setCookStepList(newList);
   };
 
-  const handleCookStepImage = (newFile, selectedIdx) => {
-    const newList = cookStepList.map(item => {
-      if(item.idx === selectedIdx){
-        return {
-          idx:item.idx,
-          detail:item.detail,
-          imgSrc:newFile,
-          uploadSrc:item.uploadSrc
-        };
-      }else{
-        return item;
-      }
-    });
+  const handleCookStepImage = (e, selectedIdx) => {
 
-    setCookStepList(newList);
+    uploadImage(e, (imageUrl) => {
+      const newList = cookStepList.map(item => {
+        if(item.idx === selectedIdx){
+          return {
+            idx:item.idx,
+            detail:item.detail,
+            uploadUrl:imageUrl
+          };
+        }else{
+          return item;
+        }
+      });
+
+      setCookStepList(newList);
+    });
   };
 
   return (

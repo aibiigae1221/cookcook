@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-@Check(constraints = "status in ('used', 'unused')")
+@Check(constraints = "status in ('used', 'unused')") // mysql에서 check 제약사항 적용이 안됨 ㅠㅠ...
 @Entity
 @Table
 public class TemporaryImage {
