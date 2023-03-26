@@ -87,8 +87,7 @@ const NewRecipeForm = () => {
       {
         idx:cookStepIdx,
         detail:"",
-        imgSrc:null,
-        uploadSrc:null
+        uploadUrl:null
       }
     ]);
   }
