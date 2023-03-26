@@ -1,5 +1,9 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+
+import {clearErrorMessage} from "../../../data/user-slice";
+
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -13,10 +17,12 @@ const LoginInput = ({handleCloseLoginModal}) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showErrorLoginMessage, setShowErrorLoginMessage] = useState(false);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const loginErrorMessage = useSelector(state => state.user.loginErrorMessage);
+
 
   const handleLogin = () => {
     dispatch(login({email, password}));
@@ -24,6 +30,8 @@ const LoginInput = ({handleCloseLoginModal}) => {
 
   const handleChange = (ev, setter) => {
     setter(ev.target.value.trim());
+    if(loginErrorMessage)
+      dispatch(clearErrorMessage());
   };
 
   const moveToSignInPage = () => {
@@ -45,9 +53,9 @@ const LoginInput = ({handleCloseLoginModal}) => {
           <TextField label="비밀번호" variant="standard" fullWidth value={password} onChange={ev => handleChange(ev, setPassword)} />
         </Grid>
 
-        {showErrorLoginMessage &&
+        {loginErrorMessage &&
           <Grid item sm={12}>
-            <Alert severity="error">로그인 실패 - 입력하신 정보가 유효하지 않습니다!</Alert>
+            <Alert severity="error">{loginErrorMessage}</Alert>
           </Grid>
         }
 

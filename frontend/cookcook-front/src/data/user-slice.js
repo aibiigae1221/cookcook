@@ -39,6 +39,9 @@ export const userSlice = createSlice({
     loginErrorMessage:null
   },
   reducers:{
+    clearErrorMessage: (state) => {
+      state.loginErrorMessage = null;
+    }
   },
   extraReducers(builder) {
     builder
@@ -56,6 +59,6 @@ export const userSlice = createSlice({
 
 });
 
-
+export const {clearErrorMessage} = userSlice.actions;
 
 export default userSlice.reducer;
