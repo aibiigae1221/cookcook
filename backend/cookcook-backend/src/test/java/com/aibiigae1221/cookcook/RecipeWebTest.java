@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -73,39 +74,164 @@ public class RecipeWebTest {
 			.andExpect(status().isOk());
 	}
 	
+
 	@Test
 	public void addNewRecipe() throws Exception {
 		String jwt = login();
 		
-		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
-		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
-		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+		adjustParametersAndSend(jwt, status().isOk(), () -> {
+			String mainImageUrl = null;
+			String cookStepImage1 = null;
+			String cookStepImage2 = null;
+			
+			try{
+				mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("title", "뿌링클 만들기");
+			paramsMap.put("tags", List.of("존맛탱", "치킨"));
+			paramsMap.put("commentary", "뿌링클 소개글");
+			paramsMap.put("mainImageUrl", mainImageUrl);
+			
+			List<Object> cookStepList = List.of(
+					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+			);
+			paramsMap.put("cookStepList", cookStepList);
+			
+			return paramsMap;
+		});
+	}
+	
+	@Test
+	public void addNewRecipeWithWrongInput1() throws Exception {
+		String jwt = login();
 		
+		adjustParametersAndSend(jwt, status().isBadRequest(), () -> {
+			String mainImageUrl = null;
+			String cookStepImage1 = null;
+			String cookStepImage2 = null;
+			
+			try{
+				mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			//paramsMap.put("title", "뿌링클 만들기"); // title 입력값 없애보기
+			paramsMap.put("tags", List.of("존맛탱", "치킨"));
+			paramsMap.put("commentary", "뿌링클 소개글");
+			paramsMap.put("mainImageUrl", mainImageUrl);
+			
+			List<Object> cookStepList = List.of(
+					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+			);
+			paramsMap.put("cookStepList", cookStepList);
+			
+			return paramsMap;
+		});
+	}
+	
+	@Test
+	public void addNewRecipeWithWrongInput2() throws Exception {
+		String jwt = login();
 		
-		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("title", "뿌링클 만들기");
-		paramsMap.put("tags", List.of("존맛탱", "치킨"));
-		paramsMap.put("commentary", "뿌링클 소개글");
-		paramsMap.put("mainImageUrl", mainImageUrl);
+		adjustParametersAndSend(jwt, status().isBadRequest(), () -> {
+			String mainImageUrl = null;
+			String cookStepImage1 = null;
+			String cookStepImage2 = null;
+			
+			try{
+				mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("title", "뿌링클 만들기"); 
+			paramsMap.put("tags", null); // tag 값 null로 전송해보기
+			paramsMap.put("commentary", "뿌링클 소개글");
+			paramsMap.put("mainImageUrl", mainImageUrl);
+			
+			List<Object> cookStepList = List.of(
+					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+			);
+			paramsMap.put("cookStepList", cookStepList);
+			
+			return paramsMap;
+		});
+	}
+	
+	@Test
+	public void addNewRecipeWithWrongInput3() throws Exception {
+		String jwt = login();
 		
-		List<Object> cookStepList = List.of(
-			Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-			Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
-		);
-		paramsMap.put("cookStepList", cookStepList);
+
+		adjustParametersAndSend(jwt, status().isBadRequest(), () -> {
+			String mainImageUrl = null;
+			//String cookStepImage1 = null;
+			//String cookStepImage2 = null;
+			
+			try{
+				mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				//cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+				//cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("title", "뿌링클 만들기"); 
+			paramsMap.put("tags", List.of("존맛탱", "치킨")); // tag 입력값 없애보기
+			paramsMap.put("commentary", "뿌링클 소개글");
+			paramsMap.put("mainImageUrl", mainImageUrl);
+			
+			/*
+			// 조리과정 입력 없이 전송해보기
+			List<Object> cookStepList = List.of(
+					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+			);
+			paramsMap.put("cookStepList", cookStepList); 
+			*/
+			
+			return paramsMap;
+		});
+	}
+	
+	private void adjustParametersAndSend(String jwt, ResultMatcher resultMatcher, CallbackForTest callback) throws Exception {
+		
+		Object obj = callback.consumeWebParameters();
+		if(obj == null) {
+			return;
+		}
 		
 		ObjectMapper jsonMapper = new ObjectMapper();
-		String paramsJson = jsonMapper.writeValueAsString(paramsMap);
+		String paramsJson = jsonMapper.writeValueAsString(obj);
 		
 		mvc.perform(post("/recipe/add-new-recipe")
-							.header("Authorization", "Bearer " + jwt)
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(paramsJson))
-					.andDo(print())
-					.andExpect(status().isOk());
-		
+				.header("Authorization", "Bearer " + jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(paramsJson))
+		.andDo(print())
+		.andExpect(resultMatcher);
 	}
-
 	
 
 	public String login() throws Exception {

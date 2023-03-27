@@ -23,6 +23,8 @@ import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class RecipeController {
 
@@ -61,11 +63,10 @@ public class RecipeController {
 	}
 	
 	@PostMapping("/recipe/add-new-recipe")
-	public ResponseEntity<?> addNewRecipe(@RequestBody AddRecipeParameters params, Authentication authentication){
+	public ResponseEntity<?> addNewRecipe(@Valid @RequestBody AddRecipeParameters params, Authentication authentication){
 		
-		logger.info("레시피 만들기 작업중...");
-		logger.info(params.toString());
-		params.getCookStepList().forEach(cookStep -> logger.info(cookStep.toString()));
+		//logger.info(params.toString());
+		//params.getCookStepList().forEach(cookStep -> logger.info(cookStep.toString()));
 		
 		User user = userService.loadUserByEmail(authentication.getName());
 		recipeService.saveNewRecipe(params, user);

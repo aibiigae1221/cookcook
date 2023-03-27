@@ -113,8 +113,8 @@ public class RecipeServiceImpl implements RecipeService{
 		params.getCookStepList().forEach(step -> setImageUsedFlag(step.getUploadUrl()));
 	}
 
+
 	private void setImageUsedFlag(String imageUrl) {
-		
 		TemporaryImage entity = temporaryImageRepository.findByImageUrl(imageUrl);
 		entity.setStatus("used");
 		temporaryImageRepository.save(entity);

@@ -3,7 +3,6 @@ package com.aibiigae1221.cookcook.web.domain;
 
 import java.io.Serializable;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
@@ -12,16 +11,13 @@ public class SignUpParameters implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message="이메일을 입력해주세요.")
-	@NotBlank(message = "이메일을 입력해주세요.")
 	@Pattern(regexp = "^[a-zA-Z0-9_]+@[0-9a-zA-Z]+\\.[0-9a-z]{2,3}", message = "이메일 형식이 유효하지 않습니다.")
 	private String email;
 
 	@NotNull(message="비밀번호를 입력해주세요.")
-	@NotBlank(message = "비밀번호를 입력해주세요.")
 	private String password;
 	
 	@NotNull(message="이름을 입력해주세요.")
-	@NotBlank(message = "이름을 입력해주세요.")
 	private String nickname;
 	
 	public SignUpParameters() {}
