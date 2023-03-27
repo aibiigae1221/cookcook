@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService{
 		userRepository.deleteAll();
 	}
 
+	@Override
+	public User loadUserByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
 }

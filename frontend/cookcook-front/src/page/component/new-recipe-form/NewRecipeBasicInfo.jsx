@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/joy/Textarea';
-import cookStepImage from "./default-cook-step-image.jpg";
+import defaultCookStepImage from "./default-cook-step-image.jpg";
 import TagList from "./TagList";
 
 import styles from "./NewRecipeBasicInfo.module.css";
@@ -46,7 +46,7 @@ const NewRecipeBasicInfo = (
         {uploadedMainImageSrc !== null ?
           <img src={uploadedMainImageSrc} alt={uploadedMainImageSrc} className={styles.cookingStepImage} />
           :
-          <img src={cookStepImage} alt={cookStepImage} className={styles.cookingStepImage} />
+          <img src={defaultCookStepImage} alt={defaultCookStepImage} className={styles.cookingStepImage} />
         }
       </Grid>
 

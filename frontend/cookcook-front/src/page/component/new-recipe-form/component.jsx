@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 import NewRecipeBasicInfo from "./NewRecipeBasicInfo";
 import NewRecipeCookStepList from "./NewRecipeCookStepList";
@@ -21,7 +22,7 @@ const NewRecipeForm = () => {
       uploadUrl:null
     }
   ]);
-  const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState("");
+  const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState(null);
   const [newTagName, setNewTagName] = useState("");
 
   const jwt = useSelector(state => state.user.jwt);
@@ -139,6 +140,41 @@ const NewRecipeForm = () => {
     });
   };
 
+  const handleSubmit = () => {
+    // // TODO:
+    const params = new URLSearchParams();
+    params.set("title", title);
+    params.set("tags", tagList);
+    params.set("commentary", commentary);
+
+    const orderAddedCookStepList = cookStepList.map((cookStep, idx) => {
+      return {
+        order:idx,
+        detail:cookStep.detail,
+        uploadUrl:cookStep.uploadUrl
+      };
+    });
+
+    params.set("cookStepList", orderAddedCookStepList);
+
+    const authHeader = `Bearer ${jwt}`;
+
+    const options = {
+      method: "post",
+      mode: "cors",
+      cache:"no-cache",
+      headers:{
+        "Authorization": authHeader
+      },
+      body:params
+    };
+
+    fetch("http://127.0.0.1:8080/recipe/add-new-recipe", options)
+      .then(response => response.json())
+      .then(json => console.log(json));
+
+  };
+
   return (
     <Box
       sx={{width:"1200px",
@@ -172,6 +208,12 @@ const NewRecipeForm = () => {
                     handleCookStepDetailChange={handleCookStepDetailChange}
                     handleCookStepImage={handleCookStepImage}
                   />
+
+          <Grid item sm={12} style={{textAlign:"center"}}>
+            <Button variant="contained" color="success" onClick={handleSubmit}>
+              등록하기
+            </Button>
+          </Grid>
         </Grid>
       </form>
   </Box>

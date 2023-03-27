@@ -6,6 +6,8 @@ public interface UserService {
 
 	User addUser(User user);
 
+	User loadUserByEmail(String email);
+	
 	long countAllUsers();
 
 	void removeAllUsers();

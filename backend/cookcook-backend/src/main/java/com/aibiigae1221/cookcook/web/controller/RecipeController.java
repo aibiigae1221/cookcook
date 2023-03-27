@@ -11,13 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
+import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.RecipeService;
+import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
+import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 
 @RestController
 public class RecipeController {
@@ -26,6 +30,9 @@ public class RecipeController {
 	
 	@Autowired
 	private RecipeService recipeService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private ObjectProvider<HashMapBean> hashMapHolderProvider;
@@ -51,5 +58,19 @@ public class RecipeController {
 			mapHolder.put("status", "error");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapHolder.getSource());
 		}
+	}
+	
+	@PostMapping("/recipe/add-new-recipe")
+	public ResponseEntity<?> addNewRecipe(@RequestBody AddRecipeParameters params, Authentication authentication){
+		
+		logger.info("레시피 만들기 작업중...");
+		logger.info(params.toString());
+		params.getCookStepList().forEach(cookStep -> logger.info(cookStep.toString()));
+		
+		User user = userService.loadUserByEmail(authentication.getName());
+		recipeService.saveNewRecipe(params, user);
+		
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

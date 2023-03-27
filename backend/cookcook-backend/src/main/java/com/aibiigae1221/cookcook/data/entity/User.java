@@ -9,7 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Table(name="users")
@@ -29,6 +29,9 @@ public class User {
 	
 	@Column(nullable = false)
 	private String nickname;
+
+	@OneToMany(mappedBy="user")
+	private Set<Recipe> recipeList;
 	
 	public User() {}
 
@@ -70,8 +73,13 @@ public class User {
 		this.nickname = nickname;
 	}
 	
-	
-	
+	public Set<Recipe> getRecipeList() {
+		return recipeList;
+	}
+
+	public void setRecipeList(Set<Recipe> recipeList) {
+		this.recipeList = recipeList;
+	}
 	
 	
 }

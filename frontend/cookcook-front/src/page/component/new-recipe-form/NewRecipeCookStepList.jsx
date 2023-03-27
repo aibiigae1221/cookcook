@@ -44,12 +44,6 @@ const NewRecipeCookStepList = ({
               />
         </React.Fragment>
       )}
-
-      <Grid item sm={12} style={{textAlign:"center"}}>
-        <Button variant="contained" color="success">
-          저장하기
-        </Button>
-      </Grid>
     </>
   );
 };
