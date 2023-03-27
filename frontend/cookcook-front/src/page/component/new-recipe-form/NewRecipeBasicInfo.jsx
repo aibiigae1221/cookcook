@@ -4,8 +4,10 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/joy/Textarea';
+import Alert from '@mui/material/Alert';
 import defaultCookStepImage from "./default-cook-step-image.jpg";
 import TagList from "./TagList";
+
 
 import styles from "./NewRecipeBasicInfo.module.css";
 
@@ -15,7 +17,8 @@ const NewRecipeBasicInfo = (
                           newTagName, setNewTagName, handleInputTagEnter, addNewTag, removeTag, tagList,
                           commentary, setCommentary,
                           uploadedMainImageSrc,
-                          handleMainImage
+                          handleMainImage,
+                          errorMessageTitle, errorMessageCommentary, errorMessageTags
                           }) => {
 
   return (
@@ -26,6 +29,12 @@ const NewRecipeBasicInfo = (
       <Grid item sm={12}>
         <TextField fullWidth label="공유하실 레시피의 주제를 알려주세요" id="title" value={title} onChange={ev => handleInputChange(ev, setTitle)}/>
       </Grid>
+
+      {errorMessageTitle !== '' &&
+        <Grid item sm={12}>
+           <Alert severity="error">{errorMessageTitle}</Alert>
+        </Grid>
+      }
 
       <Grid item sm={12}>
         <Stack spacing={2} direction="row">
@@ -38,6 +47,11 @@ const NewRecipeBasicInfo = (
           tagList={tagList}
           removeTag={removeTag}
         />
+      {errorMessageTags !== '' &&
+        <Grid item sm={12}>
+           <Alert severity="error">{errorMessageTags}</Alert>
+        </Grid>
+      }
 
       <Grid item sm={4} style={{lineHeight:"1.5"}}>
         <p style={{fontWeight:"bold"}}>완성된 요리의 이미지 파일을 추가해보세요</p>
@@ -54,6 +68,12 @@ const NewRecipeBasicInfo = (
         <p style={{fontWeight:"bold", marginBottom:"10px"}}>이 레시피에 대한 기본적인 설명을 적어보세요</p>
         <Textarea placeholder="" minRows={5} value={commentary} onChange={(e) => handleInputChange(e, setCommentary)} />
       </Grid>
+
+      {errorMessageCommentary !== '' &&
+        <Grid item sm={12}>
+           <Alert severity="error">{errorMessageCommentary}</Alert>
+        </Grid>
+      }
     </>
   );
 };

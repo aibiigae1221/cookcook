@@ -3,6 +3,9 @@ package com.aibiigae1221.cookcook.web.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class AddRecipeParameters implements Serializable{
@@ -10,34 +13,32 @@ public class AddRecipeParameters implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message = "제목을 입력해주세요.")
+	@NotBlank(message = "제목을 입력해주세요.")
 	private String title;
 	
 	@NotNull(message = "레시피에 태그를 부여해야 합니다.")
+	@NotEmpty(message = "레시피에 태그를 부여해야 합니다.")
 	private List<String> tags;
 	
 	@NotNull(message = "보내주시는 레시피의 부연설명을 해주세요.")
+	@NotBlank(message = "보내주시는 레시피의 부연설명을 해주세요.")
 	private String commentary;
 	
 	private String mainImageUrl;
 	
+	@Valid
 	@NotNull(message = "조리과정을 입력해주세요.")
 	private List<AddRecipeCookStepParameters> cookStepList;
 	
 	public AddRecipeParameters() {}
-
-	
 	
 	public String getMainImageUrl() {
 		return mainImageUrl;
 	}
 
-
-
 	public void setMainImageUrl(String mainImageUrl) {
 		this.mainImageUrl = mainImageUrl;
 	}
-
-
 
 	public String getTitle() {
 		return title;
@@ -76,7 +77,4 @@ public class AddRecipeParameters implements Serializable{
 		return "AddRecipeParameters [title=" + title + ", tags=" + tags + ", commentary=" + commentary
 				+ ", mainImageUrl=" + mainImageUrl + "]";
 	}
-
-	
-	
 }

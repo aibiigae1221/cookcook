@@ -104,17 +104,22 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 
 	@Override
-	public void saveNewRecipe(AddRecipeParameters params, User user) {
+	public UUID saveNewRecipe(AddRecipeParameters params, User user) {
+		logger.info("레시피 등록 중..");
 		Recipe savedRecipe = saveRecipe(params, user);
 		saveRecipeTags(params, savedRecipe);
 		saveRecipeSteps(params, savedRecipe);
 		
 		setImageUsedFlag(params.getMainImageUrl());
 		params.getCookStepList().forEach(step -> setImageUsedFlag(step.getUploadUrl()));
+		return savedRecipe.getRecipeId();
 	}
 
 
 	private void setImageUsedFlag(String imageUrl) {
+		if(imageUrl == null || imageUrl.isEmpty())
+			return;
+		
 		TemporaryImage entity = temporaryImageRepository.findByImageUrl(imageUrl);
 		entity.setStatus("used");
 		temporaryImageRepository.save(entity);

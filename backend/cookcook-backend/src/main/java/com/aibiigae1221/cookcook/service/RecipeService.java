@@ -1,6 +1,7 @@
 package com.aibiigae1221.cookcook.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public interface RecipeService {
 
 	void removeAllRecipes();
 
-	void saveNewRecipe(AddRecipeParameters params, User user);
+	UUID saveNewRecipe(AddRecipeParameters params, User user);
 
 
 }

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -25,7 +26,14 @@ const NewRecipeForm = () => {
   const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState(null);
   const [newTagName, setNewTagName] = useState("");
 
+  const [errorMessageTitle, setErrorMessageTitle] = useState("");
+  const [errorMessageCommentary, setErrorMessageCommentary] = useState("");
+  const [errorMessageTags, setErrorMessageTags] = useState("");
+  const [errorMessageStepDetail, setErrorMessageStepDetail] = useState("");
+
   const jwt = useSelector(state => state.user.jwt);
+
+  const navigate = useNavigate();
 
   const handleInputTagEnter = ev => {
     if(ev.key === "Enter"){
@@ -45,6 +53,9 @@ const NewRecipeForm = () => {
 
   const handleInputChange = (ev, setter) => {
     setter(ev.target.value);
+    setErrorMessageTitle("");
+    setErrorMessageCommentary("");
+    setErrorMessageTags("");
   };
 
   const handleMainImage = (e) => {
@@ -118,6 +129,7 @@ const NewRecipeForm = () => {
       }
     });
 
+    setErrorMessageStepDetail("");
     setCookStepList(newList);
   };
 
@@ -141,12 +153,7 @@ const NewRecipeForm = () => {
   };
 
   const handleSubmit = () => {
-    // // TODO:
-    const params = new URLSearchParams();
-    params.set("title", title);
-    params.set("tags", tagList);
-    params.set("commentary", commentary);
-
+//todo
     const orderAddedCookStepList = cookStepList.map((cookStep, idx) => {
       return {
         order:idx,
@@ -155,7 +162,13 @@ const NewRecipeForm = () => {
       };
     });
 
-    params.set("cookStepList", orderAddedCookStepList);
+    const jsonInput = JSON.stringify({
+      title:title,
+      tags:tagList,
+      commentary:commentary,
+      mainImageUrl:uploadedMainImageSrc,
+      cookStepList:orderAddedCookStepList
+    });
 
     const authHeader = `Bearer ${jwt}`;
 
@@ -164,14 +177,49 @@ const NewRecipeForm = () => {
       mode: "cors",
       cache:"no-cache",
       headers:{
-        "Authorization": authHeader
+        "Authorization": authHeader,
+        "Content-Type":"application/json"
       },
-      body:params
+      body:jsonInput
     };
 
     fetch("http://127.0.0.1:8080/recipe/add-new-recipe", options)
       .then(response => response.json())
-      .then(json => console.log(json));
+      .then(json => {
+        if(json.status === 'success'){
+          navigate(`/recipe-detail/${json.uuid}`);
+
+        }else{
+          console.log(json);
+
+          switch(json.field){
+
+            case "title":
+              setErrorMessageTitle(json.message);
+              break;
+
+            case "tags":
+              setErrorMessageTags(json.message);
+              break;
+
+            case "commentary":
+              setErrorMessageCommentary(json.message);
+              break;
+            default:
+              break;
+          }
+
+          if(json.field.startsWith("cookStepList[")){
+            const field = json.field;
+            const result = field.match(/cookStepList\[(\d)/);
+            const idx = result[1];
+            setErrorMessageStepDetail(`조리과정 #${Number(idx)+1}, ${json.message}`);
+          }
+
+
+        }
+      })
+      .catch(error => console.log(error));
 
   };
 
@@ -191,6 +239,7 @@ const NewRecipeForm = () => {
                     commentary={commentary} setCommentary={setCommentary}
                     uploadedMainImageSrc={uploadedMainImageSrc}
                     handleMainImage={handleMainImage}
+                    errorMessageTitle={errorMessageTitle} errorMessageCommentary={errorMessageCommentary} errorMessageTags={errorMessageTags}
                   />
 
           <Grid item sm={12}>
@@ -207,6 +256,7 @@ const NewRecipeForm = () => {
                     cookStepList={cookStepList}
                     handleCookStepDetailChange={handleCookStepDetailChange}
                     handleCookStepImage={handleCookStepImage}
+                    errorMessageStepDetail={errorMessageStepDetail}
                   />
 
           <Grid item sm={12} style={{textAlign:"center"}}>

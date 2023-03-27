@@ -2,6 +2,7 @@ import React from "react";
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 
 import CookStepElement from "./CookStepElement";
 
@@ -13,7 +14,9 @@ import styles from "./NewRecipeCookStepList.module.css";
 const NewRecipeCookStepList = ({
                     addNewCookStep, removeLastCookStep,
                     cookStepList,
-                    handleCookStepDetailChange, handleCookStepImage}) => {
+                    handleCookStepDetailChange, handleCookStepImage,
+                    errorMessageStepDetail
+                  }) => {
 
   let lastCookStepIdx = -1;
   if(cookStepList.length > 0){
@@ -44,6 +47,12 @@ const NewRecipeCookStepList = ({
               />
         </React.Fragment>
       )}
+
+      {errorMessageStepDetail !== '' &&
+        <Grid item sm={12}>
+          <Alert severity="error">{errorMessageStepDetail}</Alert>
+        </Grid>
+      }
     </>
   );
 };

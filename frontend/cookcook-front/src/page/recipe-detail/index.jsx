@@ -105,7 +105,7 @@ const RecipeDetailPage = () => {
     }
   ];
 
-  const recipeData = items.filter(item => String(item.recipeId) === params.recipeId);
+  const recipeData = items.filter(item => String(item.recipeId) === "0");
 
   return (
     <div className="content-wrapper">
