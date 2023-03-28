@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
 import com.aibiigae1221.cookcook.service.exception.UserAlreadyExistsException;
 import com.aibiigae1221.cookcook.util.HashMapBean;
 
@@ -17,10 +18,16 @@ import com.aibiigae1221.cookcook.util.HashMapBean;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-	//private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
+	// private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
 	
 	@Autowired
 	private ObjectProvider<HashMapBean> hashMapHolderProvider;
+	
+	@ExceptionHandler(RecipeNotFoundException.class) 
+	public ResponseEntity<?> recipeNotFoundException(RecipeNotFoundException e, WebRequest request) {
+		HashMapBean map = addErrorIntoMap("해당 레시피를 찾을 수 없습니다.");
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(map.getSource()); 
+	}
 	
 	@ExceptionHandler(UserAlreadyExistsException.class) 
 	public ResponseEntity<?> duplicateException(UserAlreadyExistsException e, WebRequest request) {

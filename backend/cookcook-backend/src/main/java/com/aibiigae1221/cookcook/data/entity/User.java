@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +19,7 @@ import jakarta.persistence.Table;
 @Entity
 public class User {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name="uuid2", strategy = "uuid2")
@@ -24,12 +28,14 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 	
+	@JsonIgnore
 	@Column(nullable = false)
 	private String password;
 	
 	@Column(nullable = false)
 	private String nickname;
 
+	@JsonBackReference
 	@OneToMany(mappedBy="user")
 	private Set<Recipe> recipeList;
 	

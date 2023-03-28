@@ -1,5 +1,7 @@
 package com.aibiigae1221.cookcook.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ public class RecipeStep {
 	
 	private String imageUrl;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="recipe_id")
 	private Recipe recipe;
@@ -69,6 +72,12 @@ public class RecipeStep {
 
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
+	}
+
+	@Override
+	public String toString() {
+		return "RecipeStep [stepId=" + stepId + ", stepNumber=" + stepNumber + ", detail=" + detail + ", imageUrl="
+				+ imageUrl + "]";
 	}
 	
 	

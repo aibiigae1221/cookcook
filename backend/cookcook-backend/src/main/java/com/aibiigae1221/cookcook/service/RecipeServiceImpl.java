@@ -26,6 +26,7 @@ import com.aibiigae1221.cookcook.data.entity.RecipeStep;
 import com.aibiigae1221.cookcook.data.entity.RecipeTag;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
+import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 
 import jakarta.transaction.Transactional;
@@ -168,6 +169,19 @@ public class RecipeServiceImpl implements RecipeService{
 		recipe.setMainImageUrl(params.getMainImageUrl());
 		
 		return recipeRepository.save(recipe);
+	}
+
+	@Override
+	public Recipe getRecipeDetail(String recipeId) {
+		UUID uuid = null;
+		
+		try{
+			uuid = UUID.fromString(recipeId);
+		}catch(IllegalArgumentException e) {
+			throw new RecipeNotFoundException();
+		}
+		
+		return recipeRepository.findByRecipeId(uuid).orElseThrow(() -> new RecipeNotFoundException());
 	}
 
 }

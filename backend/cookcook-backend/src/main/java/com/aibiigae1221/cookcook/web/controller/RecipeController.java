@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aibiigae1221.cookcook.data.entity.Recipe;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.RecipeService;
@@ -55,7 +57,7 @@ public class RecipeController {
 			TemporaryImage entity = recipeService.saveImagePath(authentication.getName(), image);
 			mapHolder.put("status", "success");
 			mapHolder.put("imageUrl", entity.getImageUrl());
-			return ResponseEntity.status(HttpStatus.OK).body(mapHolder.getSource());
+			return ok(mapHolder);
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 			mapHolder.put("status", "error");
@@ -65,10 +67,6 @@ public class RecipeController {
 	
 	@PostMapping("/recipe/add-new-recipe")
 	public ResponseEntity<?> addNewRecipe(@Valid @RequestBody AddRecipeParameters params, Authentication authentication){
-		
-		//logger.info(params.toString());
-		//params.getCookStepList().forEach(cookStep -> logger.info(cookStep.toString()));
-		
 		User user = userService.loadUserByEmail(authentication.getName());
 		UUID uuid = recipeService.saveNewRecipe(params, user);
 		
@@ -76,6 +74,21 @@ public class RecipeController {
 		mapHolder.put("status", "success");
 		mapHolder.put("uuid", uuid.toString());
 		
+		return ok(mapHolder);
+	}
+	
+	@GetMapping("/recipe/detail")
+	public ResponseEntity<?> recipeDetail(@RequestParam("recipeId") String recipeId){
+		Recipe recipe = recipeService.getRecipeDetail(recipeId);
+		
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		mapHolder.put("status", "success");
+		mapHolder.put("recipe", recipe);
+		
+		return ok(mapHolder);
+	}
+	
+	public ResponseEntity<?> ok(HashMapBean mapHolder) {
 		return ResponseEntity.status(HttpStatus.OK).body(mapHolder.getSource());
 	}
 }

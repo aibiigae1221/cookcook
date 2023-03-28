@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aibiigae1221.cookcook.data.entity.Recipe;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
@@ -18,6 +19,8 @@ public interface RecipeService {
 	void removeAllRecipes();
 
 	UUID saveNewRecipe(AddRecipeParameters params, User user);
+
+	Recipe getRecipeDetail(String recipeId);
 
 
 }

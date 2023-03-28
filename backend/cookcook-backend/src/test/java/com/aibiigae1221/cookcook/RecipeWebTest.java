@@ -1,5 +1,7 @@
 package com.aibiigae1221.cookcook;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -13,8 +15,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 public class RecipeWebTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(RecipeWebTest.class);
+	// private static final Logger logger = LoggerFactory.getLogger(RecipeWebTest.class);
 	
 	@Autowired
 	private MockMvc mvc;
@@ -58,6 +58,114 @@ public class RecipeWebTest {
 		recipeService.removeAllRecipes();
 		recipeService.removeAllUploadedImages();
 		userService.removeAllUsers();
+	}
+	
+	@Test
+	public void accessRecipeDetail() throws Exception {
+		String jwt = login();
+		String uuid = addRecipeFixture(jwt);
+		assertNotNull(uuid);
+	
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>(); 
+		params.set("recipeId", uuid);
+  
+		String json = mvc.perform(get("/recipe/detail") 
+							.header("Authorization", "Bearer " + jwt) 
+							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
+							.params(params)) 
+				.andDo(print())
+				.andExpect(status().isOk()) 
+				.andReturn()
+					.getResponse().getContentAsString();
+  
+		assertNotNull(json);		
+	}
+	
+	
+	@Test
+	public void accessRecipeDetailWithWronId() throws Exception {
+		String jwt = login();
+		//String uuid = addRecipeFixture(jwt); // 레시피 등록 안함
+		String uuid = "wrong_uuid"; // 유효하지 않는 uuid
+		assertNotNull(uuid);
+	
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>(); 
+		params.set("recipeId", uuid);
+  
+		mvc.perform(get("/recipe/detail") 
+							.header("Authorization", "Bearer " + jwt) 
+							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
+							.params(params)) 
+				.andDo(print())
+				.andExpect(status().isNoContent()); 
+	}
+	
+
+	@Test
+	public void accessRecipeDetailWithWronId2() throws Exception {
+		String jwt = login();
+		//String uuid = addRecipeFixture(jwt); // 레시피 등록 안함
+		String uuid = ""; // uuid 빈값
+		assertNotNull(uuid);
+	
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>(); 
+		params.set("recipeId", uuid);
+  
+		mvc.perform(get("/recipe/detail") 
+							.header("Authorization", "Bearer " + jwt) 
+							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
+							.params(params)) 
+				.andDo(print())
+				.andExpect(status().isNoContent()); 
+	}
+	
+	@Test
+	public void accessRecipeDetailWithWronId3() throws Exception {
+		String jwt = login();
+		//String uuid = addRecipeFixture(jwt); // 레시피 등록 안함
+		String uuid = ""; // uuid 빈값
+		assertNotNull(uuid);
+	
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>(); 
+		// params.set("recipeId", uuid); // 파라미터 전달 누락
+  
+		mvc.perform(get("/recipe/detail") 
+							.header("Authorization", "Bearer " + jwt) 
+							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
+							.params(params)) 
+				.andDo(print())
+				.andExpect(status().isBadRequest()); 
+	}
+	
+	private String addRecipeFixture(String jwt) throws Exception {
+		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("title", "뿌링클 만들기");
+		paramsMap.put("tags", List.of("존맛탱", "치킨"));
+		paramsMap.put("commentary", "뿌링클 소개글");
+		paramsMap.put("mainImageUrl", mainImageUrl);
+		
+		List<Object> cookStepList = List.of(
+				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+		);
+		paramsMap.put("cookStepList", cookStepList);
+		
+		ObjectMapper jsonMapper = new ObjectMapper();
+		String paramsJson = jsonMapper.writeValueAsString(paramsMap);
+		
+		String json = mvc.perform(post("/recipe/add-new-recipe")
+				.header("Authorization", "Bearer " + jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(paramsJson))
+				.andReturn().getResponse().getContentAsString();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(json);
+		return jsonNode.get("uuid").asText();
 	}
 	
 	@Test

@@ -2,6 +2,8 @@ package com.aibiigae1221.cookcook.data.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class RecipeTag {
 	@Column(nullable = false, unique = true)
 	private String tagName;
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy="tags")
 	private Set<Recipe> recipeList;
 
@@ -48,5 +51,10 @@ public class RecipeTag {
 
 	public void setRecipeList(Set<Recipe> recipeList) {
 		this.recipeList = recipeList;
+	}
+
+	@Override
+	public String toString() {
+		return "RecipeTag [tagId=" + tagId + ", tagName=" + tagName + "]";
 	}
 }
