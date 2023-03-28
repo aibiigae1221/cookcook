@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -183,6 +185,17 @@ public class RecipeServiceImpl implements RecipeService{
 		}
 		
 		return recipeRepository.findByRecipeId(uuid).orElseThrow(() -> new RecipeNotFoundException());
+	}
+
+	@Override
+	public long getAllRecipeCount() {
+		return recipeRepository.count();
+	}
+
+	@Override
+	public List<Recipe> getRecentRecipes(int amount) {
+		Page<Recipe> page = recipeRepository.findByOrderByCreatedDateDesc(PageRequest.of(0, amount));
+		return page.getContent();
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.aibiigae1221.cookcook;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -61,16 +62,59 @@ public class RecipeWebTest {
 	}
 	
 	@Test
+	public void getRecent5RecipeList() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		assertEquals(10, recipeService.getAllRecipeCount());
+	
+		String json = mvc.perform(get("/recipe/get-recent-recipes")
+						.param("amount", "5"))
+					.andDo(print())
+					.andExpect(status().isOk())
+					.andReturn()
+						.getResponse().getContentAsString();
+		
+		assertNotNull(json);
+	}
+	
+	@Test
+	public void getRecentRecipeListWithWrongAmount1() throws Exception {
+		mvc.perform(get("/recipe/get-recent-recipes")
+						.param("amount", "-1")) // 음수 값 전달
+					.andDo(print())
+					.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void getRecentRecipeListWithWrongAmount2() throws Exception {
+		mvc.perform(get("/recipe/get-recent-recipes"))
+						//.param("amount", "-1")) // 파라미터 누락
+					.andDo(print())
+					.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void getRecentRecipeListWithWrongAmount3() throws Exception {
+		mvc.perform(get("/recipe/get-recent-recipes")
+						.param("amount", "문자입력")) // 유효하지 않는 파라미터 타입
+					.andDo(print())
+					.andExpect(status().isBadRequest());
+	}
+	
+	@Test
 	public void accessRecipeDetail() throws Exception {
 		String jwt = login();
-		String uuid = addRecipeFixture(jwt);
+		String uuid = addRecipeFixture(jwt, 1);
 		assertNotNull(uuid);
 	
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>(); 
 		params.set("recipeId", uuid);
   
 		String json = mvc.perform(get("/recipe/detail") 
-							.header("Authorization", "Bearer " + jwt) 
 							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
 							.params(params)) 
 				.andDo(print())
@@ -137,20 +181,20 @@ public class RecipeWebTest {
 				.andExpect(status().isBadRequest()); 
 	}
 	
-	private String addRecipeFixture(String jwt) throws Exception {
+	private String addRecipeFixture(String jwt, int idxPrefix) throws Exception {
 		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("title", "뿌링클 만들기");
+		paramsMap.put("title", "뿌링클 만들기"+idxPrefix);
 		paramsMap.put("tags", List.of("존맛탱", "치킨"));
-		paramsMap.put("commentary", "뿌링클 소개글");
+		paramsMap.put("commentary", "뿌링클 소개글"+idxPrefix);
 		paramsMap.put("mainImageUrl", mainImageUrl);
 		
 		List<Object> cookStepList = List.of(
-				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"+idxPrefix),
+				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다."+idxPrefix)
 		);
 		paramsMap.put("cookStepList", cookStepList);
 		

@@ -43,7 +43,7 @@ public class Recipe {
 	
 	private String mainImageUrl;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
 	@JsonManagedReference

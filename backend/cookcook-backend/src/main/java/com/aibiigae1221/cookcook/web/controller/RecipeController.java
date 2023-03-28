@@ -1,6 +1,7 @@
 package com.aibiigae1221.cookcook.web.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +29,9 @@ import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
+@Validated
 @RestController
 public class RecipeController {
 
@@ -47,6 +51,20 @@ public class RecipeController {
 	
 	@Value("${user-resource-server-url}")
 	private String resourceServerUrl;
+	
+	
+	
+	@GetMapping("/recipe/get-recent-recipes")
+	public ResponseEntity<?> getRecentRecipes(@RequestParam("amount") @Min(value = 3, message = "보여주고자 하는 레시피 갯수는 최소 3개입니다.") int amount){
+		
+		List<Recipe> recipeList = recipeService.getRecentRecipes(amount);
+		
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		mapHolder.put("status", "success");
+		mapHolder.put("recipeList", recipeList);
+		
+		return ok(mapHolder);
+	}
 	
 	@PostMapping("/recipe/upload-image")
 	public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile image, Authentication authentication){
