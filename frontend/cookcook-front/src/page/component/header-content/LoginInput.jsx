@@ -50,7 +50,7 @@ const LoginInput = ({handleCloseLoginModal}) => {
       >
         <Grid item sm={12}>
           <TextField label="이메일 주소" variant="standard" fullWidth value={email} onChange={ev => handleChange(ev, setEmail)} />
-          <TextField label="비밀번호" variant="standard" fullWidth value={password} onChange={ev => handleChange(ev, setPassword)} />
+          <TextField label="비밀번호" variant="standard" fullWidth value={password} type="password" onChange={ev => handleChange(ev, setPassword)} />
         </Grid>
 
         {loginErrorMessage &&
