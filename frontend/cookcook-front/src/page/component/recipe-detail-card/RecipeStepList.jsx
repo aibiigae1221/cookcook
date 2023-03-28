@@ -5,6 +5,12 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 
 const RecipeStepList = ({recipe}) => {
+
+
+    if(!recipe){
+      return <></>
+    }
+
     return (
       <>
         <Grid item sm={12}>
@@ -15,8 +21,8 @@ const RecipeStepList = ({recipe}) => {
           </h2>
         </Grid>
 
-        {recipe.steps.length > 0 && recipe.steps.map(step =>
-          <Grid key={step.order} item sm={12}>
+        {recipe.stepList.length > 0 && recipe.stepList.map(step =>
+          <Grid key={step.stepId} item sm={12}>
 
             <Card sx={{
               width: "100%",
@@ -26,11 +32,11 @@ const RecipeStepList = ({recipe}) => {
                 component="img"
                 alt="green iguana"
                 height="300"
-                image={step.screenshotUrl}
+                image={step.imageUrl}
                 />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  #{step.order}
+                  #{Number(step.stepNumber)+1}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {step.detail}

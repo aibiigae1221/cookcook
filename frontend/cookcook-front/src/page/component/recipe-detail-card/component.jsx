@@ -23,6 +23,10 @@ const RecipeDetailCard = ({recipe}) => {
     navigate(-1);
   };
 
+
+  if(!recipe)
+    return <></>;
+
   return (
     <Box
          sx={{
@@ -32,7 +36,6 @@ const RecipeDetailCard = ({recipe}) => {
          }}>
 
         <Grid container spacing={2}>
-
           <RecipeBasic recipe={recipe} />
 
           <Grid item sm={12}>
@@ -48,13 +51,11 @@ const RecipeDetailCard = ({recipe}) => {
           <RecipeStepList recipe={recipe} />
 
           <Grid item sm={12}>
-
             <Stack direction="row" spacing={2} style={{justifyContent:"flex-end"}}>
               <Button variant="outlined" onClick={backToLastPage}>뒤로가기(BACK)</Button>
               <Button variant="outlined" onClick={moveToTop}>위로가기(UP)</Button>
             </Stack>
           </Grid>
-
         </Grid>
     </Box>
   );

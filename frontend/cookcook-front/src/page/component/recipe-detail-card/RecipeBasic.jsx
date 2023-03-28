@@ -5,6 +5,11 @@ import AccessAlarmSharpIcon from '@mui/icons-material/AccessAlarmSharp';
 import Typography from '@mui/material/Typography';
 
 const RecipeBasic = ({recipe}) => {
+
+  if(!recipe){
+    return <></>;
+  }
+
   return (
     <>
       <Grid item sm={12}>
@@ -15,8 +20,8 @@ const RecipeBasic = ({recipe}) => {
         </p>
       </Grid>
       <Grid item sm={12}>
-        <Chip icon={<AssignmentIndIcon />} label={recipe.author} />
-        <Chip icon={<AccessAlarmSharpIcon />} label={recipe.createdDate} />
+          <Chip icon={<AssignmentIndIcon />} label={recipe.user.nickname} />
+          <Chip icon={<AccessAlarmSharpIcon />} label={recipe.createdDate} />
       </Grid>
       <Grid item sm={12}>
         <img
