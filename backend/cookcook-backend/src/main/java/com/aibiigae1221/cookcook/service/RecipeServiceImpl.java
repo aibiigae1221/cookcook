@@ -167,6 +167,7 @@ public class RecipeServiceImpl implements RecipeService{
 		recipe.setTitle(params.getTitle());
 		recipe.setCommentary(params.getCommentary());
 		recipe.setMainImageUrl(params.getMainImageUrl());
+		recipe.setCreatedDate(new Date());
 		
 		return recipeRepository.save(recipe);
 	}

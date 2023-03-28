@@ -1,5 +1,6 @@
 package com.aibiigae1221.cookcook.data.entity;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,6 +18,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Table
 @Entity
@@ -39,6 +42,9 @@ public class Recipe {
 	private String commentary;
 	
 	private String mainImageUrl;
+	
+	@Temporal(TemporalType.DATE)
+	private Date createdDate;
 	
 	@JsonManagedReference
 	@ManyToMany
@@ -110,12 +116,19 @@ public class Recipe {
 	public void setStepList(Set<RecipeStep> stepList) {
 		this.stepList = stepList;
 	}
+	
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
 	@Override
 	public String toString() {
-		return "Recipe [recipeId=" + recipeId + ", user=" + user + ", title=" + title + ", commentary=" + commentary
-				+ ", mainImageUrl=" + mainImageUrl + ", tags=" + tags + ", stepList=" + stepList + "]";
+		return "Recipe [recipeId=" + recipeId + ", title=" + title + ", commentary=" + commentary + ", mainImageUrl="
+				+ mainImageUrl + ", createdDate=" + createdDate + "]";
 	}
-
 	
 }
