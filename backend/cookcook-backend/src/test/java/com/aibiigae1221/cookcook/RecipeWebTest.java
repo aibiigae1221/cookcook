@@ -97,7 +97,7 @@ public class RecipeWebTest {
 							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
 							.params(params)) 
 				.andDo(print())
-				.andExpect(status().isNoContent()); 
+				.andExpect(status().isNotFound()); 
 	}
 	
 
@@ -116,7 +116,7 @@ public class RecipeWebTest {
 							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
 							.params(params)) 
 				.andDo(print())
-				.andExpect(status().isNoContent()); 
+				.andExpect(status().isNotFound()); 
 	}
 	
 	@Test

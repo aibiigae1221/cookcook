@@ -4,6 +4,8 @@ import Chip from '@mui/material/Chip';
 import AccessAlarmSharpIcon from '@mui/icons-material/AccessAlarmSharp';
 import Typography from '@mui/material/Typography';
 
+import defaultImage from "./default-cook-step-image.jpg";
+
 const RecipeBasic = ({recipe}) => {
 
   if(!recipe){
@@ -24,12 +26,13 @@ const RecipeBasic = ({recipe}) => {
           <Chip icon={<AccessAlarmSharpIcon />} label={recipe.createdDate} />
       </Grid>
       <Grid item sm={12}>
-        <img
-          src={recipe.mainImageUrl}
-          alt={recipe.mainImageUrl}
-          style={{
-            width:"100%"
-          }} />
+
+        {(recipe.mainImageUrl !== null && recipe.mainImageUrl !== "")?
+          <img src={recipe.mainImageUrl} alt={recipe.mainImageUrl} style={{width:"100%"}} />
+          :
+          <img src={defaultImage} alt={defaultImage} style={{width:"100%"}} />
+        }
+
       </Grid>
 
       <Grid item sm={12}>

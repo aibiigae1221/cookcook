@@ -1,5 +1,7 @@
 package com.aibiigae1221.cookcook.web.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ import com.aibiigae1221.cookcook.util.HashMapBean;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-	// private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
+	private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
 	
 	@Autowired
 	private ObjectProvider<HashMapBean> hashMapHolderProvider;
@@ -26,7 +28,8 @@ public class ExceptionHandlerAdvice {
 	@ExceptionHandler(RecipeNotFoundException.class) 
 	public ResponseEntity<?> recipeNotFoundException(RecipeNotFoundException e, WebRequest request) {
 		HashMapBean map = addErrorIntoMap("해당 레시피를 찾을 수 없습니다.");
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(map.getSource()); 
+		logger.info("존재하지 않는 레시피 검색 요청이 왔음.");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map.getSource()); 
 	}
 	
 	@ExceptionHandler(UserAlreadyExistsException.class) 

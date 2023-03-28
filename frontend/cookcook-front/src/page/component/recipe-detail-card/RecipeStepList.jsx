@@ -3,6 +3,13 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
+import defaultImage from "./default-cook-step-image.jpg";
+
+const styles = {
+  image:{
+    height:"100px"
+  }
+};
 
 const RecipeStepList = ({recipe}) => {
 
@@ -28,12 +35,12 @@ const RecipeStepList = ({recipe}) => {
               width: "100%",
               marginBottom:"50px"
              }}>
-              <CardMedia
-                component="img"
-                alt="green iguana"
-                height="300"
-                image={step.imageUrl}
-                />
+
+              {(step.imageUrl !== "" && step.imageUrl !== null) ?
+                <CardMedia component="img" alt={step.imageUrl} classes={styles.image} image={step.imageUrl} />
+                :
+                <CardMedia component="img" alt={defaultImage} classes={styles.image} image={defaultImage} />
+              }
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   #{Number(step.stepNumber)+1}

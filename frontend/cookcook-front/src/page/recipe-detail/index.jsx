@@ -22,16 +22,21 @@ const RecipeDetailPage = () => {
       method: "get",
       mode: "cors",
       headers:{
-        "Authorization": `Bearer ${jwt}`
+        "Authorization": `Bearer ${jwt}`,
+        "Content-Type": "application/json"
       }
     };
 
     fetch(`http://127.0.0.1:8080/recipe/detail?recipeId=${recipeId}`, options)
       .then(response => response.json())
       .then(json => {
+        if(json.status === "error"){
+            alert(json.message);
+            return;
+        }
 
+        // 레시피 조리과정 정렬
         let result = json.recipe;
-
         if(result.stepList.length >= 2){
           result.stepList.sort((step1, step2) => {
               return Number(step1.stepNumber) - Number(step2.stepNumber);
@@ -40,6 +45,8 @@ const RecipeDetailPage = () => {
         }
 
         setRecipe(result)
+      }).catch(error => {
+        console.log(error);
       });
 
     return () => {
@@ -52,7 +59,7 @@ const RecipeDetailPage = () => {
       <div className="content header">
         <HeaderContent />
       </div>
-      
+
       <div className="content center">
         <RecipeDetailCard recipe={recipe} />
       </div>
