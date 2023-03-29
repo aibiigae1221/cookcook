@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
@@ -14,7 +13,7 @@ const RecipeDetailPage = () => {
 
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
-  const jwt = useSelector(state => state.user.jwt);
+
 
   useEffect(() => {
 
@@ -22,7 +21,6 @@ const RecipeDetailPage = () => {
       method: "get",
       mode: "cors",
       headers:{
-        "Authorization": `Bearer ${jwt}`,
         "Content-Type": "application/json"
       }
     };
@@ -52,7 +50,7 @@ const RecipeDetailPage = () => {
     return () => {
       setRecipe(null);
     };
-  }, [recipeId, jwt]);
+  }, [recipeId]);
 
   return (
     <div className="content-wrapper">

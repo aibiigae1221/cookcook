@@ -1,5 +1,7 @@
 package com.aibiigae1221.cookcook.data.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -46,6 +48,9 @@ public class Recipe {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
+	@Column(insertable = false, updatable = false)
+	private String createdDateFormatted;
+	
 	@JsonManagedReference
 	@ManyToMany
 	@JoinTable(
@@ -59,8 +64,18 @@ public class Recipe {
 	@OneToMany(mappedBy="recipe")
 	private Set<RecipeStep> stepList;
 	
+	
+	
+	
+	
+	
+	
 	public Recipe() {}
 
+	
+	
+	
+	
 	public UUID getRecipeId() {
 		return recipeId;
 	}
@@ -101,22 +116,6 @@ public class Recipe {
 		this.mainImageUrl = mainImageUrl;
 	}
 
-	public Set<RecipeTag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<RecipeTag> tags) {
-		this.tags = tags;
-	}
-	
-	public Set<RecipeStep> getStepList() {
-		return stepList;
-	}
-
-	public void setStepList(Set<RecipeStep> stepList) {
-		this.stepList = stepList;
-	}
-	
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -125,6 +124,27 @@ public class Recipe {
 		this.createdDate = createdDate;
 	}
 
+	public Set<RecipeTag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<RecipeTag> tags) {
+		this.tags = tags;
+	}
+
+	public Set<RecipeStep> getStepList() {
+		return stepList;
+	}
+
+	public void setStepList(Set<RecipeStep> stepList) {
+		this.stepList = stepList;
+	}
+
+	public String getCreatedDateFormatted() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		return dateFormat.format(createdDate);
+	}
+	
 	@Override
 	public String toString() {
 		return "Recipe [recipeId=" + recipeId + ", title=" + title + ", commentary=" + commentary + ", mainImageUrl="

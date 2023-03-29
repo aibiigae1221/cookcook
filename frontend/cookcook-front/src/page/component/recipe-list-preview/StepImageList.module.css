@@ -1,0 +1,13 @@
+
+.stepimageList{
+  flex-wrap:wrap;
+  display:flex;
+}
+
+.stepImage{
+  width:150px;
+  height:150px;
+  margin-right:10px;
+  margin-bottom:10px;
+  cursor:pointer;
+}
