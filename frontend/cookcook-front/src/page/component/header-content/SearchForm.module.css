@@ -9,33 +9,29 @@
 
 .inputKeyword{
   border:0 none;
-  background-color:#85745C;
-  color:#CFCCBE;
+  background-color:#000000bb;
+  color:#fff;
   width:350px;
   height:42px;
   padding-left:10px;
   outline:none;
-}
+  border-bottom:1px solid #fff;
 
-.inputKeyword:focus{
-  border-bottom:2px solid #000;
 }
 
 .searchButton{
   height:45px;
-
   color:#85745C;
-  background-color:#CFCCBE;
+  background-color:#fff;
   cursor:pointer;
+  border:0 none;
+  outline:none;
 }
 
 .searchButton:hover{
-  background-color:#F5ECC4;
+  background-color:#CED3CF;
 }
 
-.img{
-  height:100%;
-}
 
 .expectedSearchBar{
   position:absolute;
@@ -56,15 +52,21 @@
   font-size:12pt;
   color:#E1A83D;
   cursor:pointer;
-
+  margin-bottom:20px;
+  display:block;
 }
 
-.itemRecipe{
+.dataContainer{
   color:#989080;
   font-size:10pt;
   padding-bottom:20px;
   margin:5px 0;
   border-bottom:1px solid #E1A83D;
   cursor:pointer;
+  display:flex;
+}
 
+.dataContainer p{
+  display:block;
+  margin-right:10px;
 }

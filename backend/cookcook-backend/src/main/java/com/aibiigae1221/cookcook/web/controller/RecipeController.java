@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,12 +58,14 @@ public class RecipeController {
 	@GetMapping("/recipe/pre-search")
 	public ResponseEntity<?> preSearch(RecipeSearchParameters params){
 		
-		Page<Recipe> pages = recipeService.getRecipeList(params, 5);
-		
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();
-		mapHolder.put("status", "success");
-		mapHolder.put("recipeList", pages.getContent());
 		
+		if(StringUtils.hasText(params.getKeyword())) {
+			Page<Recipe> pages = recipeService.getRecipeList(params, 5);
+			mapHolder.put("recipeList", pages.getContent());
+		}
+				
+		mapHolder.put("status", "success");
 		return ok(mapHolder);
 	}
 	

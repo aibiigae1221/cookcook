@@ -23,7 +23,7 @@ const Pagination = ({totalPage, pageNo, keyword}) => {
   let paginationItemList = [];
 
   for(let i=startPage; i<=endPage; i++){
-    console.log("test");
+    
     if(i === pageNo){
       paginationItemList.push(
         <li key={i} className={styles.current}>

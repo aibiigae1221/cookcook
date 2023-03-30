@@ -1,112 +1,136 @@
-
 import React, {useState, useEffect} from "react";
 import {useSearchParams, useNavigate} from "react-router-dom";
+
+import SearchIcon from '@mui/icons-material/Search';
+
 import styles from "./SearchForm.module.css";
 
 const SearchForm = () => {
 
+  const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const [hoveredIdx, setHoveredIdx] = useState(-1);
-  const [showExpectedSearchPage, setShowExpectedSearchPage] = useState(false);
-  const [searchParams] = useSearchParams({search_recipe:""});
-  const navigate = useNavigate();
+  const [recipeList, setRecipeList] = useState([]);
+  const [searchParams] = useSearchParams();
 
-  const expectedSearchList = [
-    {itemId:1, itemTitle: "파닭 만들기", itemRecipe: "1.재료를 준비합니다. 2.이렇게 저렇게 요리를 합니다."},
-    {itemId:2, itemTitle: "양념 치킨 만들기", itemRecipe: "1.재료를 준비합니다. 2.이렇게 저렇게 요리를 합니다."},
-    {itemId:3, itemTitle: "뿌링클 만들기", itemRecipe: "1.재료를 준비합니다. 2.이렇게 저렇게 요리를 합니다."}
-  ];
-
-  const handleKeywordChange = (e) => {
-    if(expectedSearchList.length > 0 ){
-      setShowExpectedSearchPage(true);
-    }
-
-    setKeyword(e.target.value);
-  };
-
-  const handleKeywordKeyDown = (e) => {
-
-
-    if(expectedSearchList.length > 0){
-      if(e.key === "ArrowDown"){
-        let newIdx = hoveredIdx + 1;
-        if(newIdx > expectedSearchList.length-1){
-          newIdx = 0;
-        }
-
-        setHoveredIdx(newIdx);
-
-      }else if(e.key === "Backspace"){
-        if(keyword === "" && showExpectedSearchPage){
-          setShowExpectedSearchPage(false);
-        }
-
-      }else if(e.key === "ArrowUp"){
-        let newIdx = hoveredIdx - 1;
-        if(newIdx < 0){
-          newIdx = expectedSearchList.length - 1;
-        }
-
-        setHoveredIdx(newIdx);
-      }else if(e.key === "Enter"){
-        if(showExpectedSearchPage){
-            //추천 검색어 선택했을 때
-            copyToInputSearch(hoveredIdx);
-        }else{
-            // 추천 검색어가 닫혀있는 상태로써, 키워드 검색 폼 제출할 때
-            navigate(`/recipe-list?search_recipe=${keyword}&pageNo=1`);
-        }
-      }
-    }
-
-    if(e.key === 'Enter') e.preventDefault();
-
-  }
-
-  const copyToInputSearch = (idx) => {
-    if(idx >= 0 && idx <= (expectedSearchList.length -1)){
-      setKeyword(expectedSearchList[idx].itemTitle);
-      setShowExpectedSearchPage(false)
-    }
-  }
-
-  const hoverItem = (idx) => {
-    setHoveredIdx(idx);
-  }
-
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    navigate(`/recipe-list?search_recipe=${keyword}&pageNo=1`);
-  }
-
-
-  const RenderExpectedSearchList = expectedSearchList.map( (el,idx) =>
-      <li key={el.itemId} className={styles.item} onClick={()=>copyToInputSearch(idx)} onMouseOver={()=>hoverItem(idx)} onKeyDown={handleKeywordKeyDown} style={{backgroundColor:idx === hoveredIdx? "#CFCCBE" : "#fff"}}>
-        <p className={styles.itemTitle}>{el.itemTitle}</p>
-        <p className={styles.itemRecipe}>{el.itemRecipe}</p>
-      </li>
-  )
+  let keywordParam = searchParams.get("keyword");
+  keywordParam = (keywordParam) ? keywordParam : "";
 
   useEffect(() => {
-    setKeyword(searchParams.get("search_recipe"))
-  }, [searchParams]);
+    setKeyword(keywordParam);
+  }, [keywordParam]);
+
+  const handleKeywordChange = (e) => {
+
+    const newKeyword = e.target.value.trim();
+    setKeyword(newKeyword);
+
+    if(newKeyword === ""){
+      setHoveredIdx(-1);
+      setRecipeList([]);
+      return;
+    }
+
+    const options = {
+      method: "get",
+      mode: "cors"
+    };
+
+    fetch(`http://127.0.0.1:8080/recipe/pre-search?keyword=${newKeyword}`, options)
+      .then(response => response.json())
+      .then(json => {
+        setRecipeList(json.recipeList);
+      })
+      .catch(error => console.log(error));
+  };
+
+  const handleExpectedResult = (e) => {
+
+    if(!(recipeList.length > 0)){
+      return;
+    }
+
+    switch(e.key){
+
+      case "ArrowUp":
+        let downerIdx = hoveredIdx - 1;
+        downerIdx = (downerIdx < 0)? 1 : downerIdx;
+        setHoveredIdx(downerIdx);
+        break;
+
+      case "ArrowDown":
+        let upperIdx = hoveredIdx + 1;
+        upperIdx = (upperIdx > (recipeList.length - 1))? (recipeList.length -1) : upperIdx;
+        setHoveredIdx(upperIdx);
+        break;
+
+      case "Enter":
+        copyTitleFromSelectedIndex(hoveredIdx);
+
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const copyTitleFromSelectedIndex = (selectedIdx) => {
+
+    if(selectedIdx === -1){
+      setHoveredIdx(-1);
+      setRecipeList([]);
+      return;
+    }
+
+    const selectedRecipe = recipeList.find((recipe, idx) => idx === selectedIdx);
+    setKeyword(selectedRecipe.title);
+    setHoveredIdx(-1);
+    setRecipeList([]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(keyword === ""){
+      return;
+    }
+
+    navigate(`/recipe-list?pageNo=1&keyword=${keyword}`);
+  };
 
 
   return (
-    <form className={styles.wrap}>
+    <form className={styles.wrap} onSubmit={handleSubmit}>
 
-      <input name="keyword" className={styles.inputKeyword} value={keyword} onChange={handleKeywordChange} onKeyDown={handleKeywordKeyDown}/>
+      <input name="keyword" className={styles.inputKeyword} value={keyword} onChange={handleKeywordChange} onKeyDown={handleExpectedResult}/>
 
-      <button className={styles.searchButton} onClick={handleSubmit}>
-        검색
+      <button className={styles.searchButton}>
+        <SearchIcon />
       </button>
 
-      {showExpectedSearchPage &&
-
+      {recipeList.length > 0 &&
         <div className={styles.expectedSearchBar}>
           <ul>
-            {RenderExpectedSearchList}
+            {recipeList.map((recipe, idx) =>
+              <li
+                key={recipe.recipeId}
+                style={{backgroundColor:(idx === hoveredIdx)? "#EDEDED" : "transparent"}}
+                onClick={() => copyTitleFromSelectedIndex(idx)}
+                onMouseOver={() => setHoveredIdx(idx)}>
+
+                <strong className={styles.itemTitle}>{recipe.title}</strong>
+                <div className={styles.dataContainer}>
+                  <p>{recipe.createdDateFormatted}</p>
+                  <p>{recipe.user.nickname}</p>
+                  <p>
+                    {recipe.tags.length > 0 && recipe.tags.map(tag =>
+                      <React.Fragment key={tag.tagId}>
+                        #{tag.tagName}
+                      </React.Fragment>
+                    )}
+                  </p>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
       }

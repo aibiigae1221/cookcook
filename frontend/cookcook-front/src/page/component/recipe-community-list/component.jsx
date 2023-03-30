@@ -36,7 +36,6 @@ const RecipeCommunityList = () => {
     fetch(`http://127.0.0.1:8080/recipe/get-recipe-list?pageNo=${pageNoParam}&keyword=${keywordParam}`, options)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         setRecipeList(json.recipeList);
         setTotalPage(Number(json.totalPage));
       })
