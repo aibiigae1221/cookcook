@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,11 +26,11 @@ import com.aibiigae1221.cookcook.service.RecipeService;
 import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
+import com.aibiigae1221.cookcook.web.domain.RecentRecipeParameters;
+import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 
-@Validated
 @RestController
 public class RecipeController {
 
@@ -52,12 +51,21 @@ public class RecipeController {
 	@Value("${user-resource-server-url}")
 	private String resourceServerUrl;
 	
-	
+	@GetMapping("/recipe/get-recipe-list")
+	private ResponseEntity<?> getRecipeList(@Valid ReicpeSearchParameters params){
+
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		
+		recipeService.getRecipeList(params, mapHolder);
+		mapHolder.put("status", "success");
+				
+		return ok(mapHolder);
+	}
 	
 	@GetMapping("/recipe/get-recent-recipes")
-	public ResponseEntity<?> getRecentRecipes(@RequestParam("amount") @Min(value = 3, message = "보여주고자 하는 레시피 갯수는 최소 3개입니다.") int amount){
+	public ResponseEntity<?> getRecentRecipes(@Valid RecentRecipeParameters params){
 		
-		List<Recipe> recipeList = recipeService.getRecentRecipes(amount);
+		List<Recipe> recipeList = recipeService.getRecentRecipes(params.getAmount());
 		
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();
 		mapHolder.put("status", "success");

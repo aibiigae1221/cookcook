@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aibiigae1221.cookcook.data.entity.Recipe;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
+import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
+import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
 
 public interface RecipeService {
 
@@ -26,6 +28,8 @@ public interface RecipeService {
 	long getAllRecipeCount();
 
 	List<Recipe> getRecentRecipes(int amount);
+
+	void getRecipeList(ReicpeSearchParameters params, HashMapBean mapHolder);
 
 
 }

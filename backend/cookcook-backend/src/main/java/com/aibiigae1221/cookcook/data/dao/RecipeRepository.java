@@ -13,4 +13,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID>{
 
 	Optional<Recipe> findByRecipeId(UUID recipeId);
 	Page<Recipe> findByOrderByCreatedDateDesc(Pageable paging);
-}
+	Page<Recipe> findByTitleContainsOrderByCreatedDateDesc(String keyword, Pageable pageable);
+}	

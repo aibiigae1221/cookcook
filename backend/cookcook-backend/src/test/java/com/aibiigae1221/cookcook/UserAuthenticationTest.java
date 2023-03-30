@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.aibiigae1221.cookcook.service.RecipeService;
 import com.aibiigae1221.cookcook.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 public class UserAuthenticationTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserAuthenticationTest.class);
 	
 	private static final String USER_EMAIL = "123abc@gmail.com";
 	private static final String USER_PASSWORD = "1234";
@@ -44,8 +45,13 @@ public class UserAuthenticationTest {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private RecipeService recipeService;
+	
 	@BeforeEach
 	public void initEnvironment() {
+		recipeService.removeAllRecipes();
+		recipeService.removeAllUploadedImages();
 		userService.removeAllUsers();
 	}
 	

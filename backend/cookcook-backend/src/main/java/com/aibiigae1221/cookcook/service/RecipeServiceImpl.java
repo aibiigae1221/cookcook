@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aibiigae1221.cookcook.data.dao.RecipeRepository;
@@ -29,7 +31,9 @@ import com.aibiigae1221.cookcook.data.entity.RecipeTag;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
+import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
+import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
 
 import jakarta.transaction.Transactional;
 
@@ -58,8 +62,6 @@ public class RecipeServiceImpl implements RecipeService{
 	
 	@Value("${user-resource-server-url}")
 	private String resourceServerUrl;
-	
-	
 	
 	@Override
 	public TemporaryImage saveImagePath(String owner, MultipartFile image) throws IllegalStateException, IOException {
@@ -196,6 +198,22 @@ public class RecipeServiceImpl implements RecipeService{
 	public List<Recipe> getRecentRecipes(int amount) {
 		Page<Recipe> page = recipeRepository.findByOrderByCreatedDateDesc(PageRequest.of(0, amount));
 		return page.getContent();
+	}
+
+	@Override
+	public void getRecipeList(ReicpeSearchParameters params, HashMapBean mapHolder) {
+		Page<Recipe> page = null;
+		Pageable pageable = PageRequest.of(params.getPageNo()-1, 10);
+		
+		if(StringUtils.hasText(params.getKeyword())) {
+			logger.info("hit");
+			page = recipeRepository.findByTitleContainsOrderByCreatedDateDesc(params.getKeyword(), pageable); 
+		}else {
+			page = recipeRepository.findByOrderByCreatedDateDesc(pageable);
+		}
+		
+		mapHolder.put("recipeList", page.getContent());
+		mapHolder.put("totalPage", page.getTotalPages());
 	}
 
 }

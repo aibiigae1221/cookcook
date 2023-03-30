@@ -62,6 +62,116 @@ public class RecipeWebTest {
 	}
 	
 	@Test
+	public void getRecipeList() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isOk(), map -> {
+			map.put("pageNo", List.of("1"));
+			map.put("keyword", List.of("뿌링클"));
+		});
+	}
+	
+	@Test
+	public void getRecipeList2() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isOk(), map -> {
+			map.put("pageNo", List.of("1"));
+			map.put("keyword", List.of("만들기9"));
+		});
+	}
+	
+	
+	@Test
+	public void getRecipeListWithWrongInput() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isOk(), map -> {
+			//map.put("pageNo", List.of("1")); // 누락해보기
+			map.put("keyword", List.of("뿌링클"));
+		});
+	}
+	
+
+	@Test
+	public void getRecipeListWithWrongInput2() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isBadRequest(), map -> {
+			map.put("pageNo", List.of("-1")); // 음수 값 전달
+			map.put("keyword", List.of("뿌링클"));
+		});
+	}
+	
+	@Test
+	public void getRecipeListWithWrongInput3() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isBadRequest(), map -> {
+			map.put("pageNo", List.of("문자")); // 유효하지 않는 타입 전달
+			map.put("keyword", List.of("뿌링클"));
+		});
+	}
+	
+	@Test
+	public void getRecipeListWithWrongInput4() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isOk(), map -> {
+			map.put("pageNo", List.of("2")); // 1페이지가 총 범위일 떄 2페이지 요청 시도
+			map.put("keyword", List.of("뿌링클"));
+		});
+	}
+	
+	@Test
+	public void getRecipeListWithWrongInput5() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+		
+		searchRecipe(status().isOk(), map -> {
+			map.put("pageNo", List.of("1")); 
+			// map.put("keyword", List.of("뿌링클")); // 키워드 누락 시 타이틀 필터링 없이 검색
+		});
+	}
+	
+	
+	private void searchRecipe(ResultMatcher matcher, MultiValueMapSetterCallback callback) throws Exception {
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		callback.callback(map);
+		mvc.perform(get("/recipe/get-recipe-list")
+				.params(map))
+				.andDo(print())
+				.andExpect(matcher);
+	}
+	
+	@Test
 	public void getRecent5RecipeList() throws Exception {
 		String jwt = login();
 		
@@ -181,20 +291,20 @@ public class RecipeWebTest {
 				.andExpect(status().isBadRequest()); 
 	}
 	
-	private String addRecipeFixture(String jwt, int idxPrefix) throws Exception {
+	private String addRecipeFixture(String jwt, int idxSufix) throws Exception {
 		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
 		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("title", "뿌링클 만들기"+idxPrefix);
+		paramsMap.put("title", "뿌링클 만들기"+idxSufix);
 		paramsMap.put("tags", List.of("존맛탱", "치킨"));
-		paramsMap.put("commentary", "뿌링클 소개글"+idxPrefix);
+		paramsMap.put("commentary", "뿌링클 소개글"+idxSufix);
 		paramsMap.put("mainImageUrl", mainImageUrl);
 		
 		List<Object> cookStepList = List.of(
-				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"+idxPrefix),
-				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다."+idxPrefix)
+				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"+idxSufix),
+				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다."+idxSufix)
 		);
 		paramsMap.put("cookStepList", cookStepList);
 		
