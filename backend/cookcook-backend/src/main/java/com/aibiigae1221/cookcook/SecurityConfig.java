@@ -48,7 +48,8 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests((authorize) -> 
 						authorize
-							.requestMatchers("/sign-up", "/login", "/recipe/detail", "/recipe/get-recent-recipes", "/recipe/get-recipe-list").permitAll()
+							.requestMatchers("/sign-up", "/login", 
+									"/recipe/detail", "/recipe/get-recent-recipes", "/recipe/get-recipe-list", "/recipe/pre-search").permitAll()
 							.anyRequest().authenticated()
 				)
 				.cors()

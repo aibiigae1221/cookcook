@@ -2,7 +2,7 @@ package com.aibiigae1221.cookcook.web.domain;
 
 import jakarta.validation.constraints.Min;
 
-public class ReicpeSearchParameters {
+public class RecipeSearchParameters {
 
 	
 	private String keyword;
@@ -10,7 +10,7 @@ public class ReicpeSearchParameters {
 	@Min(value=1, message = "페이지 번호는 최소 1로 지정해야 합니다.")
 	private int pageNo;
 	
-	public ReicpeSearchParameters() {
+	public RecipeSearchParameters() {
 		pageNo = 1;
 	}
 	

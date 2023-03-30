@@ -32,7 +32,7 @@ import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
-import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
+import com.aibiigae1221.cookcook.web.domain.RecipeSearchParameters;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -201,7 +201,7 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 
 	@Override
-	public Page<Recipe> getRecipeList(@Valid ReicpeSearchParameters params, int size) {
+	public Page<Recipe> getRecipeList(@Valid RecipeSearchParameters params, int size) {
 		Pageable pageable = PageRequest.of(params.getPageNo()-1, size);
 		
 		if(StringUtils.hasText(params.getKeyword())) {
@@ -210,5 +210,4 @@ public class RecipeServiceImpl implements RecipeService{
 
 		return recipeRepository.findByOrderByCreatedDateDesc(pageable);
 	}
-
 }

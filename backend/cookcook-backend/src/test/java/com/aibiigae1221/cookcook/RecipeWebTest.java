@@ -62,6 +62,22 @@ public class RecipeWebTest {
 	}
 	
 	@Test
+	public void getRecipeListForAjax() throws Exception {
+		String jwt = login();
+		
+		for(int i=0; i<10; i++) {
+			addRecipeFixture(jwt, i);
+		}
+
+
+		mvc.perform(get("/recipe/pre-search")
+				.param("keyword", "뿌링클"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+	
+	
+	@Test
 	public void getRecipeList() throws Exception {
 		String jwt = login();
 		

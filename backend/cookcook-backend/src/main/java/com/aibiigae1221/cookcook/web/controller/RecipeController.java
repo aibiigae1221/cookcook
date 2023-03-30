@@ -28,7 +28,7 @@ import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.RecentRecipeParameters;
-import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
+import com.aibiigae1221.cookcook.web.domain.RecipeSearchParameters;
 
 import jakarta.validation.Valid;
 
@@ -52,8 +52,22 @@ public class RecipeController {
 	@Value("${user-resource-server-url}")
 	private String resourceServerUrl;
 	
+	
+	// 이 end point는 ajax로 미리보기 검색결과를 보여주는 용도이기 때문에 totalPage를 전송하지 않음.
+	@GetMapping("/recipe/pre-search")
+	public ResponseEntity<?> preSearch(RecipeSearchParameters params){
+		
+		Page<Recipe> pages = recipeService.getRecipeList(params, 5);
+		
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		mapHolder.put("status", "success");
+		mapHolder.put("recipeList", pages.getContent());
+		
+		return ok(mapHolder);
+	}
+	
 	@GetMapping("/recipe/get-recipe-list")
-	private ResponseEntity<?> getRecipeList(@Valid ReicpeSearchParameters params){
+	public ResponseEntity<?> getRecipeList(@Valid RecipeSearchParameters params){
 
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();
 		

@@ -10,9 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aibiigae1221.cookcook.data.entity.Recipe;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
-import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
-import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
+import com.aibiigae1221.cookcook.web.domain.RecipeSearchParameters;
 
 import jakarta.validation.Valid;
 
@@ -32,7 +31,6 @@ public interface RecipeService {
 
 	List<Recipe> getRecentRecipes(int amount);
 
-	Page<Recipe> getRecipeList(@Valid ReicpeSearchParameters params, int size);
-
+	Page<Recipe> getRecipeList(@Valid RecipeSearchParameters params, int size);
 
 }
