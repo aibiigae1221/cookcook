@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import {NavLink} from "react-router-dom";
 import StepImageList from "./StepImageList";
 import BasicInfo from "./BasicInfo";
 

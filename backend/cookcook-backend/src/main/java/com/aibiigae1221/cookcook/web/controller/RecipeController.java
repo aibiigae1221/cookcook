@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -56,8 +57,11 @@ public class RecipeController {
 
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();
 		
-		recipeService.getRecipeList(params, mapHolder);
+		Page<Recipe> pages = recipeService.getRecipeList(params, 5);
+		
 		mapHolder.put("status", "success");
+		mapHolder.put("recipeList", pages.getContent());
+		mapHolder.put("totalPage", pages.getTotalPages());
 				
 		return ok(mapHolder);
 	}

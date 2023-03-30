@@ -31,11 +31,11 @@ import com.aibiigae1221.cookcook.data.entity.RecipeTag;
 import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
-import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.ReicpeSearchParameters;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Transactional
 @Service
@@ -201,19 +201,14 @@ public class RecipeServiceImpl implements RecipeService{
 	}
 
 	@Override
-	public void getRecipeList(ReicpeSearchParameters params, HashMapBean mapHolder) {
-		Page<Recipe> page = null;
-		Pageable pageable = PageRequest.of(params.getPageNo()-1, 10);
+	public Page<Recipe> getRecipeList(@Valid ReicpeSearchParameters params, int size) {
+		Pageable pageable = PageRequest.of(params.getPageNo()-1, size);
 		
 		if(StringUtils.hasText(params.getKeyword())) {
-			logger.info("hit");
-			page = recipeRepository.findByTitleContainsOrderByCreatedDateDesc(params.getKeyword(), pageable); 
-		}else {
-			page = recipeRepository.findByOrderByCreatedDateDesc(pageable);
+			return recipeRepository.findByTitleContainsOrderByCreatedDateDesc(params.getKeyword(), pageable); 
 		}
-		
-		mapHolder.put("recipeList", page.getContent());
-		mapHolder.put("totalPage", page.getTotalPages());
+
+		return recipeRepository.findByOrderByCreatedDateDesc(pageable);
 	}
 
 }

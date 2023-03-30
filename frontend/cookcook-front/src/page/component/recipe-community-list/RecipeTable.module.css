@@ -1,12 +1,77 @@
-.tagList{
-  display:flex;
 
+
+.recipeTableContainer{
+  margin:20px 0;
 }
 
-.tag{
-  padding:10px;
-  background-color:#3DD2C2;
-  margin:0 5px;
+.recipeTableContainer ul{
+  height:45px;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0px 20px;
+}
+
+.recipeTableContainer ul li:nth-child(1){
+  width:40%;
+}
+
+.recipeTableContainer ul li:nth-child(2){
+  width:35%;
+  text-align:center;
+}
+
+.recipeTableContainer ul li:nth-child(3){
+  width:15%;
+  text-align:center;
+}
+
+.recipeTableContainer ul li:nth-child(4){
+  width:10%;
+  text-align:center;
+}
+
+
+
+
+
+
+
+.recipeTableContainer .tableHeader{
+  background-color:#000;
   color:#fff;
+}
+
+.recipeTableContainer .tableHeader li{
+  /* border:1px solid white; */
+}
+
+
+
+
+
+
+.recipeTableContainer .tableBody ul{
+  border-bottom:1px solid #aaa;
+  cursor:pointer;
+}
+
+.recipeTableContainer .tableBody ul li span.tag{
+  background-color:#24D2B6;
+  padding:3px 10px;
+  margin:0px 10px;
   border-radius:15px;
+  color:#fff;
+}
+
+.recipeTableContainer .tableBody ul:hover{
+  background-color:#A3BFBA;
+}
+
+.recipeTableContainer .tableBody ul:nth-child(2n){
+  background-color:#edfffb;
+}
+
+.recipeTableContainer .tableBody ul:nth-child(2n):hover{
+  background-color:#A3BFBA;
 }

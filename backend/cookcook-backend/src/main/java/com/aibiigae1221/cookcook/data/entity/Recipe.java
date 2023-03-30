@@ -141,7 +141,7 @@ public class Recipe {
 	}
 
 	public String getCreatedDateFormatted() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(createdDate);
 	}
 	

@@ -1,0 +1,26 @@
+
+.paginationContainer{
+  width:500px;
+  margin:0 auto;
+}
+
+.paginationContainer ul{
+  display:flex;
+  justify-content: center;
+}
+
+.paginationContainer ul li{
+  margin-right:10px;
+  background-color:#B3D17E;
+  padding:5px 10px;
+  border-radius:50%;
+  color:#fff;
+}
+
+.paginationContainer ul li.current{
+  background-color:#3F3DDC;
+}
+
+.paginationContainer ul li.anchor a{
+  color:#fff;
+}
