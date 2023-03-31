@@ -14,10 +14,10 @@ const RecipeListPage = () => {
 
 
 
-      <div className="content center">
+      <main className="content center">
         <RecipeCommunityList />
 
-      </div>
+      </main>
 
       <div className="content footer">
         <FooterContent />

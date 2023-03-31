@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
-import RecipeDetailCard from "../component/recipe-detail-card/component";
+import RecipeDetailSection from "../component/recipe-detail-section/component";
 
 
 
@@ -58,9 +58,9 @@ const RecipeDetailPage = () => {
         <HeaderContent />
       </div>
 
-      <div className="content center">
-        <RecipeDetailCard recipe={recipe} />
-      </div>
+      <main className="content center">
+        <RecipeDetailSection recipe={recipe} />
+      </main>
 
       <div className="content footer">
         <FooterContent />

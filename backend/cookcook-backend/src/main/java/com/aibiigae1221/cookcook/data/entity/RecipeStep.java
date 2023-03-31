@@ -22,7 +22,7 @@ public class RecipeStep {
 	@Column(nullable = false)
 	private Long stepNumber;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
 	private String imageUrl;
