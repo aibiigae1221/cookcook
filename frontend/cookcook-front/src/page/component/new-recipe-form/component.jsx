@@ -92,6 +92,7 @@ const NewRecipeForm = () => {
       });
   };
 
+
   const addNewCookStep = () => {
     cookStepIdx++;
     setCookStepList(
@@ -183,6 +184,10 @@ const NewRecipeForm = () => {
       body:jsonInput
     };
 
+    console.log(jsonInput);
+
+    
+
     fetch("http://127.0.0.1:8080/recipe/add-new-recipe", options)
       .then(response => response.json())
       .then(json => {
@@ -229,9 +234,9 @@ const NewRecipeForm = () => {
             margin:"10px 0 30px 0",
             paddingTop:"10px"}}>
 
-
       <form>
         <Grid container spacing={2}>
+
           <NewRecipeBasicInfo
                     title={title} setTitle={setTitle}
                     handleInputChange={handleInputChange}

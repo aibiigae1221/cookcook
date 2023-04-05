@@ -6,6 +6,7 @@ import defaultImage from "./default-cook-image.jpg";
 
 import CookStepViewModal from "./CookStepViewModal";
 
+
 import styles from  "./RecipeList.module.css";
 
 
@@ -16,7 +17,6 @@ const RecipeListPreview = () => {
   const [recipeList, setRecipeList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
-
 
   const recipeCountToShow = 5;
 
@@ -54,13 +54,16 @@ const RecipeListPreview = () => {
     setIsOpen(false);
   };
 
+
+
   if(recipeList.length === 0){
-    return <></>;
+      return <></>;
   }
 
   return (
       <div className={styles.wrap}>
         <h1 className={styles.title}>새로 나온 레시피 조리법을 공유해드립니다.</h1>
+
         {recipeList.map(recipe =>
           <article key={recipe.recipeId} className={styles.recipeArticle}>
             {(recipe.mainImageUrl !== null)?

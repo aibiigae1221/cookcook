@@ -50,9 +50,9 @@ public class RecipeWebTest {
 	private static final String USER_PASSWORD = "1234";
 	private static final String USER_NICKNAME = "갱훈";
 	
-	private static final String SAMPLE_IMAGE_PATH = "C:\\Users\\aibii\\OneDrive\\Desktop\\nati-melnychuk-ytbgBYivaNE-unsplash.jpg";
-	private static final String SAMPLE_IMAGE_ORIGINAL_FILENAME = "nati-melnychuk-ytbgBYivaNE-unsplash.jpg";
-	private static final String SAMPLE_IMAGE_CONTENT_TYPE = "image/jpeg";
+	private static final String SAMPLE_IMAGE_PATH = "C:\\Users\\aibii\\OneDrive\\Desktop\\돈가스.PNG";
+	private static final String SAMPLE_IMAGE_ORIGINAL_FILENAME = "돈가스.PNG";
+	private static final String SAMPLE_IMAGE_CONTENT_TYPE = "image/png";
 		
 	@BeforeEach
 	public void initEnvironment() {

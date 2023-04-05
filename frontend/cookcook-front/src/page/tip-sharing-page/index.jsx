@@ -2,9 +2,12 @@
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
 
+import AbstractEditor from "../component/abstract-editor/component";
+
 import "../common/index.css";
 
 const TipSharingPage = () => {
+
   return (
     <div className="content-wrapper">
 
@@ -17,7 +20,12 @@ const TipSharingPage = () => {
 
 
       <div className="content center">
-        <h1>노하우 공유</h1>
+
+        <div>
+          <h1>노하우 공유</h1>
+          <AbstractEditor />
+        </div>
+
       </div>
 
       <div className="content footer">
