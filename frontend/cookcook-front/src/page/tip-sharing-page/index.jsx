@@ -2,7 +2,7 @@
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
 
-import AbstractEditor from "../component/abstract-editor/component";
+import AbstractDraftEditor from "../component/abstract-draft-editor/component";
 
 import "../common/index.css";
 
@@ -23,7 +23,7 @@ const TipSharingPage = () => {
 
         <div>
           <h1>노하우 공유</h1>
-          <AbstractEditor />
+          <AbstractDraftEditor />
         </div>
 
       </div>
