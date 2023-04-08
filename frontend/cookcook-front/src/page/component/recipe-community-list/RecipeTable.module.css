@@ -12,21 +12,21 @@
   padding:0px 20px;
 }
 
-.recipeTableContainer ul li:nth-child(1){
+.recipeTableContainer ul.tableHeader li:nth-child(1){
   width:40%;
 }
 
-.recipeTableContainer ul li:nth-child(2){
+.recipeTableContainer ul.tableHeader li:nth-child(2){
   width:35%;
   text-align:center;
 }
 
-.recipeTableContainer ul li:nth-child(3){
+.recipeTableContainer ul.tableHeader li:nth-child(3){
   width:15%;
   text-align:center;
 }
 
-.recipeTableContainer ul li:nth-child(4){
+.recipeTableContainer ul.tableHeader li:nth-child(4){
   width:10%;
   text-align:center;
 }
@@ -51,12 +51,12 @@
 
 
 
-.recipeTableContainer .tableBody ul{
+.recipeTableContainer .tableBodyContainer ul{
   border-bottom:1px solid #aaa;
   cursor:pointer;
 }
 
-.recipeTableContainer .tableBody ul li span.tag{
+.recipeTableContainer .tableBodyContainer ul li span.tag{
   background-color:#24D2B6;
   padding:3px 10px;
   margin:0px 10px;
@@ -64,14 +64,30 @@
   color:#fff;
 }
 
-.recipeTableContainer .tableBody ul:hover{
+.recipeTableContainer .tableBodyContainer ul.tableBody:hover{
   background-color:#A3BFBA;
 }
 
-.recipeTableContainer .tableBody ul:nth-child(2n){
+.recipeTableContainer .tableBodyContainer ul.tableBody:nth-child(2n){
   background-color:#edfffb;
 }
 
-.recipeTableContainer .tableBody ul:nth-child(2n):hover{
+.recipeTableContainer .tableBodyContainer ul.tableBody:nth-child(2n):hover{
   background-color:#A3BFBA;
 }
+
+.recipeTableContainer .tableBodyContainer ul.tableBody li:nth-child(1){
+  width:40%;
+} 
+.recipeTableContainer .tableBodyContainer ul.tableBody li:nth-child(2){
+  width:35%;
+  text-align:left;
+} 
+.recipeTableContainer .tableBodyContainer ul.tableBody li:nth-child(3){
+  width:15%;
+  text-align:center;
+} 
+.recipeTableContainer .tableBodyContainer ul.tableBody li:nth-child(4){
+  width:10%;
+  text-align:center;
+} 

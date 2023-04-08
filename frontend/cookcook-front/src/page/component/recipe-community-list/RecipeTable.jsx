@@ -11,11 +11,11 @@ const RecipeTable = ({recipeList, moveToDetailPage}) => {
         <li>작성일</li>
       </ul>
 
-      <div className={styles.tableBody}>
+      <div className={styles.tableBodyContainer}>
 
         {recipeList.length > 0 && recipeList.map(recipe =>
 
-          <ul key={recipe.recipeId} onClick={() => moveToDetailPage(recipe.recipeId)}>
+          <ul key={recipe.recipeId} onClick={() => moveToDetailPage(recipe.recipeId)} className={styles.tableBody}>
             <li>{recipe.title}</li>
             <li>
               {recipe.tags.length > 0 && recipe.tags.map(tag =>
