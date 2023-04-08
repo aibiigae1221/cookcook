@@ -1,25 +1,19 @@
 import React, {useState, useEffect} from "react";
-import StepImageList from "./StepImageList";
-import BasicInfo from "./BasicInfo";
-
+import dompurify from "dompurify";
+import defaultSanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 import defaultImage from "./default-cook-image.jpg";
-
-import CookStepViewModal from "./CookStepViewModal";
-
-
 import styles from  "./RecipeList.module.css";
-
-
-
 
 const RecipeListPreview = () => {
 
   const [recipeList, setRecipeList] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalData, setModalData] = useState(null);
-
-  const recipeCountToShow = 5;
-
+  const recipeCountToShow = 6;
+  const sanitize = dompurify.sanitize;
+  const sanitizeOptionOverriden = Object.assign(defaultSanitizeOption, {
+    ALLOWED_TAGS: [],
+    ALLOWED_ATTR: [],
+  });
+  
   useEffect(() => {
     const options = {
       method: "get",
@@ -39,52 +33,36 @@ const RecipeListPreview = () => {
       .catch(error => console.log(error));
   }, []);
 
-  const viewStepInModal = (imageUrl, detail) => {
-
-    let image = imageUrl ? imageUrl : defaultImage;
-
-    setModalData({
-      imageUrl:image,
-      detail:detail
-    });
-    setIsOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
-
-
-
   if(recipeList.length === 0){
       return <></>;
   }
 
   return (
       <div className={styles.wrap}>
-        <h1 className={styles.title}>새로 나온 레시피 조리법을 공유해드립니다.</h1>
+        <h1 className={styles.title}>새로 나온 레시피 조리법을 소개합니다.</h1>
 
-        {recipeList.map(recipe =>
-          <article key={recipe.recipeId} className={styles.recipeArticle}>
-            {(recipe.mainImageUrl !== null)?
-              <img src={recipe.mainImageUrl} alt={recipe.mainImageUrl} className={styles.recipeMainImage} />
-                :
-              <img src={defaultImage} alt={defaultImage} className={styles.recipeMainImage} />
-            }
-
-            <div className={styles.stepDetail}>
-              <StepImageList recipe={recipe} viewStepInModal={viewStepInModal} />
-              <BasicInfo recipe={recipe} />
-
-            </div>
-
-          </article>
-        )}
-
-        <CookStepViewModal isOpen={isOpen} handleCloseModal={handleCloseModal} modalData={modalData} />
-
+        <ul className={styles.recipeList}>
+          {recipeList.length > 0 && recipeList.map(recipe => 
+            <li key={recipe.recipeId}>
+              <a href={`/recipe-detail/${recipe.recipeId}`}>
+                {(recipe.mainImageUrl !== null && recipe.mainImageUrl !== "")?
+                  <img src={recipe.mainImageUrl} alt={recipe.mainImageUrl} />
+                  :
+                  <img src={defaultImage} alt={defaultImage} />
+                }
+                <h2>{recipe.title}</h2>
+                <p>
+                  <span className={`${styles.dateIcon} ${styles.icon}`}>{recipe.createdDateFormatted}</span>
+                  <span className={`${styles.userIcon} ${styles.icon}`}>{recipe.user.nickname}</span>
+                </p>
+                <p dangerouslySetInnerHTML={{__html:sanitize(recipe.commentary, sanitizeOptionOverriden)}} />
+              </a>
+            </li>
+          )}
+        </ul>
       </div>
   );
+  
 };
 
 

@@ -1,7 +1,7 @@
 import React from "react";
 import defaultCookImage from "./default-cook-image.jpg";
 import dompurify from "dompurify";
-
+import sanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 
 import styles from "./RecipeDetailCard.module.css";
 
@@ -11,12 +11,7 @@ const RecipeDetailSection = ({recipe}) => {
     return <></>;
 
   const sanitize = dompurify.sanitize;
-  const sanitizeOption = {
-    ALLOWED_TAGS: ['span', 'p', 'h1', 'h2', 'h3', 'h4', 'a', 'br'],
-    ALLOWED_ATTR: ['style', 'href'],
-    ALLOW_DATA_ATTR: false
-  };
-
+  
   const moveToTop = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
