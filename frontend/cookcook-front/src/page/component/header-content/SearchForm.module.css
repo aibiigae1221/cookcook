@@ -1,4 +1,3 @@
-
 .wrap{
     display:flex;
     flex-direction: row;
@@ -6,7 +5,6 @@
     margin-right:10px;
     position:relative;
 }
-
 .inputKeyword{
   border:0 none;
   background-color:#000000bb;
@@ -16,9 +14,7 @@
   padding-left:10px;
   outline:none;
   border-bottom:1px solid #fff;
-
 }
-
 .searchButton{
   height:45px;
   color:#85745C;
@@ -27,12 +23,9 @@
   border:0 none;
   outline:none;
 }
-
 .searchButton:hover{
   background-color:#CED3CF;
 }
-
-
 .expectedSearchBar{
   position:absolute;
   width:83.5%;
@@ -44,9 +37,6 @@
   z-index:1;
   padding:10px;
 }
-
-
-
 .itemTitle{
   font-weight:bold;
   font-size:12pt;
@@ -55,7 +45,6 @@
   margin-bottom:20px;
   display:block;
 }
-
 .dataContainer{
   color:#989080;
   font-size:10pt;
@@ -65,7 +54,6 @@
   cursor:pointer;
   display:flex;
 }
-
 .dataContainer p{
   display:block;
   margin-right:10px;

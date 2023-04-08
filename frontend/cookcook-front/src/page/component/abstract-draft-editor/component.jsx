@@ -12,9 +12,6 @@ import {findLinkEntities} from "./DecoratorStategies";
 import 'draft-js/dist/Draft.css';
 import "./AbstractDraftEditor.css";
 
-
-
-
 const AbstractDraftEditor = ({dataChangeCallback}) => {
 
   // 링크 데코레이터
@@ -38,7 +35,6 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const editorRef = useRef(null);
-
 
   const getContentAsHTML = useCallback(() => {
     let options = {
@@ -257,9 +253,7 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
         urlValue={urlValue}
         onLinkInputKeyDown={onLinkInputKeyDown}
         logState={logState}
-
       />
-
 
       <div onClick={focusEdtior}>
         <Editor
@@ -275,10 +269,5 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
     </div>
   );
 };
-
-
-
-
-
 
 export default AbstractDraftEditor;

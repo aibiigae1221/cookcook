@@ -21,11 +21,6 @@ const NewRecipeBasicInfo = (
                           errorMessageTitle, errorMessageCommentary, errorMessageTags
                           }) => {
 
-
-
-
-
-
   return (
     <>
       <Grid item sm={12}>

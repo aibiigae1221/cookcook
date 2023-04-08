@@ -12,7 +12,6 @@ const RecipeTable = ({recipeList, moveToDetailPage}) => {
       </ul>
 
       <div className={styles.tableBodyContainer}>
-
         {recipeList.length > 0 && recipeList.map(recipe =>
 
           <ul key={recipe.recipeId} onClick={() => moveToDetailPage(recipe.recipeId)} className={styles.tableBody}>
@@ -25,13 +24,8 @@ const RecipeTable = ({recipeList, moveToDetailPage}) => {
             <li>{recipe.user.nickname}</li>
             <li>{recipe.createdDateFormatted}</li>
           </ul>
-
         )}
-
-
       </div>
-
-
     </div>
   );
 };

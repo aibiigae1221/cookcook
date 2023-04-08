@@ -1,11 +1,9 @@
-
 import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {NavLink} from "react-router-dom";
 import SearchForm from "./SearchForm";
 import LoginModal from "./LoginModal";
 import {logout} from "../../../data/user-slice";
-
 import styles from "./HeaderContent.module.css";
 
 const HeaderContent = () => {
@@ -28,7 +26,6 @@ const HeaderContent = () => {
   };
 
   return (
-
     <div className={styles.wrapper}>
 
       <div className={styles.left}>
@@ -61,10 +58,8 @@ const HeaderContent = () => {
             {/*<li><NavLink to="/find-job-page" className={styles.gnbItem}>요리사 채용공고</NavLink></li>*/}
             {/*<li><NavLink to="/tip-sharing-page" className={styles.gnbItem}>팁과 노하우</NavLink></li>*/}
             {/*<li><NavLink to="/about-this-app" className={styles.gnbItem}>About This APP</NavLink></li>*/}
-
           </ul>
         </nav>
-
       </div>
 
       {jwt === null &&
@@ -73,10 +68,7 @@ const HeaderContent = () => {
             handleCloseLoginModal={handleCloseLoginModal}
         />
       }
-
     </div>
-
-
   );
 };
 

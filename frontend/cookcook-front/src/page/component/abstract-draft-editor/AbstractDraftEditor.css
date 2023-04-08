@@ -1,9 +1,6 @@
-
-
 .editor-wrap{
   border: 1px solid #bbb;
 }
-
 .DraftEditor-root{
   width:100%;
   min-height:150px;
@@ -12,15 +9,12 @@
   box-sizing:border-box;
   line-height:1.5;
 }
-
 .DraftEditor-root h1{
   font-size:30px;
 }
-
 .DraftEditor-root h2{
   font-size:26px;
 }
-
 .DraftEditor-root p{
   font-size:16px;
 }

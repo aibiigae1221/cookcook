@@ -3,13 +3,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
-
 import CookStepElement from "./CookStepElement";
-
 import styles from "./NewRecipeCookStepList.module.css";
-
-
-
 
 const NewRecipeCookStepList = ({
                     addNewCookStep, removeLastCookStep,
@@ -22,7 +17,6 @@ const NewRecipeCookStepList = ({
   if(cookStepList.length > 0){
     lastCookStepIdx = cookStepList[cookStepList.length - 1].idx;
   }
-
 
   return (
     <>

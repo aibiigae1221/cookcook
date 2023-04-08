@@ -1,5 +1,4 @@
 import styles from "./SearchForm.module.css";
-
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchForm = ({handleSearch, handleKeywordChange, keyword}) => {

@@ -5,7 +5,6 @@ const EditorInputLink = props => {
   const {url} = props.contentState.getEntity(props.entityKey).getData();
   const [show, setShow] = useState(false);
 
-
   const handleOpen = () => {
     setShow(true);
   };

@@ -1,11 +1,9 @@
-
 .searchContainer{
   display:flex;
   align-items: flex-end;
   height:40px;
   font-size:20px;
 }
-
 .searchContainer input{
   width:450px;
   border:0px none;
@@ -14,7 +12,6 @@
   outline:none;
   font-size:20px;
 }
-
 .searchContainer button{
   height:100%;
   outline:none;
@@ -23,13 +20,10 @@
   cursor:pointer;
   border:1px solid transparent;
 }
-
 .searchContainer button:active{
   background-color:#eee;
 }
-
 .searchContainer button:hover{
   border-bottom:1px solid #333;
   border-right:1px solid #bbb;
-
 }

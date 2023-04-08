@@ -6,8 +6,7 @@ import styles from "./RecipeBasicInfo.module.css";
 const RecipeBasicInfo = ({recipe}) => {
 
     const sanitize = dompurify.sanitize;
-  
-
+    
     return (
         <div className={styles.basicInfo}>
             <h1 className={`${styles.h1} ${styles.title}`}>{recipe.title}</h1>

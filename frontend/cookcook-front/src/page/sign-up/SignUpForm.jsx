@@ -50,7 +50,6 @@ const SignUpForm = () => {
         body: body
     };
 
-
     fetch("http://127.0.0.1:8080/sign-up", options)
       .then(response => response.json())
       .then(json => {
@@ -75,7 +74,6 @@ const SignUpForm = () => {
         }
       });
   };
-
 
   const cleanInputData = () => {
     setEmail("");
@@ -143,9 +141,7 @@ const SignUpForm = () => {
     }else{
       setValidNickname(true);
       setErrorNickname("");
-
     }
-
   };
 
 
@@ -196,7 +192,6 @@ const SignUpForm = () => {
           </Grid>
         }
 
-
         <Grid item sm={12}>
           <TextField fullWidth label="별명을 적어주세요. 게시글 작성 시 작성자 별명이 노출됩니다." value={nickname} onChange={handleNickname}/>
         </Grid>
@@ -218,7 +213,6 @@ const SignUpForm = () => {
           </Grid>
         }
 
-
         <Grid item sm={12}>
           <Stack direction="row" spacing={2} style={{justifyContent:"center"}}>
 
@@ -228,8 +222,6 @@ const SignUpForm = () => {
           </Stack>
         </Grid>
       </Grid>
-
-
     </Container>
   );
 };

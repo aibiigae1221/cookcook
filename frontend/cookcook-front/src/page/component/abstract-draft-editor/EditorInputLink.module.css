@@ -12,7 +12,6 @@
   display:flex;
   min-width:200px;
 }
-
 .anchor{
   border:1px solid #999;
   display:block;
@@ -27,7 +26,6 @@
   text-overflow:ellipsis;
   white-space: nowrap;
 }
-
 .closeButton{
   border:1px solid #999;
   background-color:#0C9703;

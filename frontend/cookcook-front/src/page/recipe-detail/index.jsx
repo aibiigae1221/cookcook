@@ -1,12 +1,8 @@
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
-
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
 import RecipeDetailSection from "../component/recipe-detail-section/component";
-
-
-
 import "../common/index.css";
 
 const RecipeDetailPage = () => {
@@ -14,9 +10,7 @@ const RecipeDetailPage = () => {
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
 
-
   useEffect(() => {
-
     const options = {
       method: "get",
       mode: "cors",
@@ -43,6 +37,7 @@ const RecipeDetailPage = () => {
         }
 
         setRecipe(result)
+        
       }).catch(error => {
         console.log(error);
       });

@@ -1,6 +1,4 @@
-
 const colorStyleMap = {
-
   black: {
     color: "rgba(0, 0, 0, 1.0)"
   },
@@ -33,6 +31,5 @@ const colorStyleMap = {
     color: "rgba(128,0,128, 1.0)"
   }
 };
-
 
 export default colorStyleMap;

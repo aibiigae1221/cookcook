@@ -22,8 +22,6 @@ const RecipeCommunityList = () => {
   pageNoParam = pageNoParam? Number(pageNoParam) : 1;
   keywordParam = keywordParam? keywordParam : "";
 
-
-
   useEffect(() => {
 
     setKeyword(keywordParam);
@@ -82,8 +80,7 @@ const RecipeCommunityList = () => {
         totalPage={totalPage}
         pageNo={pageNoParam}
         keyword={keyword}
-
-      />
+       />
 
     </div>
   );

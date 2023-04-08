@@ -1,4 +1,3 @@
-
 import styles from "./LinkControl.module.css";
 
 const LinkControl = ({promptForLink, showUrlInput, onUrlChange, urlValue, onLinkInputKeyDown, confirmLink, closeUrlInput}) => {

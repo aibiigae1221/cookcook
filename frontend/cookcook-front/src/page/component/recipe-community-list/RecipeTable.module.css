@@ -1,9 +1,6 @@
-
-
 .recipeTableContainer{
   margin:20px 0;
 }
-
 .recipeTableContainer ul{
   height:45px;
   display:flex;
@@ -12,50 +9,36 @@
   padding:0px 20px;
 }
 
-.recipeTableContainer ul.tableHeader li:nth-child(1){
-  width:40%;
-}
-
-.recipeTableContainer ul.tableHeader li:nth-child(2){
-  width:35%;
-  text-align:center;
-}
-
-.recipeTableContainer ul.tableHeader li:nth-child(3){
-  width:15%;
-  text-align:center;
-}
-
-.recipeTableContainer ul.tableHeader li:nth-child(4){
-  width:10%;
-  text-align:center;
-}
-
-
-
-
-
-
-
+/* 헤더 영역 */
 .recipeTableContainer .tableHeader{
   background-color:#000;
   color:#fff;
 }
-
 .recipeTableContainer .tableHeader li{
   /* border:1px solid white; */
 }
+.recipeTableContainer ul.tableHeader li:nth-child(1){
+  width:40%;
+}
+.recipeTableContainer ul.tableHeader li:nth-child(2){
+  width:35%;
+  text-align:center;
+}
+.recipeTableContainer ul.tableHeader li:nth-child(3){
+  width:15%;
+  text-align:center;
+}
+.recipeTableContainer ul.tableHeader li:nth-child(4){
+  width:10%;
+  text-align:center;
+}
+/* 헤더 영역 */
 
-
-
-
-
-
+/* row 영역 */
 .recipeTableContainer .tableBodyContainer ul{
   border-bottom:1px solid #aaa;
   cursor:pointer;
 }
-
 .recipeTableContainer .tableBodyContainer ul li span.tag{
   background-color:#24D2B6;
   padding:3px 10px;
@@ -63,19 +46,15 @@
   border-radius:15px;
   color:#fff;
 }
-
 .recipeTableContainer .tableBodyContainer ul.tableBody:hover{
   background-color:#A3BFBA;
 }
-
 .recipeTableContainer .tableBodyContainer ul.tableBody:nth-child(2n){
   background-color:#edfffb;
 }
-
 .recipeTableContainer .tableBodyContainer ul.tableBody:nth-child(2n):hover{
   background-color:#A3BFBA;
 }
-
 .recipeTableContainer .tableBodyContainer ul.tableBody li:nth-child(1){
   width:40%;
 } 
@@ -91,3 +70,4 @@
   width:10%;
   text-align:center;
 } 
+/* row 영역 */

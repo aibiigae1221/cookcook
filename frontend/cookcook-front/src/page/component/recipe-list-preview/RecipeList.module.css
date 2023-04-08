@@ -50,7 +50,6 @@ ul.recipeList .icon::before{
   height:20px;
   display:inline-block;
 }
-
 ul.recipeList .dateIcon::before{
   background-image:url(./calendar.svg);
 }

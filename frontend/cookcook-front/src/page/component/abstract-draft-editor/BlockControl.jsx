@@ -1,4 +1,3 @@
-
 import styles from "./BlockControl.module.css";
 
 const BlockControl = ({handleBlock}) => {

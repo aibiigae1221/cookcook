@@ -1,4 +1,3 @@
-
 import styles from "./ColorPickerControl.module.css";
 
 const ColorPickerControl = ({showColorPicker, setShowColorPicker, handleColor}) => {
@@ -35,7 +34,6 @@ const ColorPickerControl = ({showColorPicker, setShowColorPicker, handleColor}) 
           </div>
         </div>
       }
-
     </>
   );
 };

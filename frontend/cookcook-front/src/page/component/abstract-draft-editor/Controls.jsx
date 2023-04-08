@@ -11,8 +11,6 @@ const Controls = ({handleInlineToggle, showColorPicker, setShowColorPicker, hand
     setShowUrlInput(false);
   };
 
-
-
   return (
     <div className={styles.controls}>
 

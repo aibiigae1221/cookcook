@@ -22,13 +22,11 @@ const RecipeListPreview = () => {
     fetch(`http://127.0.0.1:8080/recipe/get-recent-recipes?amount=${recipeCountToShow}`, options)
       .then(response => response.json())
       .then(json => {
-
         if(json.status === "success"){
             setRecipeList(json.recipeList);
         }else{
           console.log(json.status);
         }
-
       })
       .catch(error => console.log(error));
   }, []);

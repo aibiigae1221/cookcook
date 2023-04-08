@@ -1,56 +1,46 @@
-
 .wrapper{
   display:flex;
   justify-content:space-between;
   width:100%;
 }
-
 .right{
   display:flex;
   position:relative;
   justify-content: flex-end;
   margin-right:3%;
 }
-
 .nav{
   display:flex;
   flex-direction:column;
   margin-top:60px;
 }
-
 .ul{
   display:flex;
   flex-direction:row;
   justify-content: flex-end;
   margin-bottom:30px;
-
 }
-
 .subNavBar{
  position:absolute;
  top:10px;
  right:30px;
  display:flex;
 }
-
 .subNavBarItem{
     font-weight:bold;
     margin-right:30px;
     cursor:pointer;
 }
-
 .subNavBarItem:hover{
    border-bottom:1px solid #000;
 
 }
-
 .gnbItem{
   border-top:5px solid #D49146;
   background-color:#000;
   color:#fff;
   padding:10px 30px;
 }
-
 .gnbItem:hover{
   border-top-color:#E5DB90;
   color:#D0DC7D;

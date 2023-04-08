@@ -1,8 +1,6 @@
-
 import styles from "./InlineControl.module.css";
 
 const InlineControl = ({handleInlineToggle}) => {
-
     return (
       <>
         <button onMouseDown={(e) => handleInlineToggle(e, "BOLD")} className={`${styles.button} ${styles.boldButton}`} type="button">굵게</button>
@@ -12,5 +10,4 @@ const InlineControl = ({handleInlineToggle}) => {
       </>
     );
 };
-
 export default InlineControl;

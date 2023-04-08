@@ -1,9 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-
 import {clearErrorMessage} from "../../../data/user-slice";
-
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -17,12 +15,9 @@ const LoginInput = ({handleCloseLoginModal}) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const loginErrorMessage = useSelector(state => state.user.loginErrorMessage);
-
 
   const handleLogin = () => {
     dispatch(login({email, password}));
@@ -35,7 +30,6 @@ const LoginInput = ({handleCloseLoginModal}) => {
   };
 
   const handleEnter = (e) => {
-    
     if(e.key === "Enter"){
       dispatch(login({email, password}));
     }
@@ -44,7 +38,6 @@ const LoginInput = ({handleCloseLoginModal}) => {
   const moveToSignInPage = () => {
     navigate("/sign-up");
   };
-
 
   return (
       <Grid

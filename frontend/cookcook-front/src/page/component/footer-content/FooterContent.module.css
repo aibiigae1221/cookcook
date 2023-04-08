@@ -1,31 +1,25 @@
-
 .wrapper{
   background-color:#FCE2C3;
   width:100%;
   display:flex;
 }
-
 .verticalDivider{
   border-left:1px solid #888B96;
   width:10px;
   height:80%;
   margin:10px 30px;
 }
-
 .list{
   margin:5px 10px 0 20px;
   font-size:10pt;
 }
-
 .header{
   font-weight:bold;
   font-size:18pt;
 }
-
 .listItem{
   line-height:1.5;
 }
-
 .anchor:hover{
   color:#60BA26;
   text-decoration: underline;

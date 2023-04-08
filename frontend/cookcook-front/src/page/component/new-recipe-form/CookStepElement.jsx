@@ -1,13 +1,9 @@
-
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 //import { MuiFileInput } from 'mui-file-input'
 import AbstractDraftEditor from "../abstract-draft-editor/component";
 import deafultCookStepImage from "./default-cook-step-image.jpg";
-
-
 import styles from "./CookStepElement.module.css";
-
 
 const CookStepElement = ({
                 order,

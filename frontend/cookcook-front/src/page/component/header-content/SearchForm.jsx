@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useSearchParams, useNavigate} from "react-router-dom";
-
 import SearchIcon from '@mui/icons-material/Search';
-
 import styles from "./SearchForm.module.css";
 
 const SearchForm = () => {
@@ -66,7 +64,6 @@ const SearchForm = () => {
 
       case "Enter":
         copyTitleFromSelectedIndex(hoveredIdx);
-
         break;
 
       default:
@@ -134,8 +131,6 @@ const SearchForm = () => {
           </ul>
         </div>
       }
-
-
     </form>
   );
 }

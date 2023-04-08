@@ -1,4 +1,3 @@
-
 .tagItem{
   background-color:#3DD2C2;
   color:#fff;
@@ -11,12 +10,10 @@
 }
 
 .tagText{
-
   margin:auto;
 }
 
 .tagCloseButton{
-
   cursor:pointer;
   padding:0 3px 0 10px;
 }

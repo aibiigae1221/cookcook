@@ -4,9 +4,6 @@ import Grid from '@mui/material/Grid';
 import LoginInput from "./LoginInput";
 import styles from "./LoginModal.module.css";
 
-
-
-
 const LoginModal = ({openModal, handleCloseLoginModal}) => {
 
   const modalContainerCss = {
@@ -20,7 +17,6 @@ const LoginModal = ({openModal, handleCloseLoginModal}) => {
     boxShadow:"24",
     padding:"40px"
   };
-
 
   if(!openModal){
     return <></>;
