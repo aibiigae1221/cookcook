@@ -1,25 +1,12 @@
-//import { configureStore } from '@reduxjs/toolkit'
-import {combineReducers, createStore, applyMiddleware} from "redux";
+import { configureStore } from '@reduxjs/toolkit'
+import {combineReducers} from "redux";
 
 // reducer
 import userReducer from "./user-slice";
 
-// async
-import thunk from "redux-thunk";
-
 // persist
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-
-/*
-export default configureStore({
-  reducer: {
-    user:userReducer
-  }
-});
-*/
-
-
 
 const rootReducer = combineReducers({
   user: userReducer
@@ -32,7 +19,12 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-let store = createStore(persistedReducer, applyMiddleware(thunk));
+//let store = createStore(persistedReducer, applyMiddleware(thunk));
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (defaultMiddleware) => defaultMiddleware({serializableCheck: false})
+});
+
 export let persistor = persistStore(store);
 
 

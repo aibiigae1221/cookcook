@@ -34,6 +34,13 @@ const LoginInput = ({handleCloseLoginModal}) => {
       dispatch(clearErrorMessage());
   };
 
+  const handleEnter = (e) => {
+    
+    if(e.key === "Enter"){
+      dispatch(login({email, password}));
+    }
+  };
+
   const moveToSignInPage = () => {
     navigate("/sign-up");
   };
@@ -49,8 +56,8 @@ const LoginInput = ({handleCloseLoginModal}) => {
         }}
       >
         <Grid item sm={12}>
-          <TextField label="이메일 주소" variant="standard" fullWidth value={email} onChange={ev => handleChange(ev, setEmail)} />
-          <TextField label="비밀번호" variant="standard" fullWidth value={password} type="password" onChange={ev => handleChange(ev, setPassword)} />
+          <TextField label="이메일 주소" variant="standard" fullWidth value={email} onChange={ev => handleChange(ev, setEmail)} onKeyDown={handleEnter} />
+          <TextField label="비밀번호" variant="standard" fullWidth value={password} type="password" onChange={ev => handleChange(ev, setPassword)} onKeyDown={handleEnter} />
         </Grid>
 
         {loginErrorMessage &&
