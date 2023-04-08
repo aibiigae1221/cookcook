@@ -1,11 +1,10 @@
-import {useState} from "react";
 import styles from "./Controls.module.css";
 import InlineControl from "./InlineControl";
 import ColorPickerControl from "./ColorPickerControl";
 import BlockControl from "./BlockControl";
 import LinkControl from "./LinkControl";
 
-const Controls = ({handleInlineToggle, showColorPicker, setShowColorPicker, handleBlock, handleColor, promptForLink, confirmLink, showUrlInput, setShowUrlInput, onUrlChange, urlValue, onLinkInputKeyDown, logState, getContent}) => {
+const Controls = ({handleInlineToggle, showColorPicker, setShowColorPicker, handleBlock, handleColor, promptForLink, confirmLink, showUrlInput, setShowUrlInput, onUrlChange, urlValue, onLinkInputKeyDown, logState}) => {
 
   const closeUrlInput = (e) => {
     e.preventDefault();
@@ -38,7 +37,6 @@ const Controls = ({handleInlineToggle, showColorPicker, setShowColorPicker, hand
         closeUrlInput={closeUrlInput}
         />
         {/*<button onClick={logState}>로그</button>*/}
-        <button onClick={getContent}>데이터</button>
     </div>
   );
 };

@@ -2,16 +2,26 @@ import React from "react";
 import defaultCookImage from "./default-cook-image.jpg";
 import userIcon from "./user.svg";
 import calendarIcon from "./calendar.svg";
+import dompurify from "dompurify";
 
 
 import styles from "./RecipeDetailCard.module.css";
 
 const RecipeDetailSection = ({recipe}) => {
 
-
-
   if(!recipe)
     return <></>;
+
+  const sample = "<span style='color:red' data-text='a1'>asd</span>";
+
+  const sanitize = dompurify.sanitize;
+  const sanitizeOption = {
+    ALLOWED_TAGS: ['span', 'p', 'h1', 'h2', 'h3', 'h4', 'a'],
+    ALLOWED_ATTR: ['style', 'href'],
+    ALLOW_DATA_ATTR: false
+  };
+
+
 
   return (
     <div className={styles.wrap}>
@@ -25,8 +35,8 @@ const RecipeDetailSection = ({recipe}) => {
             <img src={defaultCookImage} alt={defaultCookImage} className={styles.mainImage} />
           }
 
-          <div className={styles.detail}>
-            <h2>DETAIL</h2>
+          <div className={styles.detailContainer}>
+            <h2 className={styles.h2}>DETAIL</h2>
             <ul>
               <li>
                 <img src={userIcon} alt={userIcon} className={styles.icon} />
@@ -44,9 +54,8 @@ const RecipeDetailSection = ({recipe}) => {
               </li>
             </ul>
 
-            <p>
-              {recipe.commentary}
-            </p>
+
+            <p className={styles.description} dangerouslySetInnerHTML={{__html:sanitize(recipe.commentary, sanitizeOption)}} />
           </div>
 
 
@@ -69,8 +78,8 @@ const RecipeDetailSection = ({recipe}) => {
 
             </li>
             <li className={styles.detail}>
-              <strong>#{Number(step.stepNumber)+1}</strong>
-              <p>{step.detail}</p>
+              <strong className={styles.stepDetailStrong}>#{Number(step.stepNumber)+1}</strong>
+              <p dangerouslySetInnerHTML={{__html:sanitize(step.detail, sanitizeOption)}} />
             </li>
           </React.Fragment>
         )}

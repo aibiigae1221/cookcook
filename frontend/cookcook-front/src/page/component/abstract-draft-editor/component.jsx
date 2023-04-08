@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {Editor, EditorState,
         RichUtils, convertToRaw, CompositeDecorator, Modifier,
-        getDefaultKeyBinding, KeyBindingUtil} from 'draft-js';
+        getDefaultKeyBinding} from 'draft-js';
 import Controls from "./Controls";
 import EditorInputLink from "./EditorInputLink";
 import {stateToHTML} from 'draft-js-export-html';
@@ -15,7 +15,7 @@ import "./AbstractDraftEditor.css";
 
 
 
-const AbstractDraftEditor = () => {
+const AbstractDraftEditor = ({dataChangeCallback}) => {
 
   // 링크 데코레이터
   const decorator = new CompositeDecorator([
@@ -37,11 +37,44 @@ const AbstractDraftEditor = () => {
   // 컬러 피커 컨트롤 표시 여부
   const [showColorPicker, setShowColorPicker] = useState(false);
 
+  const editorRef = useRef(null);
+
+
+  const getContentAsHTML = useCallback(() => {
+    let options = {
+      inlineStyles: {
+
+        BOLD: {element:"span", style: {fontWeight: "bold"}},
+        ITALIC: {element:"span", style: {fontStyle: "italic"}},
+        UNDERLINE: {element:"span", style: {textDecoration: "underline"}},
+        STRIKETHROUGH: {element:"span", style: {textDecoration: "line-through"}},
+
+        black: {style: {color: "rgba(0, 0, 0, 1.0)"}},
+        red: {style: {color: "rgba(255, 0, 0, 1.0)"}},
+        blue: {style: {color: "rgba(0,0,255, 1.0)"}},
+        green: {style: {color: "rgba(0,128,0, 1.0)"}},
+        yellow: {style: {color: "rgba(255,255,0, 1.0)"}},
+        orange: {style: {color: "rgba(255,165,0, 1.0)"}},
+        gray: {style: {color: "rgba(128,128,128, 1.0)"}},
+        purple: {style: {color: "rgba(128,0,128, 1.0)"}},
+
+      },
+    };
+
+    const contentState = editorState.getCurrentContent();
+    return stateToHTML(contentState, options);
+  }, [editorState]);
 
   // 에디터 controlling dom
   const onChange = (newState) => {
     setEditorState(newState);
   };
+
+  useEffect(() => {
+    const html = getContentAsHTML();
+    dataChangeCallback(html);
+
+  }, [editorState, dataChangeCallback, getContentAsHTML]);
 
   // 인라인 엔티티에 스타일 적용
   const handleInlineToggle = (e, inlineStyle) => {
@@ -96,6 +129,7 @@ const AbstractDraftEditor = () => {
   };
 
   // 예제 코드에서 가져온 건데 아직 사용 안해봄
+  /*
   const removeLink = e => {
     e.preventDefault();
 
@@ -104,6 +138,7 @@ const AbstractDraftEditor = () => {
       setEditorState(RichUtils.toggleLink(editorState, selectionState, null));
     }
   };
+  */
 
   // 탭키 바인딩
   const myKeyBindingFn = e => {
@@ -201,32 +236,9 @@ const AbstractDraftEditor = () => {
     onChange(newEditorState);
   };
 
-  const getContent = () => {
+  const focusEdtior = () => {
 
-    let options = {
-      inlineStyles: {
-
-        BOLD: {element:"span", style: {fontWeight: "bold"}},
-        ITALIC: {element:"span", style: {fontStyle: "italic"}},
-        UNDERLINE: {element:"span", style: {textDecoration: "underline"}},
-        STRIKETHROUGH: {element:"span", style: {textDecoration: "line=through"}},
-
-        black: {style: {color: "rgba(0, 0, 0, 1.0)"}},
-        red: {style: {color: "rgba(255, 0, 0, 1.0)"}},
-        blue: {style: {color: "rgba(0,0,255, 1.0)"}},
-        green: {style: {color: "rgba(0,128,0, 1.0)"}},
-        yellow: {style: {color: "rgba(255,255,0, 1.0)"}},
-        orange: {style: {color: "rgba(255,165,0, 1.0)"}},
-        gray: {style: {color: "rgba(128,128,128, 1.0)"}},
-        purple: {style: {color: "rgba(128,0,128, 1.0)"}},
-
-      },
-    };
-
-
-    const contentState = editorState.getCurrentContent();
-    console.log(stateToHTML(contentState, options));
-
+    editorRef.current.focus()
   };
 
   return (
@@ -245,19 +257,21 @@ const AbstractDraftEditor = () => {
         urlValue={urlValue}
         onLinkInputKeyDown={onLinkInputKeyDown}
         logState={logState}
-        getContent={getContent}
+
       />
 
 
-
-      <Editor
-        editorState={editorState}
-        onChange={onChange}
-        handleKeyCommand={handleKeyCommand}
-        placeholder="텍스트 입력.."
-        keyBindingFn={myKeyBindingFn}
-        customStyleMap={colorStyleMap}
-      />
+      <div onClick={focusEdtior}>
+        <Editor
+          editorState={editorState}
+          onChange={onChange}
+          handleKeyCommand={handleKeyCommand}
+          placeholder="텍스트 입력.."
+          keyBindingFn={myKeyBindingFn}
+          customStyleMap={colorStyleMap}
+          ref={editorRef}
+        />
+      </div>
     </div>
   );
 };

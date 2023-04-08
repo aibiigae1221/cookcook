@@ -1,13 +1,12 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Textarea from '@mui/joy/Textarea';
 import Alert from '@mui/material/Alert';
 import defaultCookStepImage from "./default-cook-step-image.jpg";
 import TagList from "./TagList";
-
+import AbstractDraftEditor from "../abstract-draft-editor/component";
 
 
 import styles from "./NewRecipeBasicInfo.module.css";
@@ -72,8 +71,8 @@ const NewRecipeBasicInfo = (
 
       <Grid item sm={12}>
         <p style={{fontWeight:"bold", marginBottom:"10px"}}>이 레시피에 대한 기본적인 설명을 적어보세요</p>
-        <Textarea placeholder="" minRows={5} value={commentary} onChange={(e) => handleInputChange(e, setCommentary)} />
-
+        {/*<Textarea placeholder="" minRows={5} value={commentary} onChange={(e) => handleInputChange(e, setCommentary)} />*/}
+        <AbstractDraftEditor dataChangeCallback={html => setCommentary(html) } />
       </Grid>
 
       {errorMessageCommentary !== '' &&

@@ -1,8 +1,8 @@
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Textarea from '@mui/joy/Textarea';
 //import { MuiFileInput } from 'mui-file-input'
+import AbstractDraftEditor from "../abstract-draft-editor/component";
 import deafultCookStepImage from "./default-cook-step-image.jpg";
 
 
@@ -26,8 +26,8 @@ const CookStepElement = ({
             #{order+1}
           </p>
           <Button onClick={() => removeLastCookStep(cookStep.idx)}>요리과정 제거</Button>
-          <Textarea placeholder="요리 과정을 적어주세요" minRows={9} value={cookStep.detail} onChange={(e) => handleCookStepDetailChange(e, cookStep.idx)} />
-
+          {/*<Textarea placeholder="요리 과정을 적어주세요" minRows={9} value={cookStep.detail} onChange={(e) => handleCookStepDetailChange(e.target.value, cookStep.idx)} />*/}
+          <AbstractDraftEditor dataChangeCallback={html => handleCookStepDetailChange(html, cookStep.idx)} />
         </div>
       </Grid>
       <Grid item sm={4} style={{lineHeight:"1.5"}}>

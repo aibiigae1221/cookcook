@@ -19,13 +19,16 @@ const TipSharingPage = () => {
 
 
 
-      <div className="content center">
+      <div className="content center" style={{display:"block"}}>
 
-        <div>
-          <h1>노하우 공유</h1>
-          <AbstractDraftEditor />
+
+
+        <div style={{display:"block", marginBottom:"20px"}}>
+          <h1>에디터 1</h1>
+          <AbstractDraftEditor dataChangeCallback={html => console.log(html)} />
         </div>
 
+      
       </div>
 
       <div className="content footer">

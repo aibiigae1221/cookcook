@@ -15,7 +15,7 @@ const ColorPickerControl = ({showColorPicker, setShowColorPicker, handleColor}) 
 
   return (
     <>
-      <button onMouseDown={handleColorPickerModal} className={styles.button}>색상</button>
+      <button onMouseDown={handleColorPickerModal} className={styles.button} type="button">색상</button>
 
       {showColorPicker &&
         <div className={styles.colorPicker}>
@@ -31,7 +31,7 @@ const ColorPickerControl = ({showColorPicker, setShowColorPicker, handleColor}) 
             <span onMouseDown={(e) => handleColor(e, "purple")} className={`${styles.colorBox} ${styles.colorPurple}`}></span>
           </div>
           <div className={styles.buttonHolder}>
-            <button onMouseDown={handleClose} className={styles.closeButton}>닫기</button>
+            <button onMouseDown={handleClose} className={styles.closeButton} type="button">닫기</button>
           </div>
         </div>
       }

@@ -116,13 +116,12 @@ const NewRecipeForm = () => {
     );
   };
 
-  const handleCookStepDetailChange = (ev, selectedIdx) => {
-    const value = ev.target.value;
+  const handleCookStepDetailChange = (data, selectedIdx) => {
     const newList = cookStepList.map(item => {
       if(item.idx === selectedIdx){
         return {
           idx:item.idx,
-          detail:value,
+          detail:data,
           uploadUrl:item.uploadUrl
         };
       }else{
@@ -154,7 +153,7 @@ const NewRecipeForm = () => {
   };
 
   const handleSubmit = () => {
-//todo
+
     const orderAddedCookStepList = cookStepList.map((cookStep, idx) => {
       return {
         order:idx,
@@ -184,10 +183,6 @@ const NewRecipeForm = () => {
       body:jsonInput
     };
 
-    console.log(jsonInput);
-
-    
-
     fetch("http://127.0.0.1:8080/recipe/add-new-recipe", options)
       .then(response => response.json())
       .then(json => {
@@ -195,7 +190,6 @@ const NewRecipeForm = () => {
           navigate(`/recipe-detail/${json.uuid}`);
 
         }else{
-          console.log(json);
 
           switch(json.field){
 
@@ -220,12 +214,9 @@ const NewRecipeForm = () => {
             const idx = result[1];
             setErrorMessageStepDetail(`조리과정 #${Number(idx)+1}, ${json.message}`);
           }
-
-
         }
       })
       .catch(error => console.log(error));
-
   };
 
   return (

@@ -33,31 +33,29 @@
   max-height:400px;
 }
 
-.basicInfo .detail{
+.basicInfo .detailContainer{
   height:100%;
   display:flex;
   flex-direction: column;
 }
 
-
-
-.basicInfo .detail ul{
+.basicInfo .detailContainer ul{
   display:flex;
 }
 
-.basicInfo .detail ul li{
+.basicInfo .detailContainer ul li{
   margin-right:10px;
   line-height:3.0;
   vertical-align: middle;;
   font-size:20px;
 }
 
-.basicInfo .detail ul li .icon{
+.basicInfo .detailContainer ul li .icon{
   vertical-align: -5%;
   height:25px;
 }
 
-.basicInfo .detail ul li .tag{
+.basicInfo .detailContainer ul li .tag{
   background-color:#24D2B6;
   line-height:1.2;
   margin-right:5px;
@@ -66,10 +64,9 @@
   padding:0 10px;
 }
 
-.basicInfo .detail p{
+.basicInfo .detailContainer .description{
   border:1px solid #eee;
   height:100%;
-  display:flex;
   padding:10px;
   font-size:20px;
 }
@@ -101,6 +98,6 @@
   display:block;
 }
 
-.stepList .detail p{
+.stepList .detail .description{
 
 }

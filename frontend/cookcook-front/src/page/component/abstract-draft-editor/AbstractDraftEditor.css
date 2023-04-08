@@ -10,6 +10,7 @@
   padding:10px;
   border:1px solid #000;
   box-sizing:border-box;
+  line-height:1.5;
 }
 
 .DraftEditor-root h1{
