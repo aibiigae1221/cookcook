@@ -1,0 +1,25 @@
+.stepListContainer{
+    margin:20px 0;
+}
+.stepListContainer h1{
+    margin:20px 0;
+    font-size:28px;     
+}
+.stepListContainer ul.list li{
+    display:flex;
+    margin-bottom:20px;
+    column-gap:10px;
+}
+.stepListContainer ul.list li img{
+    width:35%;
+}
+.stepListContainer ul.list li .detail{
+    width:65%;
+    line-height:1.4;
+}
+.stepListContainer .detail .order{
+    color:#3DE7B8;
+    font-size:25px;
+    margin-bottom:20px;
+    display:block;
+}
