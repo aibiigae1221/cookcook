@@ -24,7 +24,7 @@ public class AddRecipeParameters implements Serializable{
 	@NotBlank(message = "보내주시는 레시피의 부연설명을 해주세요.")
 	private String commentary;
 	
-	private String mainImageUrl;
+	private String imageFileName;
 	
 	@Valid
 	@NotNull(message = "조리과정을 입력해주세요.")
@@ -32,14 +32,8 @@ public class AddRecipeParameters implements Serializable{
 	
 	public AddRecipeParameters() {}
 	
-	public String getMainImageUrl() {
-		return mainImageUrl;
-	}
-
-	public void setMainImageUrl(String mainImageUrl) {
-		this.mainImageUrl = mainImageUrl;
-	}
-
+	
+	
 	public String getTitle() {
 		return title;
 	}
@@ -72,9 +66,17 @@ public class AddRecipeParameters implements Serializable{
 		this.cookStepList = cookStepList;
 	}
 
+	public String getImageFileName() {
+		return imageFileName;
+	}
+
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
+	}
+
 	@Override
 	public String toString() {
-		return "AddRecipeParameters [title=" + title + ", tags=" + tags + ", commentary=" + commentary
-				+ ", mainImageUrl=" + mainImageUrl + "]";
+		return "AddRecipeParameters [title=" + title + ", commentary=" + commentary + ", imageFileName=" + imageFileName
+				+ "]";
 	}
 }

@@ -71,7 +71,7 @@ public class RecipeServiceImpl implements RecipeService{
 		TemporaryImage entity = new TemporaryImage();
 		entity.setCreatedAt(new Date());
 		entity.setImageLocalPath(uploadLocalPath + "\\" + imageFileName);
-		entity.setImageUrl(resourceServerUrl+"/"+imageFileName);
+		entity.setImageFileName(imageFileName);
 		entity.setStatus("unused");
 		TemporaryImage saved = temporaryImageRepository.save(entity);
 		
@@ -115,8 +115,8 @@ public class RecipeServiceImpl implements RecipeService{
 		saveRecipeTags(params, savedRecipe);
 		saveRecipeSteps(params, savedRecipe);
 		
-		setImageUsedFlag(params.getMainImageUrl());
-		params.getCookStepList().forEach(step -> setImageUsedFlag(step.getUploadUrl()));
+		setImageUsedFlag(params.getImageFileName());
+		params.getCookStepList().forEach(step -> setImageUsedFlag(step.getImageFileName()));
 		return savedRecipe.getRecipeId();
 	}
 
@@ -125,7 +125,7 @@ public class RecipeServiceImpl implements RecipeService{
 		if(imageUrl == null || imageUrl.isEmpty())
 			return;
 		
-		TemporaryImage entity = temporaryImageRepository.findByImageUrl(imageUrl);
+		TemporaryImage entity = temporaryImageRepository.findByImageFileName(imageUrl);
 		entity.setStatus("used");
 		temporaryImageRepository.save(entity);
 	}
@@ -135,7 +135,7 @@ public class RecipeServiceImpl implements RecipeService{
 			RecipeStep recipeStep = new RecipeStep();
 			recipeStep.setStepNumber(Long.valueOf(step.getOrder()));
 			recipeStep.setDetail(step.getDetail());
-			recipeStep.setImageUrl(step.getUploadUrl());
+			recipeStep.setImageFileName(step.getImageFileName());
 			recipeStep.setRecipe(savedRecipe);
 			return recipeStep;
 		}).collect(Collectors.toSet());
@@ -146,7 +146,6 @@ public class RecipeServiceImpl implements RecipeService{
 	private void saveRecipeTags(AddRecipeParameters params, Recipe savedRecipe) {
 		Set<RecipeTag> recipeTags = params.getTags().stream().map(tag -> {
 			RecipeTag recipeTag = recipeTagRepository.findByTagName(tag).orElseGet(() -> {
-				logger.info("새로운 태그 등록중..");
 				RecipeTag newRecipeTag = new RecipeTag();
 				newRecipeTag.setTagName(tag);
 				newRecipeTag.setRecipeList(new HashSet<Recipe>());
@@ -170,7 +169,7 @@ public class RecipeServiceImpl implements RecipeService{
 		recipe.setUser(user);
 		recipe.setTitle(params.getTitle());
 		recipe.setCommentary(params.getCommentary());
-		recipe.setMainImageUrl(params.getMainImageUrl());
+		recipe.setImageFileName(params.getImageFileName());
 		recipe.setCreatedDate(new Date());
 		
 		return recipeRepository.save(recipe);

@@ -3,13 +3,15 @@ import {combineReducers} from "redux";
 
 // reducer
 import userReducer from "./user-slice";
+import commonContextReducer from "./common-context-slice";
 
 // persist
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  commonContext: commonContextReducer
 });
 
 const persistConfig = {

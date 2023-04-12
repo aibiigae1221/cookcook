@@ -12,7 +12,7 @@ public class AddRecipeCookStepParameters implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private String uploadUrl;
+	private String imageFileName;
 
 	@NotNull(message = "조리 과정에 대한 부연 설명을 입력해주세요.")
 	@NotBlank(message = "조리 과정에 대한 부연 설명을 입력해주세요.")
@@ -22,12 +22,6 @@ public class AddRecipeCookStepParameters implements Serializable{
 	@NotNull
 	private int order;
 	
-	public String getUploadUrl() {
-		return uploadUrl;
-	}
-	public void setUploadUrl(String uploadUrl) {
-		this.uploadUrl = uploadUrl;
-	}
 	public String getDetail() {
 		return detail;
 	}
@@ -40,9 +34,17 @@ public class AddRecipeCookStepParameters implements Serializable{
 	public void setOrder(int order) {
 		this.order = order;
 	}
+	public String getImageFileName() {
+		return imageFileName;
+	}
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
+	}
 	
 	@Override
 	public String toString() {
-		return "AddRecipeCookStepParameters [uploadUrl=" + uploadUrl + ", detail=" + detail + ", order=" + order + "]";
+		return "AddRecipeCookStepParameters [imageFileName=" + imageFileName + ", detail=" + detail + ", order=" + order
+				+ "]";
 	}
+	
 }

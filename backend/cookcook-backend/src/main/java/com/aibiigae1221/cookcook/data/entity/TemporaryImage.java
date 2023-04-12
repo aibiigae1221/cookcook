@@ -23,7 +23,7 @@ public class TemporaryImage {
 	private Long imageId;
 	
 	@Column(nullable = false, unique = true)
-	private String imageUrl;
+	private String imageFileName;
 	
 	// unique 값 줘야하지만 인덱스 여러개 생성되는건 좀 부담되니 걍 냅둠..
 	@Column(nullable = false) 
@@ -34,14 +34,15 @@ public class TemporaryImage {
 	
 	@Column(name="status", nullable = false)
 	private String status;
-
+	
 	public TemporaryImage() {}
-
-	public TemporaryImage(Long imageId, String imageUrl, String imageLocalPath, Date createdAt) {
-		this.imageId = imageId;
-		this.imageUrl = imageUrl;
+	
+	public TemporaryImage(String imageFileName, String imageLocalPath, Date createdAt, String status) {
+		super();
+		this.imageFileName = imageFileName;
 		this.imageLocalPath = imageLocalPath;
 		this.createdAt = createdAt;
+		this.status = status;
 	}
 
 	public String getStatus() {
@@ -60,13 +61,14 @@ public class TemporaryImage {
 		this.imageId = imageId;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public String getImageFileName() {
+		return imageFileName;
 	}
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
 	}
+
 
 	public String getImageLocalPath() {
 		return imageLocalPath;

@@ -6,7 +6,7 @@ import com.aibiigae1221.cookcook.data.entity.TemporaryImage;
 
 public interface TemporaryImageRepository extends JpaRepository<TemporaryImage, Long>{
 
-	TemporaryImage findByImageUrl(String imageUrl);
+	TemporaryImage findByImageFileName(String imageFileName);
 
 
 }

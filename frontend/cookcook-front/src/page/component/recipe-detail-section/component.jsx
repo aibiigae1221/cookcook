@@ -5,6 +5,7 @@ import styles from "./RecipeDetailSection.module.css";
 
 const RecipeDetailSection = ({recipe}) => {
 
+
   if(!recipe)
     return <></>;
 

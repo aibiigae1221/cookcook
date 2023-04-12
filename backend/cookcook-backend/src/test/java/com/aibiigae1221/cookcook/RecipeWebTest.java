@@ -316,11 +316,11 @@ public class RecipeWebTest {
 		paramsMap.put("title", "뿌링클 만들기"+idxSufix);
 		paramsMap.put("tags", List.of("존맛탱", "치킨"));
 		paramsMap.put("commentary", "뿌링클 소개글"+idxSufix);
-		paramsMap.put("mainImageUrl", mainImageUrl);
+		paramsMap.put("imageFileName", mainImageUrl);
 		
 		List<Object> cookStepList = List.of(
-				Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"+idxSufix),
-				Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다."+idxSufix)
+				Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"+idxSufix),
+				Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다."+idxSufix)
 		);
 		paramsMap.put("cookStepList", cookStepList);
 		
@@ -342,8 +342,8 @@ public class RecipeWebTest {
 	public void uploadImageTest() throws Exception {
 		String jwt = login();
 		
-		String testImagePath = "C:\\Users\\aibii\\OneDrive\\Desktop\\nati-melnychuk-ytbgBYivaNE-unsplash.jpg";
-		MockMultipartFile file = new MockMultipartFile("image", "nati-melnychuk-ytbgBYivaNE-unsplash.jpg", "image/jpeg", new FileInputStream(new File(testImagePath)));
+		String testImagePath = "C:\\Users\\aibii\\OneDrive\\Desktop\\돈가스.PNG";
+		MockMultipartFile file = new MockMultipartFile("image", "돈가스.PNG", "image/jpeg", new FileInputStream(new File(testImagePath)));
 		
 		mvc.perform(multipart("/recipe/upload-image")
 						.file(file)
@@ -375,11 +375,11 @@ public class RecipeWebTest {
 			paramsMap.put("title", "뿌링클 만들기");
 			paramsMap.put("tags", List.of("존맛탱", "치킨"));
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -409,11 +409,11 @@ public class RecipeWebTest {
 			//paramsMap.put("title", "뿌링클 만들기"); // title 입력값 없애보기
 			paramsMap.put("tags", List.of("존맛탱", "치킨"));
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -443,11 +443,11 @@ public class RecipeWebTest {
 			paramsMap.put("title", "뿌링클 만들기"); 
 			paramsMap.put("tags", null); // tag 값 null로 전송해보기
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -478,13 +478,13 @@ public class RecipeWebTest {
 			paramsMap.put("title", "뿌링클 만들기"); 
 			paramsMap.put("tags", List.of("존맛탱", "치킨")); // tag 입력값 없애보기
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			/*
 			// 조리과정 입력 없이 전송해보기
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList); 
 			*/
@@ -515,11 +515,11 @@ public class RecipeWebTest {
 			paramsMap.put("title", ""); // 빈 값 입력해보기
 			paramsMap.put("tags", List.of("존맛탱", "치킨"));
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -549,11 +549,11 @@ public class RecipeWebTest {
 			paramsMap.put("title", "뿌링클 만들기"); 
 			//paramsMap.put("tags", List.of("존맛탱", "치킨")); 태그 값 누락해보기 
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "이런 과정을 거쳐서"),
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -583,11 +583,11 @@ public class RecipeWebTest {
 			paramsMap.put("title", "뿌링클 만들기");
 			paramsMap.put("tags", List.of("존맛탱", "치킨"));
 			paramsMap.put("commentary", "뿌링클 소개글");
-			paramsMap.put("mainImageUrl", mainImageUrl);
+			paramsMap.put("imageFileName", mainImageUrl);
 			
 			List<Object> cookStepList = List.of(
-					Map.of("uploadUrl", cookStepImage1, "order", "-1", "detail", "이런 과정을 거쳐서"), // 음수 값 입력해보기
-					Map.of("uploadUrl", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
+					Map.of("imageFileName", cookStepImage1, "order", "-1", "detail", "이런 과정을 거쳐서"), // 음수 값 입력해보기
+					Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "이렇게 만듭니다.")
 			);
 			paramsMap.put("cookStepList", cookStepList);
 			
@@ -653,7 +653,7 @@ public class RecipeWebTest {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(output);
-		String imageUrl = jsonNode.get("imageUrl").asText();
+		String imageUrl = jsonNode.get("imageFileName").asText();
 		return imageUrl;
 	} 
 	

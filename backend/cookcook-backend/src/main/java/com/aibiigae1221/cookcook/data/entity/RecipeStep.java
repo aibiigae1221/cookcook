@@ -25,7 +25,7 @@ public class RecipeStep {
 	@Column(nullable = false, columnDefinition = "text")
 	private String detail;
 	
-	private String imageUrl;
+	private String imageFileName;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -58,14 +58,6 @@ public class RecipeStep {
 		this.detail = detail;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
 	public Recipe getRecipe() {
 		return recipe;
 	}
@@ -74,11 +66,19 @@ public class RecipeStep {
 		this.recipe = recipe;
 	}
 
+	public String getImageFileName() {
+		return imageFileName;
+	}
+
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
+	}
+
 	@Override
 	public String toString() {
-		return "RecipeStep [stepId=" + stepId + ", stepNumber=" + stepNumber + ", detail=" + detail + ", imageUrl="
-				+ imageUrl + "]";
+		return "RecipeStep [stepId=" + stepId + ", stepNumber=" + stepNumber + ", detail=" + detail + ", imageFileName="
+				+ imageFileName + "]";
 	}
-	
+
 	
 }

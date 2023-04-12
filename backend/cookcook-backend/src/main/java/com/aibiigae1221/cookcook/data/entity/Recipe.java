@@ -43,7 +43,7 @@ public class Recipe {
 	@Column(nullable = false, columnDefinition = "text")
 	private String commentary;
 	
-	private String mainImageUrl;
+	private String imageFileName;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
@@ -108,12 +108,12 @@ public class Recipe {
 		this.commentary = commentary;
 	}
 
-	public String getMainImageUrl() {
-		return mainImageUrl;
+	public String getImageFileName() {
+		return imageFileName;
 	}
 
-	public void setMainImageUrl(String mainImageUrl) {
-		this.mainImageUrl = mainImageUrl;
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
 	}
 
 	public Date getCreatedDate() {
@@ -144,11 +144,12 @@ public class Recipe {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(createdDate);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Recipe [recipeId=" + recipeId + ", title=" + title + ", commentary=" + commentary + ", mainImageUrl="
-				+ mainImageUrl + ", createdDate=" + createdDate + "]";
+		return "Recipe [recipeId=" + recipeId + ", user=" + user + ", title=" + title + ", commentary=" + commentary
+				+ ", imageFileName=" + imageFileName + ", createdDate=" + createdDate + ", createdDateFormatted="
+				+ createdDateFormatted + "]";
 	}
 	
 }

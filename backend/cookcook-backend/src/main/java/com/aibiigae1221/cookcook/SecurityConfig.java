@@ -49,6 +49,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests((authorize) -> 
 						authorize
 							.requestMatchers("/sign-up", "/login", "/recipe/pre-search",
+									"/generic/resource-server-url",
 									"/recipe/detail", "/recipe/get-recent-recipes", "/recipe/get-recipe-list").permitAll()
 							.anyRequest().authenticated()
 				)

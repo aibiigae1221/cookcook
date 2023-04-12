@@ -97,13 +97,12 @@ public class RecipeController {
 	
 	@PostMapping("/recipe/upload-image")
 	public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile image, Authentication authentication){
-		logger.info("유저[{}]님이 파일업로드 중...{}", authentication.getName(), image.getOriginalFilename());
 
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();		
 		try {
 			TemporaryImage entity = recipeService.saveImagePath(authentication.getName(), image);
 			mapHolder.put("status", "success");
-			mapHolder.put("imageUrl", entity.getImageUrl());
+			mapHolder.put("imageFileName", entity.getImageFileName());
 			return ok(mapHolder);
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();

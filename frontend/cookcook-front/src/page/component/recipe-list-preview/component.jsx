@@ -1,10 +1,15 @@
 import React, {useState, useEffect} from "react";
+import {useSelector} from "react-redux";
 import dompurify from "dompurify";
 import defaultSanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 import defaultImage from "./default-cook-image.jpg";
 import styles from  "./RecipeList.module.css";
 
 const RecipeListPreview = () => {
+
+  const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
+
+  console.log('aa');
 
   const [recipeList, setRecipeList] = useState([]);
   const recipeCountToShow = 6;
@@ -19,7 +24,7 @@ const RecipeListPreview = () => {
       method: "get",
       mode: "cors"
     };
-    fetch(`http://127.0.0.1:8080/recipe/get-recent-recipes?amount=${recipeCountToShow}`, options)
+    fetch(`${apiServerUrl}/recipe/get-recent-recipes?amount=${recipeCountToShow}`, options)
       .then(response => response.json())
       .then(json => {
         if(json.status === "success"){
@@ -43,8 +48,8 @@ const RecipeListPreview = () => {
           {recipeList.length > 0 && recipeList.map(recipe => 
             <li key={recipe.recipeId}>
               <a href={`/recipe-detail/${recipe.recipeId}`}>
-                {(recipe.mainImageUrl !== null && recipe.mainImageUrl !== "")?
-                  <img src={recipe.mainImageUrl} alt={recipe.mainImageUrl} />
+                {(recipe.imageFileName !== null && recipe.imageFileName !== "")?
+                  <img src={`${resourceServerUrl}/${recipe.imageFileName}`} alt={`${resourceServerUrl}/${recipe.imageFileName}`} />
                   :
                   <img src={defaultImage} alt={defaultImage} />
                 }
