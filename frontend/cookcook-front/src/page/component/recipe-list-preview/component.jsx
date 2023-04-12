@@ -6,10 +6,8 @@ import defaultImage from "./default-cook-image.jpg";
 import styles from  "./RecipeList.module.css";
 
 const RecipeListPreview = () => {
-
+  console.log('hit');
   const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
-
-  console.log('aa');
 
   const [recipeList, setRecipeList] = useState([]);
   const recipeCountToShow = 6;

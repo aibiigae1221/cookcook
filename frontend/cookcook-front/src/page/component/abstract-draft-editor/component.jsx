@@ -53,7 +53,6 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
         orange: {style: {color: "rgba(255,165,0, 1.0)"}},
         gray: {style: {color: "rgba(128,128,128, 1.0)"}},
         purple: {style: {color: "rgba(128,0,128, 1.0)"}},
-
       },
     };
 
@@ -66,11 +65,12 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
     setEditorState(newState);
   };
 
+  
   useEffect(() => {
     const html = getContentAsHTML();
     dataChangeCallback(html);
-
-  }, [editorState, dataChangeCallback, getContentAsHTML]);
+  }, [editorState]);
+  
 
   // 인라인 엔티티에 스타일 적용
   const handleInlineToggle = (e, inlineStyle) => {

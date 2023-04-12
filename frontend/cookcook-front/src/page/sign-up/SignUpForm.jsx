@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -27,6 +28,8 @@ const SignUpForm = () => {
 
   const navigate = useNavigate();
 
+  const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
+
   const handleSignUp = () => {
 
     setErrorEmail("");
@@ -50,7 +53,7 @@ const SignUpForm = () => {
         body: body
     };
 
-    fetch("http://127.0.0.1:8080/sign-up", options)
+    fetch(`${apiServerUrl}/sign-up`, options)
       .then(response => response.json())
       .then(json => {
         if(json.status === "success"){

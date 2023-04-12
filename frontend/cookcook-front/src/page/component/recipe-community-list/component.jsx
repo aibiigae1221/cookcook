@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useSearchParams, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 import SearchForm  from "./SearchForm";
 import RecipeTable from "./RecipeTable";
@@ -9,7 +10,11 @@ import styles from "./RecipeCommunityList.module.css";
 
 const RecipeCommunityList = () => {
 
+  console.log("hit");
+
   const navigate = useNavigate();
+
+  const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   const [searchParams] = useSearchParams();
   let pageNoParam = searchParams.get("pageNo");
@@ -18,7 +23,6 @@ const RecipeCommunityList = () => {
   const [keyword, setKeyword] = useState("");
   const [recipeList, setRecipeList] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
-
   pageNoParam = pageNoParam? Number(pageNoParam) : 1;
   keywordParam = keywordParam? keywordParam : "";
 
@@ -31,7 +35,7 @@ const RecipeCommunityList = () => {
       mode:"cors"
     };
 
-    fetch(`http://127.0.0.1:8080/recipe/get-recipe-list?pageNo=${pageNoParam}&keyword=${keywordParam}`, options)
+    fetch(`${apiServerUrl}/recipe/get-recipe-list?pageNo=${pageNoParam}&keyword=${keywordParam}`, options)
       .then(response => response.json())
       .then(json => {
         setRecipeList(json.recipeList);

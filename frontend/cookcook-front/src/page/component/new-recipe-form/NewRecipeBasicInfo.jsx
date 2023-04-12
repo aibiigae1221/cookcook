@@ -1,4 +1,5 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -16,10 +17,12 @@ const NewRecipeBasicInfo = (
                           handleInputChange,
                           newTagName, setNewTagName, handleInputTagEnter, addNewTag, removeTag, tagList,
                           commentary, setCommentary,
-                          uploadedMainImageSrc,
+                          mainImageFileName,
                           handleMainImage,
                           errorMessageTitle, errorMessageCommentary, errorMessageTags
                           }) => {
+
+  const {resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   return (
     <>
@@ -57,8 +60,8 @@ const NewRecipeBasicInfo = (
         <p style={{fontWeight:"bold"}}>완성된 요리의 이미지 파일을 추가해보세요</p>
         <p>이미지를 추가하지 않으면 기본 이미지가 보여집니다.</p>
         <input accept="image/*" type="file"  onChange={handleMainImage} />
-        {uploadedMainImageSrc !== null ?
-          <img src={uploadedMainImageSrc} alt={uploadedMainImageSrc} className={styles.cookingStepImage} />
+        {(mainImageFileName !== null && mainImageFileName !== "")?
+          <img src={`${resourceServerUrl}/${mainImageFileName}`} alt={`${resourceServerUrl}/${mainImageFileName}`} className={styles.cookingStepImage} />
           :
           <img src={defaultCookStepImage} alt={defaultCookStepImage} className={styles.cookingStepImage} />
         }

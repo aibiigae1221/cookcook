@@ -12,6 +12,7 @@
 }
 .stepListContainer ul.list li img{
     width:35%;
+    height:250px;
 }
 .stepListContainer ul.list li .detail{
     width:65%;

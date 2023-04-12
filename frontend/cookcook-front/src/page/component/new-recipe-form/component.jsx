@@ -11,6 +11,7 @@ let cookStepIdx = 0;
 
 const NewRecipeForm = () => {
 
+  
   const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState([]);
   const [commentary, setCommentary] = useState("");
@@ -18,10 +19,10 @@ const NewRecipeForm = () => {
     {
       idx:0,
       detail:"",
-      uploadUrl:null
+      imageFileName:null
     }
   ]);
-  const [uploadedMainImageSrc, setUploadedMainImageSrc] = useState(null);
+  const [mainImageFileName, setMainImageFileName] = useState(null);
   const [newTagName, setNewTagName] = useState("");
 
   const [errorMessageTitle, setErrorMessageTitle] = useState("");
@@ -30,6 +31,8 @@ const NewRecipeForm = () => {
   const [errorMessageStepDetail, setErrorMessageStepDetail] = useState("");
 
   const jwt = useSelector(state => state.user.jwt);
+
+  const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   const navigate = useNavigate();
 
@@ -58,7 +61,7 @@ const NewRecipeForm = () => {
 
   const handleMainImage = (e) => {
     uploadImage(e, (imageUrl) => {
-      setUploadedMainImageSrc(imageUrl)
+      setMainImageFileName(imageUrl)
     });
   };
 
@@ -78,12 +81,12 @@ const NewRecipeForm = () => {
       body:body
     };
 
-    fetch("http://127.0.0.1:8080/recipe/upload-image", options)
+    fetch(`${apiServerUrl}/recipe/upload-image`, options)
       .then(response => response.json())
       .then(json => {
         if(json.status === "success"){
-          //console.log(json.imageUrl);
-          receiveImage(json.imageUrl)
+//          console.log(json);
+          receiveImage(json.imageFileName)
         }else{
           alert("이미지 저장에 실패하였습니다.");
         }
@@ -97,7 +100,7 @@ const NewRecipeForm = () => {
       {
         idx:cookStepIdx,
         detail:"",
-        uploadUrl:null
+        imageFileName:null
       }
     ]);
   }
@@ -119,26 +122,27 @@ const NewRecipeForm = () => {
         return {
           idx:item.idx,
           detail:data,
-          uploadUrl:item.uploadUrl
+          imageFileName:item.imageFileName
         };
       }else{
         return item;
       }
     });
-
+    
     setErrorMessageStepDetail("");
     setCookStepList(newList);
   };
 
+
   const handleCookStepImage = (e, selectedIdx) => {
 
-    uploadImage(e, (imageUrl) => {
+    uploadImage(e, (imageFileName) => {
       const newList = cookStepList.map(item => {
         if(item.idx === selectedIdx){
           return {
             idx:item.idx,
             detail:item.detail,
-            uploadUrl:imageUrl
+            imageFileName:imageFileName
           };
         }else{
           return item;
@@ -155,7 +159,7 @@ const NewRecipeForm = () => {
       return {
         order:idx,
         detail:cookStep.detail,
-        uploadUrl:cookStep.uploadUrl
+        imageFileName:cookStep.imageFileName
       };
     });
 
@@ -163,7 +167,7 @@ const NewRecipeForm = () => {
       title:title,
       tags:tagList,
       commentary:commentary,
-      mainImageUrl:uploadedMainImageSrc,
+      imageFileName:mainImageFileName,
       cookStepList:orderAddedCookStepList
     });
 
@@ -180,7 +184,7 @@ const NewRecipeForm = () => {
       body:jsonInput
     };
 
-    fetch("http://127.0.0.1:8080/recipe/add-new-recipe", options)
+    fetch(`${apiServerUrl}/recipe/add-new-recipe`, options)
       .then(response => response.json())
       .then(json => {
         if(json.status === 'success'){
@@ -228,7 +232,7 @@ const NewRecipeForm = () => {
                     handleInputChange={handleInputChange}
                     newTagName={newTagName} setNewTagName={setNewTagName} handleInputTagEnter={handleInputTagEnter} addNewTag={addNewTag} removeTag={removeTag} tagList={tagList}
                     commentary={commentary} setCommentary={setCommentary}
-                    uploadedMainImageSrc={uploadedMainImageSrc}
+                    mainImageFileName={mainImageFileName}
                     handleMainImage={handleMainImage}
                     errorMessageTitle={errorMessageTitle} errorMessageCommentary={errorMessageCommentary} errorMessageTags={errorMessageTags}
                   />

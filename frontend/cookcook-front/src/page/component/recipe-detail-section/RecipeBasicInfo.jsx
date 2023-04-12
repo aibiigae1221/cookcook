@@ -1,4 +1,5 @@
 import dompurify from "dompurify";
+import {useSelector} from "react-redux";
 import sanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 import defaultCookImage from "./default-cook-image.jpg";
 import styles from "./RecipeBasicInfo.module.css"; 
@@ -6,16 +7,17 @@ import styles from "./RecipeBasicInfo.module.css";
 const RecipeBasicInfo = ({recipe}) => {
 
     const sanitize = dompurify.sanitize;
+    const {resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
     
     return (
         <div className={styles.basicInfo}>
             <h1 className={`${styles.h1} ${styles.title}`}>{recipe.title}</h1>
 
-            {(recipe.mainImageUrl !== null && recipe.mainImageUrl !== "")?
+            {(recipe.imageFileName !== null && recipe.imageFileName !== "")?
 
-            <img src={recipe.mainImageUrl} alt={recipe.mainImageUrl} className={styles.mainImage} />
-            :
-            <img src={defaultCookImage} alt={defaultCookImage} className={styles.mainImage} />
+                <img src={`${resourceServerUrl}/${recipe.imageFileName}`} alt={`${resourceServerUrl}/${recipe.imageFileName}`} className={styles.mainImage} />
+                :
+                <img src={defaultCookImage} alt={defaultCookImage} className={styles.mainImage} />
             }
 
             <div className={styles.description}>

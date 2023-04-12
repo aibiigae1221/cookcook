@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useSearchParams, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 import SearchIcon from '@mui/icons-material/Search';
 import styles from "./SearchForm.module.css";
 
@@ -13,6 +14,8 @@ const SearchForm = () => {
 
   let keywordParam = searchParams.get("keyword");
   keywordParam = (keywordParam) ? keywordParam : "";
+
+  const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   useEffect(() => {
     setKeyword(keywordParam);
@@ -34,7 +37,7 @@ const SearchForm = () => {
       mode: "cors"
     };
 
-    fetch(`http://127.0.0.1:8080/recipe/pre-search?keyword=${newKeyword}`, options)
+    fetch(`${apiServerUrl}/recipe/pre-search?keyword=${newKeyword}`, options)
       .then(response => response.json())
       .then(json => {
         setRecipeList(json.recipeList);

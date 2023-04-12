@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
 import RecipeDetailSection from "../component/recipe-detail-section/component";
@@ -9,6 +10,7 @@ const RecipeDetailPage = () => {
 
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
+  const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   useEffect(() => {
     const options = {
@@ -19,7 +21,7 @@ const RecipeDetailPage = () => {
       }
     };
 
-    fetch(`http://127.0.0.1:8080/recipe/detail?recipeId=${recipeId}`, options)
+    fetch(`${apiServerUrl}/recipe/detail?recipeId=${recipeId}`, options)
       .then(response => response.json())
       .then(json => {
         if(json.status === "error"){
