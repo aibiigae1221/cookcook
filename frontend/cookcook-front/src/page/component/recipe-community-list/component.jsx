@@ -43,7 +43,7 @@ const RecipeCommunityList = () => {
       })
       .catch(error => console.log(error));
 
-  }, [keywordParam, pageNoParam]);
+  }, [apiServerUrl, keywordParam, pageNoParam]);
 
   const handleKeywordChange = (e) => {
     setKeyword(e.target.value);

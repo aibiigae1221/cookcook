@@ -7,9 +7,8 @@ const CommonDataInitializer = ({children}) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCommonContext(process.env.REACT_APP_MODE));
-        
-    }, []);
-    
+    }, [dispatch]);
+
     return (
         <>
         {children}

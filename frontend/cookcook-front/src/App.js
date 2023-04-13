@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 // persist
 import store, {persistor} from "./data/store";
 import { PersistGate } from 'redux-persist/integration/react'
-
+import CommonDataInitializer from "./CommonDataInitializer";
 
 const IndexPage = React.lazy(() => import("./page/index/index"));
 const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
@@ -73,7 +73,9 @@ function App() {
       <Suspense fallback={<div>로딩...</div>}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <RouterProvider router={router} />
+            <CommonDataInitializer>
+              <RouterProvider router={router} />
+            </CommonDataInitializer>
           </PersistGate>
         </Provider>
       </Suspense>

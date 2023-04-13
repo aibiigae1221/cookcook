@@ -32,7 +32,7 @@ const RecipeListPreview = () => {
         }
       })
       .catch(error => console.log(error));
-  }, []);
+  }, [apiServerUrl]);
 
   if(recipeList.length === 0){
       return <></>;

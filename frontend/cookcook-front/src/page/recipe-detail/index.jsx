@@ -10,7 +10,7 @@ const RecipeDetailPage = () => {
 
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
-  const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
+  const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   useEffect(() => {
     const options = {
@@ -47,7 +47,7 @@ const RecipeDetailPage = () => {
     return () => {
       setRecipe(null);
     };
-  }, [recipeId]);
+  }, [apiServerUrl, recipeId]);
 
   return (
     <div className="content-wrapper">

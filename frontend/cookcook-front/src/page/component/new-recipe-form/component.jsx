@@ -11,6 +11,7 @@ let cookStepIdx = 0;
 
 const NewRecipeForm = () => {
 
+  console.log('hit');
   
   const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState([]);
@@ -34,13 +35,22 @@ const NewRecipeForm = () => {
 
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
+  console.log(apiServerUrl);
+
   const navigate = useNavigate();
 
   const handleInputTagEnter = ev => {
-    if(ev.key === "Enter"){
-      addNewTag();
+    
+    if(ev.key === "Tab"){
       ev.preventDefault();
     }
+
+    if(ev.key === "Enter"){
+      ev.preventDefault();
+      addNewTag();
+      
+    }
+    
   };
 
   const addNewTag = () => {
@@ -117,23 +127,23 @@ const NewRecipeForm = () => {
   };
 
   const handleCookStepDetailChange = (data, selectedIdx) => {
-    const newList = cookStepList.map(item => {
-      if(item.idx === selectedIdx){
+
+    const newList = cookStepList.map(step => {
+      if(step.idx === selectedIdx){
         return {
-          idx:item.idx,
+          idx:step.idx,
           detail:data,
-          imageFileName:item.imageFileName
+          imageFileName:step.imageFileName
         };
-      }else{
-        return item;
       }
+
+      return step;
     });
-    
+
     setErrorMessageStepDetail("");
     setCookStepList(newList);
   };
-
-
+  
   const handleCookStepImage = (e, selectedIdx) => {
 
     uploadImage(e, (imageFileName) => {
@@ -170,6 +180,8 @@ const NewRecipeForm = () => {
       imageFileName:mainImageFileName,
       cookStepList:orderAddedCookStepList
     });
+
+
 
     const authHeader = `Bearer ${jwt}`;
 
@@ -216,6 +228,7 @@ const NewRecipeForm = () => {
         }
       })
       .catch(error => console.log(error));
+      
   };
 
   return (

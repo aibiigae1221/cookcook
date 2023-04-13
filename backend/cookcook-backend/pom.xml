@@ -70,4 +70,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+				<activatedProperties>dev</activatedProperties>
+                <spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+			
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+				<activatedProperties>prod</activatedProperties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 </project>

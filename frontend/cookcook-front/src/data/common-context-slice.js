@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const contextByEnv = {};
+let contextByEnv = {};
 
 contextByEnv['development'] = {
     apiServerUrl:"http://127.0.0.1:8080",

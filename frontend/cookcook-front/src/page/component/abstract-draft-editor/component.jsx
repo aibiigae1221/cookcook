@@ -65,16 +65,16 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
     setEditorState(newState);
   };
 
-  
   useEffect(() => {
     const html = getContentAsHTML();
     dataChangeCallback(html);
-  }, [editorState]);
-  
+  }, [editorState, getContentAsHTML, dataChangeCallback]);
+
 
   // 인라인 엔티티에 스타일 적용
   const handleInlineToggle = (e, inlineStyle) => {
     e.preventDefault();
+    console.log(inlineStyle);
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   };
 
