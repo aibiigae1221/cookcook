@@ -10,8 +10,6 @@ import styles from "./RecipeCommunityList.module.css";
 
 const RecipeCommunityList = () => {
 
-  console.log("hit");
-
   const navigate = useNavigate();
 
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
@@ -32,7 +30,8 @@ const RecipeCommunityList = () => {
 
     const options = {
       method:"get",
-      mode:"cors"
+      mode:"cors",
+      "Access-Control-Allow-Origin": "*"
     };
 
     fetch(`${apiServerUrl}/recipe/get-recipe-list?pageNo=${pageNoParam}&keyword=${keywordParam}`, options)

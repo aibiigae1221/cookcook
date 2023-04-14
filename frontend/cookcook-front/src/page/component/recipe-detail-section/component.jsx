@@ -4,7 +4,7 @@ import RecipeStepList from "./RecipeStepList";
 import styles from "./RecipeDetailSection.module.css";
 
 const RecipeDetailSection = ({recipe}) => {
-  console.log('hit');
+  
   if(!recipe)
     return <></>;
 

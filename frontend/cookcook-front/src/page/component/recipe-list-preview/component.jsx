@@ -6,7 +6,7 @@ import defaultImage from "./default-cook-image.jpg";
 import styles from  "./RecipeList.module.css";
 
 const RecipeListPreview = () => {
-  console.log('hit');
+
   const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
 
   const [recipeList, setRecipeList] = useState([]);
@@ -20,7 +20,8 @@ const RecipeListPreview = () => {
   useEffect(() => {
     const options = {
       method: "get",
-      mode: "cors"
+      mode: "cors",
+      "Access-Control-Allow-Origin": "*"
     };
     fetch(`${apiServerUrl}/recipe/get-recent-recipes?amount=${recipeCountToShow}`, options)
       .then(response => response.json())

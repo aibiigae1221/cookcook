@@ -70,7 +70,7 @@ public class RecipeServiceImpl implements RecipeService{
 		
 		TemporaryImage entity = new TemporaryImage();
 		entity.setCreatedAt(new Date());
-		entity.setImageLocalPath(uploadLocalPath + "\\" + imageFileName);
+		entity.setImageLocalPath(uploadLocalPath + File.separator + imageFileName);
 		entity.setImageFileName(imageFileName);
 		entity.setStatus("unused");
 		TemporaryImage saved = temporaryImageRepository.save(entity);

@@ -10,8 +10,6 @@ import NewRecipeCookStepList from "./NewRecipeCookStepList";
 let cookStepIdx = 0;
 
 const NewRecipeForm = () => {
-
-  console.log('hit');
   
   const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState([]);
@@ -34,8 +32,6 @@ const NewRecipeForm = () => {
   const jwt = useSelector(state => state.user.jwt);
 
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
-
-  console.log(apiServerUrl);
 
   const navigate = useNavigate();
 
@@ -86,7 +82,8 @@ const NewRecipeForm = () => {
       mode: "cors",
       cache:"no-cache",
       headers:{
-        "Authorization": authHeader
+        "Authorization": authHeader,
+        "Access-Control-Allow-Origin": "*"
       },
       body:body
     };
@@ -191,7 +188,8 @@ const NewRecipeForm = () => {
       cache:"no-cache",
       headers:{
         "Authorization": authHeader,
-        "Content-Type":"application/json"
+        "Content-Type":"application/json",
+        "Access-Control-Allow-Origin": "*"
       },
       body:jsonInput
     };

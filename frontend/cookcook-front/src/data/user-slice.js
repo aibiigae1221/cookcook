@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 
-export const login = createAsyncThunk("user/login", async (inputArgs) => {
+export const login = createAsyncThunk("user/login", async (inputArgs, {getState}) => {
+  const apiServerUrl = getState().commonContext.serverUrl.apiServerUrl;
   const {email, password} = inputArgs;
   const input = new URLSearchParams({
     email:email,
@@ -17,18 +18,19 @@ export const login = createAsyncThunk("user/login", async (inputArgs) => {
       body: input
   };
 
-  const response = await fetch("http://127.0.0.1:8080/login", options);
+  const response = await fetch(`${apiServerUrl}/login`, options);
   return response.json();
 });
 
-export const logout = createAsyncThunk("user/logout", async (inputArgs) => {
+export const logout = createAsyncThunk("user/logout", async (inputArgs, {getState}) => {
+  const apiServerUrl = getState().commonContext.serverUrl.apiServerUrl;
   const options = {
       method: "get",
       mode: "cors",
       cache: "no-cache"
   };
 
-  const response = await fetch("http://127.0.0.1:8080/logout", options);
+  const response = await fetch(`${apiServerUrl}/logout`, options);
   return response.status;
 });
 

@@ -34,7 +34,10 @@ const SearchForm = () => {
 
     const options = {
       method: "get",
-      mode: "cors"
+      mode: "cors",
+      headers:{
+        "Access-Control-Allow-Origin": "*"
+      }
     };
 
     fetch(`${apiServerUrl}/recipe/pre-search?keyword=${newKeyword}`, options)
