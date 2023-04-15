@@ -8,16 +8,25 @@ import store, {persistor} from "./data/store";
 import { PersistGate } from 'redux-persist/integration/react'
 import CommonDataInitializer from "./CommonDataInitializer";
 
-const IndexPage = React.lazy(() => import("./page/index/index"));
-const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
-const RecipeListPage = React.lazy(() => import("./page/recipe-list/index"));
-const SignUpPage = React.lazy(() => import("./page/sign-up/index"));
-const FindJobPage = React.lazy(() => import("./page/find-job-page/index"));
-const TipSharingPage = React.lazy(() => import("./page/tip-sharing-page/index"));
-const AboutThisAppPage = React.lazy(() => import("./page/about-this-app/index"));
-const RecipeDetailPage = React.lazy(() => import("./page/recipe-detail/index"));
+
+// chunk 에러가 자꾸 발생해서... 그냥 레이지로딩은 안하기로..
+
+// const IndexPage = React.lazy(() => import("./page/index/index"));
+// const CreateRecipePage = React.lazy(() => import("./page/create-recipe-page/index"));
+// const RecipeListPage = React.lazy(() => import("./page/recipe-list/index"));
+// const SignUpPage = React.lazy(() => import("./page/sign-up/index"));
+// const FindJobPage = React.lazy(() => import("./page/find-job-page/index"));
+// const TipSharingPage = React.lazy(() => import("./page/tip-sharing-page/index"));
+// const AboutThisAppPage = React.lazy(() => import("./page/about-this-app/index"));
+// const RecipeDetailPage = React.lazy(() => import("./page/recipe-detail/index"));
 
 
+
+import IndexPage from "./page/index/index";
+import CreateRecipePage from "./page/create-recipe-page/index";
+import RecipeListPage from "./page/recipe-list/index";
+import SignUpPage from "./page/sign-up/index";
+import RecipeDetailPage from "./page/recipe-detail/index";
 
 const router  = createBrowserRouter([
   {
@@ -38,23 +47,6 @@ const router  = createBrowserRouter([
   {
     path:"/sign-up",
     element:<SignUpPage />
-  },
-
-  {
-    path:"/find-job-page",
-    element:<FindJobPage />
-  },
-
-  {
-    path:"/tip-sharing-page",
-    element:
-        <TipSharingPage />
-  },
-
-  {
-    path:"/about-this-app",
-    element:
-        <AboutThisAppPage />
   },
 
   {

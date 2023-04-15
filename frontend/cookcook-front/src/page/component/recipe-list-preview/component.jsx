@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import dompurify from "dompurify";
 import defaultSanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 import defaultImage from "./default-cook-image.jpg";
@@ -8,7 +9,7 @@ import styles from  "./RecipeList.module.css";
 const RecipeListPreview = () => {
 
   const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
-
+  const navigate = useNavigate();
   const [recipeList, setRecipeList] = useState([]);
   const recipeCountToShow = 6;
   const sanitize = dompurify.sanitize;
@@ -35,6 +36,10 @@ const RecipeListPreview = () => {
       .catch(error => console.log(error));
   }, [apiServerUrl]);
 
+  const handleLink = href => {
+    navigate(href);
+  };
+
   if(recipeList.length === 0){
       return <></>;
   }
@@ -46,7 +51,7 @@ const RecipeListPreview = () => {
         <ul className={styles.recipeList}>
           {recipeList.length > 0 && recipeList.map(recipe => 
             <li key={recipe.recipeId}>
-              <a href={`/recipe-detail/${recipe.recipeId}`}>
+              <a onClick={() => handleLink(`/recipe-detail/${recipe.recipeId}`)}>
                 {(recipe.imageFileName !== null && recipe.imageFileName !== "")?
                   <img src={`${resourceServerUrl}/${recipe.imageFileName}`} alt={`${resourceServerUrl}/${recipe.imageFileName}`} />
                   :
