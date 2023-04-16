@@ -45,6 +45,10 @@ const RecipeBasicInfo = ({recipe, isAuthor}) => {
             });
     }
 
+    const editRecipeArticle = () => {
+        navigate(`/recipe-edit/${recipe.recipeId}`);
+    };
+
     return (
         <div className={styles.basicInfo}>
             <h1 className={`${styles.h1} ${styles.title}`}>{recipe.title}</h1>
@@ -73,7 +77,7 @@ const RecipeBasicInfo = ({recipe, isAuthor}) => {
 
                 {isAuthor && 
                     <p className={styles.controlsContainer}>
-                        <button className={styles.edit}>수정</button>
+                        <button onClick={editRecipeArticle} className={styles.edit}>수정</button>
                         <button onClick={deleteRecipeArticle} className={styles.delete}>삭제</button>
                     </p>
                 }

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {Editor, EditorState,
         RichUtils, convertToRaw, CompositeDecorator, Modifier,
         getDefaultKeyBinding} from 'draft-js';
 import Controls from "./Controls";
 import EditorInputLink from "./EditorInputLink";
 import {stateToHTML} from 'draft-js-export-html';
+import {stateFromHTML} from 'draft-js-import-html';
 
 import colorStyleMap from "./ColorStyleMap";
 import {findLinkEntities} from "./DecoratorStategies";
@@ -12,7 +13,7 @@ import {findLinkEntities} from "./DecoratorStategies";
 import 'draft-js/dist/Draft.css';
 import "./AbstractDraftEditor.css";
 
-const AbstractDraftEditor = ({dataChangeCallback}) => {
+const AbstractDraftEditor = ({defaultValue, dataChangeCallback}) => {
 
   // 링크 데코레이터
   const decorator = new CompositeDecorator([
@@ -45,14 +46,14 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
         UNDERLINE: {element:"span", style: {textDecoration: "underline"}},
         STRIKETHROUGH: {element:"span", style: {textDecoration: "line-through"}},
 
-        black: {style: {color: "rgba(0, 0, 0, 1.0)"}},
-        red: {style: {color: "rgba(255, 0, 0, 1.0)"}},
-        blue: {style: {color: "rgba(0,0,255, 1.0)"}},
-        green: {style: {color: "rgba(0,128,0, 1.0)"}},
-        yellow: {style: {color: "rgba(255,255,0, 1.0)"}},
-        orange: {style: {color: "rgba(255,165,0, 1.0)"}},
-        gray: {style: {color: "rgba(128,128,128, 1.0)"}},
-        purple: {style: {color: "rgba(128,0,128, 1.0)"}},
+        black: {style: {color: "rgb(0, 0, 0)"}},
+        red: {style: {color: "rgb(255, 0, 0)"}},
+        blue: {style: {color: "rgb(0, 0, 255)"}},
+        green: {style: {color: "rgb(0, 128, 0)"}},
+        yellow: {style: {color: "rgb(255, 255, 0)"}},
+        orange: {style: {color: "rgb(255, 165, 0)"}},
+        gray: {style: {color: "rgb(128, 128, 128)"}},
+        purple: {style: {color: "rgb(128, 0, 128)"}},
       },
     };
 
@@ -68,7 +69,7 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
   useEffect(() => {
     const html = getContentAsHTML();
     dataChangeCallback(html);
-  }, [editorState, getContentAsHTML, dataChangeCallback]);
+  }, [getContentAsHTML, dataChangeCallback]);
 
 
   // 인라인 엔티티에 스타일 적용
@@ -180,6 +181,8 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
   const handleColor = (e, inputColor) => {
     e.preventDefault();
 
+    console.log(inputColor);
+
     const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
 
@@ -232,9 +235,38 @@ const AbstractDraftEditor = ({dataChangeCallback}) => {
   };
 
   const focusEdtior = () => {
-
     editorRef.current.focus()
   };
+
+  const importHtmlOptions = useMemo(() => {
+
+    return {
+      customInlineFn: (element, { Style }) => {
+          if (element.tagName === 'SPAN') {
+            const color = element.style.color; // the element color in RGB
+            const customStyle = Object.keys(colorStyleMap).find((styleKey) => {
+              const colorMap = colorStyleMap[styleKey].color;
+              //console.log(`[match] element(${color}) / colorMap(${colorMap}) result(${color===colorMap})`);
+              return color === colorMap;
+            });
+            
+            if (customStyle) {// TODO
+              return Style(customStyle)
+            }
+          }
+      }
+    };  
+  }, []);
+
+  useEffect(() => {
+    if(defaultValue){
+      // console.log(defaultValue);
+      let contentState = stateFromHTML(defaultValue, importHtmlOptions);   
+      const newEditorState = EditorState.createWithContent(contentState);
+      onChange(newEditorState);
+    }
+  }, [defaultValue, importHtmlOptions]);
+  
 
   return (
     <div className="editor-wrap">

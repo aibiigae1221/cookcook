@@ -16,10 +16,11 @@ const NewRecipeBasicInfo = (
                         {title, setTitle,
                           handleInputChange,
                           newTagName, setNewTagName, handleInputTagEnter, addNewTag, removeTag, tagList,
-                          commentary, setCommentary,
+                          setCommentary,
                           mainImageFileName,
                           handleMainImage,
-                          errorMessageTitle, errorMessageCommentary, errorMessageTags
+                          errorMessageTitle, errorMessageCommentary, errorMessageTags,
+                          editorDefaultText
                           }) => {
 
   const {resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
@@ -70,7 +71,7 @@ const NewRecipeBasicInfo = (
       <Grid item sm={12}>
         <p style={{fontWeight:"bold", marginBottom:"10px"}}>이 레시피에 대한 기본적인 설명을 적어보세요</p>
         {/*<Textarea placeholder="" minRows={5} value={commentary} onChange={(e) => handleInputChange(e, setCommentary)} />*/}
-        <AbstractDraftEditor dataChangeCallback={html => setCommentary(html) } />
+        <AbstractDraftEditor defaultValue={editorDefaultText} dataChangeCallback={html => setCommentary(html) } />
       </Grid>
 
       {errorMessageCommentary !== '' &&

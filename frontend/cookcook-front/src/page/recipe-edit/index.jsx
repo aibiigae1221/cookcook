@@ -1,18 +1,18 @@
 import {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import HeaderContent from "../component/header-content/component";
 import FooterContent from "../component/footer-content/component";
-import RecipeDetailSection from "../component/recipe-detail-section/component";
+import RecipeEditForm from "../component/recipe-edit-form/component";
 import "../common/index.css";
 
-const RecipeDetailPage = () => {
+const RecipeEditPage = () => {
 
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
-  const [isAuthor, setIsAuthor] = useState(false);
   const jwt = useSelector(state => state.user.jwt);
+  const {navigate} = useNavigate();
 
 
   useEffect(() => {
@@ -48,18 +48,16 @@ const RecipeDetailPage = () => {
 
         setRecipe(result);
 
-        if(json.isAuthor){
-          setIsAuthor(true);
+        if(!(json.isAuthor)){
+          alert("권한이 없습니다!");
+          navigate("/");
         }
         
       }).catch(error => {
         console.log(error);
       });
 
-    return () => {
-      setRecipe(null);
-    };
-  }, [apiServerUrl, recipeId, jwt]);
+  }, [apiServerUrl, jwt, navigate, recipeId]);
 
   return (
     <div className="content-wrapper">
@@ -68,7 +66,7 @@ const RecipeDetailPage = () => {
       </div>
 
       <main className="content center">
-        <RecipeDetailSection recipe={recipe} isAuthor={isAuthor} />
+        <RecipeEditForm recipe={recipe} />
       </main>
 
       <div className="content footer">
@@ -79,4 +77,4 @@ const RecipeDetailPage = () => {
 };
 
 
-export default RecipeDetailPage;
+export default RecipeEditPage;
