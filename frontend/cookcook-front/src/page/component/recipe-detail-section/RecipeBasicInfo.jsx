@@ -1,5 +1,6 @@
 import dompurify from "dompurify";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import sanitizeOption from "../abstract-draft-editor/DompurifyDefaultSanitizerOption";
 import defaultCookImage from "./default-cook-image.jpg";
 import styles from "./RecipeBasicInfo.module.css"; 
@@ -7,10 +8,41 @@ import styles from "./RecipeBasicInfo.module.css";
 const RecipeBasicInfo = ({recipe, isAuthor}) => {
 
     const sanitize = dompurify.sanitize;
-    const {resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
+    const {apiServerUrl, resourceServerUrl} = useSelector(state => state.commonContext.serverUrl);
+    const jwt = useSelector(state => state.user.jwt);
+    const navigate = useNavigate();
     
+
     const deleteRecipeArticle = () => {
+        if(!window.confirm("이 레시피를 삭제합니다.")){
+            return;
+        }
+        const authHeader = `Bearer ${jwt}`;
+        const body = new URLSearchParams({
+            "recipeId": recipe.recipeId
+        }).toString();
         
+        const options = {
+            method:"post",
+            mode: "cors",
+            cache:"no-cache",
+            headers:{
+                "Authorization": authHeader,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type":"application/x-www-form-urlencoded"
+            },
+            body:body
+        };
+
+        fetch(`${apiServerUrl}/recipe/delete-article`, options)
+            .then(response => response.json())
+            .then(json => {
+                if(json.status === "success"){
+                    navigate("/");
+                }else{
+                    alert(json.message);
+                }
+            });
     }
 
     return (

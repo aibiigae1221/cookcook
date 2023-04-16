@@ -64,6 +64,11 @@ public class RecipeWebTest {
 	}
 	
 	@Test
+	public void contextLoads() {
+		
+	}
+	
+	@Test
 	public void deleteReicpeArticle() throws Exception {
 		String jwt = login();
 		String uuid = addRecipeFixture(jwt, 0);
