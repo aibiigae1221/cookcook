@@ -41,7 +41,6 @@ public class UserController {
 
 	@PostMapping("/login") 
 	public ResponseEntity<?> login(@Valid LoginParameters params) {
-		logger.info("로그인 파라미터 - {}", params.toString());
 		String jwt = userService.login(params);
 		HashMapBean mapHolder = hashMapHolderProvider.getObject();
 		mapHolder.put("jwt", jwt);

@@ -191,14 +191,6 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public void deleteRecipe(String recipeId) {
 		Recipe recipe = recipeRepository.findByRecipeId(UUID.fromString(recipeId)).orElseThrow(() -> new RecipeNotFoundException());
-//		recipe.getStepList().forEach(step -> {
-//			TemporaryImage image = temporaryImageRepository.findByImageFileName(step.getImageFileName());
-//			temporaryImageRepository.delete(image);
-//			recipeStepRepository.delete(step);
-//		});
-//		recipe.getTags().forEach(tag -> recipeTagRepository.delete(tag));
-//		TemporaryImage image = temporaryImageRepository.findByImageFileName(recipe.getImageFileName());
-//		temporaryImageRepository.delete(image);
 		recipeRepository.delete(recipe);
 	}
 

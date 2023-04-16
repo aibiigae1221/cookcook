@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Container from '@mui/material/Container';
@@ -29,6 +29,14 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
+
+  const jwt = useSelector(state => state.user.jwt);
+
+  useEffect(() => {
+    if(jwt){
+      navigate("/");
+    }
+  }, [jwt, navigate]);
 
   const handleSignUp = () => {
 
