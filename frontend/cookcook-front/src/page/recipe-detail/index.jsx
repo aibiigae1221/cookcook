@@ -11,6 +11,9 @@ const RecipeDetailPage = () => {
   const {recipeId} = useParams();
   const [recipe, setRecipe] = useState(null);
   const {apiServerUrl} = useSelector(state => state.commonContext.serverUrl);
+  const [isAuthor, setIsAuthor] = useState(false);
+  const jwt = useSelector(state => state.user.jwt);
+
 
   useEffect(() => {
     const options = {
@@ -21,6 +24,10 @@ const RecipeDetailPage = () => {
         "Access-Control-Allow-Origin": "*"
       }
     };
+
+    if(jwt){
+      options.headers["Authorization"] = `Bearer ${jwt}`;
+    }
 
     fetch(`${apiServerUrl}/recipe/detail?recipeId=${recipeId}`, options)
       .then(response => response.json())
@@ -39,7 +46,11 @@ const RecipeDetailPage = () => {
           });
         }
 
-        setRecipe(result)
+        setRecipe(result);
+
+        if(json.isAuthor){
+          setIsAuthor(true);
+        }
         
       }).catch(error => {
         console.log(error);
@@ -57,7 +68,7 @@ const RecipeDetailPage = () => {
       </div>
 
       <main className="content center">
-        <RecipeDetailSection recipe={recipe} />
+        <RecipeDetailSection recipe={recipe} isAuthor={isAuthor} />
       </main>
 
       <div className="content footer">

@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import com.aibiigae1221.cookcook.service.RecipeService;
 import com.aibiigae1221.cookcook.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -59,6 +61,36 @@ public class RecipeWebTest {
 		recipeService.removeAllRecipes();
 		recipeService.removeAllUploadedImages();
 		userService.removeAllUsers();
+	}
+	
+	@Test
+	public void deleteReicpeArticle() throws Exception {
+		String jwt = login();
+		String uuid = addRecipeFixture(jwt, 0);
+		
+		mvc.perform(post("/recipe/delete-article")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.header("Authorization", "Bearer " + jwt)
+				.param("recipeId", uuid))
+			.andDo(print())
+			.andExpect(status().isOk());
+		
+		String content = mvc.perform(get("/recipe/get-recipe-list")
+				.param("pageNo", "1")
+				.param("keyword", "뿌링클"))
+				.andDo(print())
+				.andReturn().getResponse().getContentAsString();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(content);
+		ArrayNode list = (ArrayNode) jsonNode.get("recipeList");
+		Iterator<JsonNode> iterator = list.elements();
+		int cnt = 0;
+		while(iterator.hasNext()) {
+			iterator.next();
+			cnt++;
+		}
+		assertEquals(0, cnt);
 	}
 	
 	@Test
@@ -241,7 +273,8 @@ public class RecipeWebTest {
 		params.set("recipeId", uuid);
   
 		String json = mvc.perform(get("/recipe/detail") 
-							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED) 
+							.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED)
+							.header("Authorization", "Bearer " + jwt)
 							.params(params)) 
 				.andDo(print())
 				.andExpect(status().isOk()) 

@@ -22,11 +22,11 @@
     flex-direction: column;
     width:100%;
   }
-  .description .inline{
+  .description > p{
     display:inline;
     margin-right:20px;
   }
-  .description .inline span:nth-child(3){
+  .description > p span:nth-child(3){
     margin-left:30px;
   }
   .description .icon{
@@ -57,6 +57,33 @@
     padding:5px 10px;
     font-size:16px;
     border-radius:15px;
+  }
+  .description .controlsContainer{
+    margin-top:25px;
+  }
+  .description .controlsContainer button{
+    line-height:3;
+    padding:0 10px;
+    margin-right:10px;
+    background-color:#fff;
+    outline:none;
+    cursor:pointer; 
+  }
+  .description .controlsContainer button.edit{
+    border:1px solid #0D912D;
+    color:#0D912D;
+  }
+  .description .controlsContainer button.edit:hover{
+    background-color:#0D912D;
+    color:#fff;
+  }
+  .description .controlsContainer button.delete{
+    border:1px solid #FF0000;
+    color:#FF0000;
+  }
+  .description .controlsContainer button.delete:hover{
+    background-color:#FF0000;
+    color:#fff;
   }
   .description .commentary{
     border-top:1px solid #aaa;

@@ -10,8 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,7 +39,7 @@ import jakarta.validation.Valid;
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
-	private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
+//	private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 	
 
 	@Autowired
@@ -60,23 +58,16 @@ public class RecipeServiceImpl implements RecipeService{
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadLocalPath;
 	
-	@Value("${user-resource-server-url}")
-	private String resourceServerUrl;
-	
 	@Override
 	public TemporaryImage saveImagePath(String owner, MultipartFile image) throws IllegalStateException, IOException {
-		
 		String imageFileName = getNewFileName(owner, image.getOriginalFilename());
-		
 		TemporaryImage entity = new TemporaryImage();
 		entity.setCreatedAt(new Date());
 		entity.setImageLocalPath(uploadLocalPath + File.separator + imageFileName);
 		entity.setImageFileName(imageFileName);
 		entity.setStatus("unused");
 		TemporaryImage saved = temporaryImageRepository.save(entity);
-		
 		image.transferTo( new File(saved.getImageLocalPath()));
-		
 		return saved;
 	}
 
@@ -91,13 +82,11 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public void removeAllUploadedImages() {
 		List<TemporaryImage> list = temporaryImageRepository.findAll();
-		
 		list.forEach(image -> {
 			String path = image.getImageLocalPath();
 			File file = new File(path);
 			file.deleteOnExit();
 		});
-		
 		temporaryImageRepository.deleteAll();
 	}
 
@@ -110,11 +99,9 @@ public class RecipeServiceImpl implements RecipeService{
 
 	@Override
 	public UUID saveNewRecipe(AddRecipeParameters params, User user) {
-		logger.info("레시피 등록 중..");
 		Recipe savedRecipe = saveRecipe(params, user);
 		saveRecipeTags(params, savedRecipe);
 		saveRecipeSteps(params, savedRecipe);
-		
 		setImageUsedFlag(params.getImageFileName());
 		params.getCookStepList().forEach(step -> setImageUsedFlag(step.getImageFileName()));
 		return savedRecipe.getRecipeId();
@@ -124,7 +111,6 @@ public class RecipeServiceImpl implements RecipeService{
 	private void setImageUsedFlag(String imageUrl) {
 		if(imageUrl == null || imageUrl.isEmpty())
 			return;
-		
 		TemporaryImage entity = temporaryImageRepository.findByImageFileName(imageUrl);
 		entity.setStatus("used");
 		temporaryImageRepository.save(entity);
@@ -139,7 +125,6 @@ public class RecipeServiceImpl implements RecipeService{
 			recipeStep.setRecipe(savedRecipe);
 			return recipeStep;
 		}).collect(Collectors.toSet());
-		
 		recipeStepList.forEach(step -> recipeStepRepository.save(step));
 	}
 
@@ -151,7 +136,6 @@ public class RecipeServiceImpl implements RecipeService{
 				newRecipeTag.setRecipeList(new HashSet<Recipe>());
 				return newRecipeTag;
 			});
-			
 			return recipeTag;
 		}).collect(Collectors.toSet());
 		
@@ -161,7 +145,6 @@ public class RecipeServiceImpl implements RecipeService{
 			recipeTag.getRecipeList().add(savedRecipe);
 			recipeTagRepository.save(recipeTag);
 		});
-		
 	}
 
 	private Recipe saveRecipe(AddRecipeParameters params, User user) {
@@ -171,20 +154,17 @@ public class RecipeServiceImpl implements RecipeService{
 		recipe.setCommentary(params.getCommentary());
 		recipe.setImageFileName(params.getImageFileName());
 		recipe.setCreatedDate(new Date());
-		
 		return recipeRepository.save(recipe);
 	}
 
 	@Override
 	public Recipe getRecipeDetail(String recipeId) {
 		UUID uuid = null;
-		
 		try{
 			uuid = UUID.fromString(recipeId);
 		}catch(IllegalArgumentException e) {
 			throw new RecipeNotFoundException();
 		}
-		
 		return recipeRepository.findByRecipeId(uuid).orElseThrow(() -> new RecipeNotFoundException());
 	}
 
@@ -202,11 +182,28 @@ public class RecipeServiceImpl implements RecipeService{
 	@Override
 	public Page<Recipe> getRecipeList(@Valid RecipeSearchParameters params, int size) {
 		Pageable pageable = PageRequest.of(params.getPageNo()-1, size);
-		
 		if(StringUtils.hasText(params.getKeyword())) {
 			return recipeRepository.findByTitleContainsOrderByCreatedDateDesc(params.getKeyword(), pageable); 
 		}
-
 		return recipeRepository.findByOrderByCreatedDateDesc(pageable);
+	}
+
+	@Override
+	public void deleteRecipe(String recipeId) {
+		Recipe recipe = recipeRepository.findByRecipeId(UUID.fromString(recipeId)).orElseThrow(() -> new RecipeNotFoundException());
+//		recipe.getStepList().forEach(step -> {
+//			TemporaryImage image = temporaryImageRepository.findByImageFileName(step.getImageFileName());
+//			temporaryImageRepository.delete(image);
+//			recipeStepRepository.delete(step);
+//		});
+//		recipe.getTags().forEach(tag -> recipeTagRepository.delete(tag));
+//		TemporaryImage image = temporaryImageRepository.findByImageFileName(recipe.getImageFileName());
+//		temporaryImageRepository.delete(image);
+		recipeRepository.delete(recipe);
+	}
+
+	@Override
+	public Recipe getRecipe(UUID recipeId) {
+		return recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException());
 	}
 }

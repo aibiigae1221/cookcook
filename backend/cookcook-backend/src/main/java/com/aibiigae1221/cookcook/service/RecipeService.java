@@ -33,4 +33,8 @@ public interface RecipeService {
 
 	Page<Recipe> getRecipeList(@Valid RecipeSearchParameters params, int size);
 
+	void deleteRecipe(String recipeId);
+
+	Recipe getRecipe(UUID fromString);
+
 }

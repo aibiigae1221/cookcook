@@ -1,31 +1,17 @@
 package com.aibiigae1221.cookcook.web.controller;
 
 
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aibiigae1221.cookcook.data.entity.User;
 import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
+import com.aibiigae1221.cookcook.web.controller.tool.ResponseOk;
 import com.aibiigae1221.cookcook.web.domain.LoginParameters;
 import com.aibiigae1221.cookcook.web.domain.SignUpParameters;
 
@@ -38,78 +24,27 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
-
-	@Autowired
-	private JwtEncoder jwtEncoder;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private ObjectProvider<HashMapBean> hashMapHolderProvider;
-	
+
+	@Autowired
+	private ResponseOk responseOk;
 	
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> signUp(@Valid SignUpParameters params) {
 		logger.info(params.toString());
-		userService.addUser(paramsToUserEntity(params));
-		
-		HashMapBean map = hashMapHolderProvider.getObject();
-		map.put("status", "success");
-		
-		return ResponseEntity.status(HttpStatus.OK).body(map.getSource());
+		userService.addUser(params);
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		return responseOk.ok(mapHolder);
 	}
 
 	@PostMapping("/login") 
 	public ResponseEntity<?> login(@Valid LoginParameters params) {
 		logger.info("로그인 파라미터 - {}", params.toString());
-		
-		Instant now = Instant.now(); long expiry = 36000L;
-	  
-		UserDetails userDetails = userDetailsService.loadUserByUsername(params.getEmail());
-		if(!passwordEncoder.matches(params.getPassword(), userDetails.getPassword())) {
-			throw new BadCredentialsException("유효하지 않는 로그인 정보입니다.");
-		}
-		
-		JwtClaimsSet claims = JwtClaimsSet.builder() 
-								.issuer("self") 
-								.issuedAt(now)
-								.expiresAt(now.plusSeconds(expiry)) 
-								.subject(userDetails.getUsername())
-								.claims(map -> {
-									Set<String> set = userDetails
-														.getAuthorities()
-														.stream()
-														.map(authority -> authority.getAuthority())
-														.collect(Collectors.toSet());
-									map.put("scope", set);
-								})
-								.build();
-
-		String jwt = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-		
-		HashMapBean map = hashMapHolderProvider.getObject();
-		map.put("status", "success");
-		map.put("jwt", jwt);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(map.getSource()); 
-	}
-	
-	@GetMapping("/restricted")
-	public void restrictedPage(Authentication authentication) {
-		// 테스트 목적 entry point
-		
-		if(authentication != null)
-			logger.info("인증된 유저만 접속 가능한 페이지 - name:[{}]", authentication.getName());
-		else
-			logger.info("인증이 안되었지만 접속이 된 경우..");
-	}
-
-	private User paramsToUserEntity(SignUpParameters params) {
-		return new User(params.getEmail(), params.getPassword(), params.getNickname());
+		String jwt = userService.login(params);
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		mapHolder.put("jwt", jwt);
+		return responseOk.ok(mapHolder);
 	}
 }

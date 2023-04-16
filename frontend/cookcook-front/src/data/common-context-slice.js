@@ -8,13 +8,8 @@ contextByEnv['dev'] = {
 };
 
 contextByEnv['prod'] = {
-    apiServerUrl:"http://119.66.211.13:8080",
-    resourceServerUrl:"http://119.66.211.13:5000"
-};
-
-contextByEnv['test'] = {
-    apiServerUrl:"http://192.168.123.102:8080",
-    resourceServerUrl:"http://192.168.123.102:5000"
+    apiServerUrl:"http://133.186.244.249:8080",
+    resourceServerUrl:"http://133.186.244.249:5000"
 };
 
 export const commonContextSlice = createSlice({

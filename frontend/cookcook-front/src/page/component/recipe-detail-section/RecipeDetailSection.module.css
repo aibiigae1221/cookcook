@@ -17,6 +17,7 @@
   padding:10px;
 }
 .navButtons button:hover{
-  background-color:#eee;
+  background-color:#428BC1;
+  color:#fff;
 }
 /* 네비게이션 버튼 */

@@ -1,4 +1,4 @@
-package com.aibiigae1221.cookcook.web.controller;
+package com.aibiigae1221.cookcook.web.controller.tool;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

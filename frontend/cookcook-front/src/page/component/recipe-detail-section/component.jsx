@@ -3,7 +3,7 @@ import RecipeBasicInfo from "./RecipeBasicInfo";
 import RecipeStepList from "./RecipeStepList";
 import styles from "./RecipeDetailSection.module.css";
 
-const RecipeDetailSection = ({recipe}) => {
+const RecipeDetailSection = ({recipe, isAuthor}) => {
   
   if(!recipe)
     return <></>;
@@ -15,7 +15,7 @@ const RecipeDetailSection = ({recipe}) => {
   return (
     <div className={styles.wrap}>
 
-      <RecipeBasicInfo recipe={recipe} />
+      <RecipeBasicInfo recipe={recipe} isAuthor={isAuthor} />
       <RecipeStepList stepList={recipe.stepList} />
     
       <div className={styles.navButtons}>

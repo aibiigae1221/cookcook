@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
+import {clearErrorMessage} from "../../../data/user-slice";
 import {NavLink} from "react-router-dom";
 import SearchForm from "./SearchForm";
 import LoginModal from "./LoginModal";
@@ -17,6 +18,7 @@ const HeaderContent = () => {
   };
 
   const handleOpenLoginModal = () => {
+    dispatch(clearErrorMessage())
     setOpenModal(true)
   };
 

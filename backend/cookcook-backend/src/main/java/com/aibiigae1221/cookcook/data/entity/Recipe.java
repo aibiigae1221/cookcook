@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,7 +53,7 @@ public class Recipe {
 	private String createdDateFormatted;
 	
 	@JsonManagedReference
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(
 		name="recipe_recipe_tag",
 		joinColumns = @JoinColumn(name="recipe_id"),
@@ -61,21 +62,11 @@ public class Recipe {
 	private Set<RecipeTag> tags;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy="recipe")
+	@OneToMany(mappedBy="recipe", cascade = CascadeType.REMOVE)
 	private Set<RecipeStep> stepList;
-	
-	
-	
-	
-	
-	
 	
 	public Recipe() {}
 
-	
-	
-	
-	
 	public UUID getRecipeId() {
 		return recipeId;
 	}
