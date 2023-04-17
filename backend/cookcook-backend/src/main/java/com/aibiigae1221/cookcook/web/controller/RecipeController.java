@@ -28,7 +28,7 @@ import com.aibiigae1221.cookcook.service.RecipeService;
 import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
 import com.aibiigae1221.cookcook.util.HashMapBean;
-import com.aibiigae1221.cookcook.web.controller.tool.ResponseOk;
+import com.aibiigae1221.cookcook.web.controller.auxiliary.ResponseOk;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.EditRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.RecentRecipeParameters;

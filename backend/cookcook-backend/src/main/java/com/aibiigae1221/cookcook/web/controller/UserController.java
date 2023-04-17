@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aibiigae1221.cookcook.service.UserService;
 import com.aibiigae1221.cookcook.util.HashMapBean;
-import com.aibiigae1221.cookcook.web.controller.tool.ResponseOk;
+import com.aibiigae1221.cookcook.web.controller.auxiliary.ResponseOk;
 import com.aibiigae1221.cookcook.web.domain.LoginParameters;
 import com.aibiigae1221.cookcook.web.domain.SignUpParameters;
 

@@ -1,4 +1,4 @@
-package com.aibiigae1221.cookcook.web.controller.tool;
+package com.aibiigae1221.cookcook.web.controller.auxiliary;
 
 import org.springframework.http.ResponseEntity;
 

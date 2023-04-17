@@ -12,8 +12,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -50,7 +48,7 @@ import jakarta.validation.Valid;
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
-	private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
+	// private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 	
 
 	@Autowired
@@ -131,11 +129,12 @@ public class RecipeServiceImpl implements RecipeService{
 		if(imageUrl == null || imageUrl.isEmpty())
 			return;
 		TemporaryImage entity = temporaryImageRepository.findByImageFileName(imageUrl);
-		entity.setStatus("used");
-		temporaryImageRepository.save(entity);
+		if(entity != null) {
+			entity.setStatus("used");
+			temporaryImageRepository.save(entity);
+		}
 	}
 
-	
 	private void saveNewRecipeSteps(List<AddRecipeCookStepParameters> stepList, Recipe savedRecipe) {
 		Set<RecipeStep> recipeStepList = stepList.stream().map(step -> {
 			RecipeStep recipeStep = new RecipeStep();
@@ -307,7 +306,9 @@ public class RecipeServiceImpl implements RecipeService{
 
 	private void removeUploadedImage(String imageFileName) {
 		TemporaryImage tempImage = temporaryImageRepository.findByImageFileName(imageFileName);
-		temporaryImageRepository.delete(tempImage);
+		if(tempImage != null) {
+			temporaryImageRepository.delete(tempImage);	
+		}
 	}
 
 	private void saveEditRecipeSteps(List<EditRecipeCookStepParameters> stepList, Recipe originalRecipe) {

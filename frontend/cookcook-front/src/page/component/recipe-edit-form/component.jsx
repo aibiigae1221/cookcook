@@ -197,7 +197,7 @@ const RecipeEditForm = ({recipe}) => {
       .then(response => response.json())
       .then(json => {
         if(json.status === 'success'){
-          navigate(`/recipe-detail/${json.uuid}`);
+          navigate(`/recipe-detail/${recipe.recipeId}`);
 
         }else{
           switch(json.field){

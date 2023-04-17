@@ -1,4 +1,4 @@
-package com.aibiigae1221.cookcook.web.controller.tool;
+package com.aibiigae1221.cookcook.web.controller.auxiliary;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,7 @@ public class ExceptionHandlerAdvice {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<?> illegalArgumentException(IllegalArgumentException e, WebRequest request){
 		HashMapBean map = addErrorIntoMap("잘못된 형식의 값이 전달되었습니다.");
+		e.printStackTrace();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map.getSource());
 	}
 	
