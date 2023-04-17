@@ -100,6 +100,76 @@ public class RecipeWebTest {
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
+	
+	@Test 
+	public void updateRecipeArticleWithWrongInput() throws Exception { 
+		String jwt = login(); 
+		String uuid = addRecipeFixture(jwt, 0); 
+		
+		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		// 기본 정보 하나씩 누락 시험해봄
+		// 누락된 기본 정보는 기존의 정보로 저장되게 처리함
+		paramsMap.put("recipeId", uuid);
+		paramsMap.put("title", "수정된 제목"); // 값 누락해보기
+		paramsMap.put("tags", List.of("수정된 태그"));
+		paramsMap.put("commentary", "수정된 소개글");
+		paramsMap.put("imageFileName", mainImageUrl);
+		
+		List<Object> cookStepList = List.of(
+				Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "수정된 과정1"),
+				Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "수정된 과정2")
+		);
+		paramsMap.put("cookStepList", cookStepList);
+		
+		ObjectMapper jsonMapper = new ObjectMapper();
+		String paramsJson = jsonMapper.writeValueAsString(paramsMap);
+		
+		mvc.perform(post("/recipe/edit-recipe")
+				.header("Authorization", "Bearer " + jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(paramsJson))
+				.andDo(print())
+				.andExpect(status().isOk()); // 누락이된건 수정을 안하면 되니 그대로 ok 진행
+	}
+ 
+	@Test 
+	public void updateRecipeArticleWithWrongInput2() throws Exception { 
+		String jwt = login(); 
+		String uuid = addRecipeFixture(jwt, 0); 
+		
+		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("recipeId", uuid);
+		paramsMap.put("title", "수정된 제목"); // 값 누락해보기
+		paramsMap.put("tags", List.of("수정된 태그"));
+		paramsMap.put("commentary", "수정된 소개글");
+		paramsMap.put("imageFileName", mainImageUrl);
+		
+		// 조리과정 누락 시도
+		// 조리과정이 누락되고 순서나 다른 값이 변경되면 누락된 값은 빈 문자열로 저장하도록 처리함.
+		List<Object> cookStepList = List.of(
+				Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "수정된 과정1"),
+				Map.of("imageFileName", cookStepImage2, "order", "1") // detail 누락
+		);
+		paramsMap.put("cookStepList", cookStepList);
+		
+		ObjectMapper jsonMapper = new ObjectMapper();
+		String paramsJson = jsonMapper.writeValueAsString(paramsMap);
+		
+		mvc.perform(post("/recipe/edit-recipe")
+				.header("Authorization", "Bearer " + jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(paramsJson))
+				.andDo(print())
+				.andExpect(status().isOk()); // 누락이된건 수정을 안하면 되니 그대로 ok 진행
+	}
  
 	
 	@Test

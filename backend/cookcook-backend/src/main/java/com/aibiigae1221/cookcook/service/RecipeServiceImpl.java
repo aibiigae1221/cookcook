@@ -12,6 +12,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -48,7 +50,7 @@ import jakarta.validation.Valid;
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
-	// private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 	
 
 	@Autowired
@@ -245,26 +247,37 @@ public class RecipeServiceImpl implements RecipeService{
 		// 태그 수정
 		Set<RecipeTag> originalTags = originalRecipe.getTags();
 		List<String> newTags = params.getTags();
-
-		// 새로 받은 값과 기존의 있는 태그 값들 검사
-		boolean tagEditted = recipeTagEditComparer.checkIfCollectionDataIsDifferent(originalTags, newTags, (originalTag, mayEdittedTag) -> {
-			return !(originalTag.getTagName().equals(mayEdittedTag));
-		});
-		
-		if(tagEditted) {
-			originalRecipe.getTags().clear();
-			saveRecipeTags(newTags, originalRecipe);
-			editted = true;
+		if(newTags != null) {
+			// 새로 받은 값과 기존의 있는 태그 값들 검사
+			boolean tagEditted = recipeTagEditComparer.checkIfCollectionDataIsDifferent(originalTags, newTags, (originalTag, mayEdittedTag) -> {
+				return !(originalTag.getTagName().equals(mayEdittedTag));
+			});
+			
+			if(tagEditted) {
+				originalRecipe.getTags().clear();
+				saveRecipeTags(newTags, originalRecipe);
+				editted = true;
+			}
 		}
+		
 		
 		// 조리과정 수정
 		Set<RecipeStep> originalSteps = originalRecipe.getStepList();
 		List<EditRecipeCookStepParameters> newSteps = params.getCookStepList();
 		boolean stepEditted = recipeStepEditComparer.checkIfCollectionDataIsDifferent(originalSteps, newSteps, (originalStep, newStep) -> {
 			boolean innerDiff = false;
-			innerDiff = innerDiff | !originalStep.getDetail().equals(newStep.getDetail());
-			innerDiff = innerDiff | !originalStep.getImageFileName().equals(newStep.getImageFileName());
-			innerDiff = innerDiff | originalStep.getStepNumber() != newStep.getOrder();
+			// 값이 존재하면 수정된 컨텐츠인지 검색
+			// 만약 값이 없다면 수정을 하지 않기
+			if(StringUtils.hasText(newStep.getDetail())) {
+				innerDiff = innerDiff | !originalStep.getDetail().equals(newStep.getDetail());
+			}
+			if(StringUtils.hasText(newStep.getImageFileName())) {
+				innerDiff = innerDiff | !originalStep.getImageFileName().equals(newStep.getImageFileName());	
+			}
+			if(StringUtils.hasText(String.valueOf(newStep.getOrder()))) {
+				innerDiff = innerDiff | originalStep.getStepNumber() != newStep.getOrder();
+			}
+			
 			return innerDiff;
 		});
 		
@@ -273,7 +286,6 @@ public class RecipeServiceImpl implements RecipeService{
 			originalRecipe.getStepList().clear();
 			saveEditRecipeSteps(newSteps, originalRecipe);
 			stepIdList.forEach(stepId -> removeStepsById(stepId));
-			
 			newSteps.forEach(step -> {
 				setImageUsedFlag(step.getImageFileName());
 			});
@@ -301,10 +313,19 @@ public class RecipeServiceImpl implements RecipeService{
 	private void saveEditRecipeSteps(List<EditRecipeCookStepParameters> stepList, Recipe originalRecipe) {
 		Set<RecipeStep> recipeStepList = stepList.stream().map(step -> {
 			RecipeStep recipeStep = new RecipeStep();
-			recipeStep.setStepNumber(Long.valueOf(step.getOrder()));
-			recipeStep.setDetail(step.getDetail());
-			recipeStep.setImageFileName(step.getImageFileName());
 			recipeStep.setRecipe(originalRecipe);
+			recipeStep.setStepNumber(Long.valueOf(step.getOrder()));
+			
+			if(StringUtils.hasText(step.getDetail())) {
+				recipeStep.setDetail(step.getDetail());
+			}else {
+				recipeStep.setDetail("");
+			}
+			
+			if(StringUtils.hasText(step.getImageFileName())) {
+				recipeStep.setImageFileName(step.getImageFileName());
+			}
+			
 			return recipeStep;
 		}).collect(Collectors.toSet());
 		saveRecipeSteps(recipeStepList);
