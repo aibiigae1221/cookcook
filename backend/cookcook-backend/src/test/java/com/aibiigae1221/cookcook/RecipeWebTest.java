@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,10 +30,13 @@ import org.springframework.util.MultiValueMap;
 
 import com.aibiigae1221.cookcook.service.RecipeService;
 import com.aibiigae1221.cookcook.service.UserService;
+import com.aibiigae1221.cookcook.util.CallbackForTest;
+import com.aibiigae1221.cookcook.util.MultiValueMapSetterCallback;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 @SpringBootTest
 public class RecipeWebTest {
@@ -63,10 +67,40 @@ public class RecipeWebTest {
 		userService.removeAllUsers();
 	}
 	
-	@Test
-	public void contextLoads() {
+	
+	@Test 
+	public void updateRecipeArticle() throws Exception { 
+		String jwt = login(); 
+		String uuid = addRecipeFixture(jwt, 0); 
 		
+		String mainImageUrl = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage1 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		String cookStepImage2 = uploadImage(jwt, SAMPLE_IMAGE_ORIGINAL_FILENAME, SAMPLE_IMAGE_CONTENT_TYPE, SAMPLE_IMAGE_PATH);;
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("recipeId", uuid);
+		paramsMap.put("title", "수정된 제목");
+		paramsMap.put("tags", List.of("수정된 태그"));
+		paramsMap.put("commentary", "수정된 소개글");
+		paramsMap.put("imageFileName", mainImageUrl);
+		
+		List<Object> cookStepList = List.of(
+				Map.of("imageFileName", cookStepImage1, "order", "0", "detail", "수정된 과정1"),
+				Map.of("imageFileName", cookStepImage2, "order", "1", "detail", "수정된 과정2")
+		);
+		paramsMap.put("cookStepList", cookStepList);
+		
+		ObjectMapper jsonMapper = new ObjectMapper();
+		String paramsJson = jsonMapper.writeValueAsString(paramsMap);
+		
+		mvc.perform(post("/recipe/edit-recipe")
+				.header("Authorization", "Bearer " + jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(paramsJson))
+				.andDo(print())
+				.andExpect(status().isOk());
 	}
+ 
 	
 	@Test
 	public void deleteReicpeArticle() throws Exception {
@@ -96,6 +130,32 @@ public class RecipeWebTest {
 			cnt++;
 		}
 		assertEquals(0, cnt);
+	}
+	
+	@Test
+	public void deleteReicpeArticleWithWrongInput() throws Exception {
+		String jwt = login();
+		/*String uuid = */addRecipeFixture(jwt, 0);
+		
+		mvc.perform(post("/recipe/delete-article")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.header("Authorization", "Bearer " + jwt)
+				.param("recipeId", "unknownId")) // 잘못된 recipeId 입력
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void deleteReicpeArticleWithWrongInput2() throws Exception {
+		String jwt = login();
+		/*String uuid = */addRecipeFixture(jwt, 0);
+		
+		mvc.perform(post("/recipe/delete-article")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.header("Authorization", "Bearer " + jwt))
+				//.param("recipeId", uuid)) -- 값 누락 
+			.andDo(print())
+			.andExpect(status().isBadRequest());
 	}
 	
 	@Test

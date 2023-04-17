@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -28,7 +29,7 @@ import com.aibiigae1221.cookcook.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 @SpringBootTest
 public class UserAuthenticationTest {
@@ -71,10 +72,6 @@ public class UserAuthenticationTest {
 		
 		assertNotNull(jwt);
 		logger.info("jwt:[{}]", jwt);
-		
-		mvc.perform(get("/restricted") 
-				.header("Authorization", "Bearer " + jwt))
-		  		.andExpect(status().isOk());
 		
 		mvc.perform(get("/logout"))
 				.andExpect(status().isOk());

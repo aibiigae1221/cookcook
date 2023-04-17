@@ -30,6 +30,7 @@ import com.aibiigae1221.cookcook.service.exception.RecipeNotFoundException;
 import com.aibiigae1221.cookcook.util.HashMapBean;
 import com.aibiigae1221.cookcook.web.controller.tool.ResponseOk;
 import com.aibiigae1221.cookcook.web.domain.AddRecipeParameters;
+import com.aibiigae1221.cookcook.web.domain.EditRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.RecentRecipeParameters;
 import com.aibiigae1221.cookcook.web.domain.RecipeIdParameter;
 import com.aibiigae1221.cookcook.web.domain.RecipeSearchParameters;
@@ -56,6 +57,13 @@ public class RecipeController {
 	@Autowired
 	private ResponseOk responseOk;
 	
+	@PostMapping("/recipe/edit-recipe")
+	public ResponseEntity<?> editRecipe(@Valid @RequestBody EditRecipeParameters params, Authentication authentication){
+		HashMapBean mapHolder = hashMapHolderProvider.getObject();
+		logger.info(params.toString());
+		recipeService.editRecipe(authentication, params);
+		return responseOk.ok(mapHolder);
+	}
 	
 	@PostMapping("/recipe/delete-article")
 	public ResponseEntity<?> deleteRecipe(@Valid RecipeIdParameter param, Authentication authentication){

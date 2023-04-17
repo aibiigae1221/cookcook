@@ -51,9 +51,15 @@ public class Recipe {
 	
 	@Column(insertable = false, updatable = false)
 	private String createdDateFormatted;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedDate;
+	
+	@Column(insertable = false, updatable = false)
+	private String modifiedDateFormatted;
 	
 	@JsonManagedReference
-	@ManyToMany(cascade = CascadeType.REMOVE)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
 		name="recipe_recipe_tag",
 		joinColumns = @JoinColumn(name="recipe_id"),
@@ -132,9 +138,28 @@ public class Recipe {
 	}
 
 	public String getCreatedDateFormatted() {
+		// 여기는 date를 기본으로 가지고 있기 때문에 null 체크를 안함
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(createdDate);
 	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public String getModifiedDateFormatted() {
+		if(this.modifiedDate != null) {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			return dateFormat.format(modifiedDate);	
+		}
+		
+		return null;
+	}
+
 
 	@Override
 	public String toString() {

@@ -25,6 +25,12 @@ public class ExceptionHandlerAdvice {
 	@Autowired
 	private ObjectProvider<HashMapBean> hashMapHolderProvider;
 	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<?> illegalArgumentException(IllegalArgumentException e, WebRequest request){
+		HashMapBean map = addErrorIntoMap("잘못된 형식의 값이 전달되었습니다.");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map.getSource());
+	}
+	
 	@ExceptionHandler(ConstraintViolationException.class) 
 	public ResponseEntity<?> constraintViolationException(ConstraintViolationException e, WebRequest request) {
 		String message = e.getMessage();

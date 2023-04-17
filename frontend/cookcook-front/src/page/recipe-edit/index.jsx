@@ -21,13 +21,10 @@ const RecipeEditPage = () => {
       mode: "cors",
       headers:{
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": `Bearer ${jwt}`
       }
     };
-
-    if(jwt){
-      options.headers["Authorization"] = `Bearer ${jwt}`;
-    }
 
     fetch(`${apiServerUrl}/recipe/detail?recipeId=${recipeId}`, options)
       .then(response => response.json())
